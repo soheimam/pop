@@ -55,6 +55,7 @@ export default function Home({ title = "" }) {
         {cars.map((car) => (
           <CarCard
             key={car.id}
+            id={car.id}
             make={car.make}
             model={car.model}
             year={car.year}
