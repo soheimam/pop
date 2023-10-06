@@ -13,6 +13,9 @@ export default function Home({ title = "" }) {
           Snap and sell a varifiable auto marketplace
         </p>
       </div>
+      <h4 className="mt-9 mb-6 blue-900 text-xl font-semibold tracking-tight">
+        Todays picks
+      </h4>
     </main>
   );
 }
