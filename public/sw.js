@@ -80,7 +80,7 @@ define(['./workbox-ac81b9be'], (function (workbox) { 'use strict';
    */
   workbox.precacheAndRoute([{
     "url": "/_next/app-build-manifest.json",
-    "revision": "2e3b0d757f96d7ffa4dbc9e6acadafe4"
+    "revision": "2b519e5e2f51c3ef1c2f23b310ac1fc1"
   }, {
     "url": "/_next/build-manifest.json",
     "revision": "9cb6afb2be56767e85f623122637a919"
@@ -88,14 +88,8 @@ define(['./workbox-ac81b9be'], (function (workbox) { 'use strict';
     "url": "/_next/react-loadable-manifest.json",
     "revision": "99914b932bd37a50b983c5e7c90ae93b"
   }, {
-    "url": "/_next/server/app/_not-found_client-reference-manifest.js",
-    "revision": "d7b184b3551e77e809e6d7f635eb7388"
-  }, {
-    "url": "/_next/server/app/not-found_client-reference-manifest.js",
-    "revision": "7433113752a629f1353be31e8e8689e3"
-  }, {
     "url": "/_next/server/app/page_client-reference-manifest.js",
-    "revision": "0df800cb4b098789a95d31efb2368324"
+    "revision": "eb42c18d1f55a926abe7078a80ba02ed"
   }, {
     "url": "/_next/server/middleware-build-manifest.js",
     "revision": "9b8da685af90831dd78ddc8d2fc836a0"
@@ -113,19 +107,16 @@ define(['./workbox-ac81b9be'], (function (workbox) { 'use strict';
     "revision": "32bb8b81e44143443946597e972b2d69"
   }, {
     "url": "/_next/static/chunks/app/layout.js",
-    "revision": "8eb6b3c2398ce248a1ee6b0f7afa1737"
-  }, {
-    "url": "/_next/static/chunks/app/not-found.js",
-    "revision": "2b616843074671070a32d911f38fec8f"
+    "revision": "8c3ed0593ed64f9a9e5081ea4f6988b9"
   }, {
     "url": "/_next/static/chunks/polyfills.js",
     "revision": "837c0df77fd5009c9e46d446188ecfd0"
   }, {
     "url": "/_next/static/chunks/webpack.js",
-    "revision": "6373b644b5ecf0b157e1655ba9dfa303"
+    "revision": "97f3d2f6e7b36c826d67fc02f05a3d9d"
   }, {
     "url": "/_next/static/css/app/layout.css",
-    "revision": "871112fc511fff2d0d2539d8e4ea999a"
+    "revision": "d9faddb4c6dec028917994d985b9b0ca"
   }, {
     "url": "/_next/static/development/_buildManifest.js",
     "revision": "ffa3aabb229020bfdacb6f27acadcf31"
@@ -154,10 +145,13 @@ define(['./workbox-ac81b9be'], (function (workbox) { 'use strict';
     "url": "/_next/static/media/fd4db3eb5472fc27-s.woff2",
     "revision": "71f3fcaf22131c3368d9ec28ef839831"
   }, {
-    "url": "/_next/static/webpack/adeadfae86534cb9.webpack.hot-update.json",
+    "url": "/_next/static/webpack/app/layout.d10b571903970a6d.hot-update.js",
     "revision": "development"
   }, {
-    "url": "/_next/static/webpack/webpack.adeadfae86534cb9.hot-update.js",
+    "url": "/_next/static/webpack/d10b571903970a6d.webpack.hot-update.json",
+    "revision": "development"
+  }, {
+    "url": "/_next/static/webpack/webpack.d10b571903970a6d.hot-update.js",
     "revision": "development"
   }], {
     "ignoreURLParametersMatching": [/ts/]
