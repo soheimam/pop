@@ -37,7 +37,7 @@ yarn-error.log*
 next-env.d.ts
 
 # Ignore PWA workbox files if generated in the src directory
-src/sw.js
+public/sw.js
 src/workbox-*.js
-src/sw.js.map
-sw.js.map
+public/sw.js.map
+public/sw.js.map

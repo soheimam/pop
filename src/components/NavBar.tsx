@@ -13,7 +13,7 @@ function NavBar() {
   return (
     <footer className=" fixed bottom-0 max-w-2/3  mb-6 bg-blue-500 rounded-md transform -translate-x-1/2 left-1/2">
       <div className="flex justify-between max-w-screen-md mx-auto">
-        <Link href="/home" passHref legacyBehavior>
+        <Link href="/" passHref legacyBehavior>
           <a
             className="text-white bg-blue-500 hover:bg-blue-600 p-4 rounded-tl-md rounded-bl-md transition ease-in-out"
             aria-label="Home"

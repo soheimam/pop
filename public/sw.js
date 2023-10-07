@@ -80,7 +80,7 @@ define(['./workbox-ac81b9be'], (function (workbox) { 'use strict';
    */
   workbox.precacheAndRoute([{
     "url": "/_next/app-build-manifest.json",
-    "revision": "2b519e5e2f51c3ef1c2f23b310ac1fc1"
+    "revision": "8e9db5a7f4f125617190da52f5b370c4"
   }, {
     "url": "/_next/build-manifest.json",
     "revision": "9cb6afb2be56767e85f623122637a919"
@@ -88,8 +88,17 @@ define(['./workbox-ac81b9be'], (function (workbox) { 'use strict';
     "url": "/_next/react-loadable-manifest.json",
     "revision": "99914b932bd37a50b983c5e7c90ae93b"
   }, {
+    "url": "/_next/server/app/_not-found_client-reference-manifest.js",
+    "revision": "36cae3f2f317bd9acafeb7b54ebdc711"
+  }, {
+    "url": "/_next/server/app/cars/%5Bid%5D/page_client-reference-manifest.js",
+    "revision": "f96a9b3754b4f16c4d316610751c8743"
+  }, {
+    "url": "/_next/server/app/not-found_client-reference-manifest.js",
+    "revision": "a81075570b7e854a57fb313d8a3ccb83"
+  }, {
     "url": "/_next/server/app/page_client-reference-manifest.js",
-    "revision": "eb42c18d1f55a926abe7078a80ba02ed"
+    "revision": "3a3f6d129f3d5d574aa42991cd60e88d"
   }, {
     "url": "/_next/server/middleware-build-manifest.js",
     "revision": "9b8da685af90831dd78ddc8d2fc836a0"
@@ -107,16 +116,19 @@ define(['./workbox-ac81b9be'], (function (workbox) { 'use strict';
     "revision": "32bb8b81e44143443946597e972b2d69"
   }, {
     "url": "/_next/static/chunks/app/layout.js",
-    "revision": "8c3ed0593ed64f9a9e5081ea4f6988b9"
+    "revision": "9337e18890e9df8ba00075b9be72de46"
+  }, {
+    "url": "/_next/static/chunks/app/not-found.js",
+    "revision": "2b616843074671070a32d911f38fec8f"
   }, {
     "url": "/_next/static/chunks/polyfills.js",
     "revision": "837c0df77fd5009c9e46d446188ecfd0"
   }, {
     "url": "/_next/static/chunks/webpack.js",
-    "revision": "97f3d2f6e7b36c826d67fc02f05a3d9d"
+    "revision": "744e9219d2e12f31c9e1da17fd685943"
   }, {
     "url": "/_next/static/css/app/layout.css",
-    "revision": "d9faddb4c6dec028917994d985b9b0ca"
+    "revision": "0e0b8cde56999df81fcd783a0796882a"
   }, {
     "url": "/_next/static/development/_buildManifest.js",
     "revision": "ffa3aabb229020bfdacb6f27acadcf31"
@@ -145,13 +157,10 @@ define(['./workbox-ac81b9be'], (function (workbox) { 'use strict';
     "url": "/_next/static/media/fd4db3eb5472fc27-s.woff2",
     "revision": "71f3fcaf22131c3368d9ec28ef839831"
   }, {
-    "url": "/_next/static/webpack/app/layout.d10b571903970a6d.hot-update.js",
+    "url": "/_next/static/webpack/97c7611ac04b4b86.webpack.hot-update.json",
     "revision": "development"
   }, {
-    "url": "/_next/static/webpack/d10b571903970a6d.webpack.hot-update.json",
-    "revision": "development"
-  }, {
-    "url": "/_next/static/webpack/webpack.d10b571903970a6d.hot-update.js",
+    "url": "/_next/static/webpack/webpack.97c7611ac04b4b86.hot-update.js",
     "revision": "development"
   }], {
     "ignoreURLParametersMatching": [/ts/]
