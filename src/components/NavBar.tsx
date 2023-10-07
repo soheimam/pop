@@ -21,7 +21,7 @@ function NavBar() {
             <HomeIcon width="24" height="24" />
           </a>
         </Link>
-        <Link href="/profile" passHref legacyBehavior>
+        <Link href="/createListing" passHref legacyBehavior>
           <a
             className="text-white bg-blue-500 hover:bg-blue-600 p-4 overflow-hidden transition ease-in-out"
             aria-label="Profile"
