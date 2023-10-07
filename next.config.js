@@ -9,6 +9,11 @@ const nextConfig = {
 const withPWA = require("next-pwa")({
   dest: "public",
   publicExcludes: ["**/manifest.json"],
+  exclude: [
+    // Exclude files from the service worker
+    /sw\.js/,
+    /sw\.js\.map/,
+  ],
 });
 
 module.exports = withPWA(nextConfig);

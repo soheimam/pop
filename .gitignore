@@ -39,3 +39,4 @@ next-env.d.ts
 # Ignore PWA workbox files if generated in the src directory
 src/sw.js
 src/workbox-*.js
+src/sw.js.map
