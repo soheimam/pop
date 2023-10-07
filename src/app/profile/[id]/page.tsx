@@ -1,6 +1,6 @@
 function Page({ params }: { params: { id: string } }) {
-  // If the car is not found, display a message
-  console.log(params);
+  // If the profile is not found, display a message
+  console.log(params, "profile");
 
   return (
     <main>

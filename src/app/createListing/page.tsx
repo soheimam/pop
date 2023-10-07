@@ -22,10 +22,13 @@ function Page({ params }: { params: { id: string } }) {
 
   return (
     <main>
-      <h2 className="scroll-m-20 border-b pb-2 text-3xl font-semibold tracking-tight transition-colors first:mt-0">
+      <h2 className=" max-w-xs scroll-m-20 border-b pb-2 text-3xl font-semibold tracking-tight transition-colors first:mt-0 text-blue-500 my-10">
         Snap & Sell List Car
       </h2>
-      <Camera onCapture={handleImageCapture} />
+
+      <div className="grid grid-cols-6 md:grid-cols-12 gap-4">
+        <Camera onCapture={handleImageCapture} />
+      </div>
 
       {/* Only show the "Upload Photo" button when an image is captured */}
       {capturedImage && <button onClick={handleUpload}>Submit</button>}
