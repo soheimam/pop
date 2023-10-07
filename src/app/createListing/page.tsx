@@ -22,7 +22,7 @@ function Page({ params }: { params: { id: string } }) {
 
   return (
     <main>
-      <h2 className=" max-w-xs scroll-m-20 border-b pb-2 text-3xl font-semibold tracking-tight transition-colors first:mt-0 text-blue-500 my-10">
+      <h2 className=" max-w-[200px]  border-b pb-2 text-3xl font-semibold tracking-tight transition-colors  text-blue-500 my-20">
         Snap & Sell List Car
       </h2>
 
