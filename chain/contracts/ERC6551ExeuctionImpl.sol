@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: MIT 
 pragma solidity ^0.8.0;
 
 import "@openzeppelin/contracts/utils/introspection/IERC165.sol";
@@ -21,7 +22,7 @@ contract ERC6551Account is IERC165, IERC1271, IERC6551Account, IERC6551Executabl
         uint256 operation
     ) external payable returns (bytes memory result) {
         console.log(msg.sender);
-        // require(_isValidSigner(msg.sender), "Invalid signer");
+        require(_isValidSigner(msg.sender), "Invalid signer");
         require(operation == 0, "Only call operations are supported");
 
         ++state;

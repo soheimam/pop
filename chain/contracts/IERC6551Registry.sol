@@ -1,3 +1,6 @@
+// SPDX-License-Identifier: MIT 
+pragma solidity ^0.8.19;
+
 interface IERC6551Registry {
     /**
      * @dev The registry SHALL emit the AccountCreated event upon successful account creation

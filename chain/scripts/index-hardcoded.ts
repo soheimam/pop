@@ -12,7 +12,7 @@ async function main() {
   }
 
   // Constants
-  const chainId = 31337;
+  const chainId = 1337;
   const tokenId = 1; // Since we minted only one token and the tokenId starts from 0
   const salt = ethers.getBigInt(123456789);
   const initData = "0x";
@@ -23,10 +23,12 @@ async function main() {
   let CarNFT: CarNFT;
   // Addresses
   let IERC6551RegistryContractAddress: string =
-    deployedContracts.ERC6551Registry;
-  let IERC6551AccountContractAddress: string = deployedContracts.ERC6551Account;
+    "0xe7f1725E7734CE288F8367e1Bb143E90bb3F0512";
+  let IERC6551AccountContractAddress: string =
+    "0x9fE46736679d2D9a65F0992F2272dE9f3c7fa6e0";
   let carNftContractAddress: string = deployedContracts.CarNFT;
-  let UserProfileNFTAddress: string = deployedContracts.UserProfileNFT;
+  let UserProfileNFTAddress: string =
+    "0x5FbDB2315678afecb367f032d93F642f64180aa3";
   // Factories
   UserProfileNFT = await ethers.getContractFactory("UserProfileNFT");
   ERC6551Registry = await ethers.getContractFactory("ERC6551Registry");
@@ -35,7 +37,7 @@ async function main() {
   // Instances
   let userProfileInstance = (await UserProfileNFT.attach(
     UserProfileNFTAddress
-  )) as UserProfileNFT; // UserProfileNFT - Not really needed, but just for reference
+  )) as UserProfileNFT;
   let registryInstance = await ERC6551Registry.attach(
     IERC6551RegistryContractAddress
   );
@@ -51,7 +53,7 @@ async function main() {
   // Mint the 'Admin' User profile NFT (tokenId = 0)
   let admin1 = await userProfileInstance
     .connect(owner)
-    .mintNFT(account2publicKey, 0);
+    .mintNFT(account2publicKey);
   let admin1MintResult = await admin1.wait();
   console.log(
     `Admin token #1 transaction : ${JSON.stringify(admin1MintResult)}\n\n`
@@ -60,7 +62,7 @@ async function main() {
   // Mint the 'Admin' User profile NFT (tokenId = 0)
   let admin2 = await userProfileInstance
     .connect(owner)
-    .mintNFT(account2publicKey, 1);
+    .mintNFT(account2publicKey);
   let admin2MintResult = await admin2.wait();
   console.log(
     `Admin token #2 transaction : ${JSON.stringify(admin2MintResult)}\n\n`
@@ -70,30 +72,25 @@ async function main() {
   let accountCreation = await registryInstance
     .connect(owner)
     .createAccount(
-      IERC6551AccountContractAddress,
+      "0x5FbDB2315678afecb367f032d93F642f64180aa3",
       chainId,
-      UserProfileNFTAddress,
+      "0x5FbDB2315678afecb367f032d93F642f64180aa3",
       tokenId,
       salt,
       initData
     );
 
-  console.log(JSON.stringify(accountCreation));
-  const receipt = await accountCreation.wait();
-  const event = receipt.events?.find((e) => e.event === "AccountCreated");
-  if (event) {
-    const address = event.args?.account;
-    console.log(`Account Created Address: ${address}`);
-  }
+  await accountCreation.wait();
 
-  const accountAddress = await registryInstance.account(
-    IERC6551AccountContractAddress,
-    chainId,
-    UserProfileNFTAddress,
-    tokenId,
-    salt
-  );
-  console.log(`Account Address: ${accountAddress}`);
+  let accountAddress = await registryInstance
+    .connect(owner)
+    .account(
+      "0x5FbDB2315678afecb367f032d93F642f64180aa3",
+      chainId,
+      "0x5FbDB2315678afecb367f032d93F642f64180aa3",
+      tokenId,
+      salt
+    );
 
   let callData = await carProofOfPurchaseInstance.interface.encodeFunctionData(
     "mint",
