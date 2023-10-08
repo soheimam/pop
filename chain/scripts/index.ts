@@ -2,7 +2,7 @@ import { ethers } from "hardhat";
 import { ContractFactory } from "ethers";
 import { deployedContracts } from "./deployedContractAddresses";
 const { Wallet } = require("ethers");
-import { account2publicKey, account2privateKey } from "./accountData";
+import { account1publicKey, account1privateKey } from "./accountData";
 import { CarNFT, ERC6551Account, ERC6551Registry } from "../typechain-types";
 import { UserProfileNFT } from "../typechain-types/contracts/UserProfileNFT.sol";
 
@@ -12,9 +12,10 @@ async function main() {
   }
 
   // Constants
-  const chainId = 31337;
-  const tokenId = 1; // Since we minted only one token and the tokenId starts from 0
-  const salt = ethers.getBigInt(123456789);
+  // const chainId: Uint256 = 31337;
+  let chainId = ethers.toBigInt(1337);
+  const tokenId = ethers.toBigInt(1); // Since we minted only one token and the tokenId starts from 0
+  const salt = ethers.getBigInt(111);
   const initData = "0x";
   // Definitions
   let UserProfileNFT: UserProfileNFT;
@@ -45,13 +46,13 @@ async function main() {
   let carProofOfPurchaseInstance = await CarNFT.attach(carNftContractAddress);
 
   const provider = new ethers.JsonRpcProvider("http://127.0.0.1:8545");
-  let owner = new Wallet(account2privateKey, provider);
+  const owner = new Wallet(account1privateKey, provider);
   console.log(`owner address : ${owner.address}`);
 
   // Mint the 'Admin' User profile NFT (tokenId = 0)
   let admin1 = await userProfileInstance
     .connect(owner)
-    .mintNFT(account2publicKey, 0);
+    .mintNFT(owner.address, 0);
   let admin1MintResult = await admin1.wait();
   console.log(
     `Admin token #1 transaction : ${JSON.stringify(admin1MintResult)}\n\n`
@@ -60,10 +61,14 @@ async function main() {
   // Mint the 'Admin' User profile NFT (tokenId = 0)
   let admin2 = await userProfileInstance
     .connect(owner)
-    .mintNFT(account2publicKey, 1);
+    .mintNFT(owner.address, 1);
   let admin2MintResult = await admin2.wait();
   console.log(
     `Admin token #2 transaction : ${JSON.stringify(admin2MintResult)}\n\n`
+  );
+
+  console.log(
+    `addressess before = ${IERC6551AccountContractAddress} ,  ${UserProfileNFTAddress}`
   );
 
   //@ts-ignore
@@ -86,30 +91,30 @@ async function main() {
     console.log(`Account Created Address: ${address}`);
   }
 
-  const accountAddress = await registryInstance.account(
-    IERC6551AccountContractAddress,
-    chainId,
-    UserProfileNFTAddress,
-    tokenId,
-    salt
+  console.log(
+    `addressess after = ${IERC6551AccountContractAddress} ,  ${UserProfileNFTAddress}`
   );
-  console.log(`Account Address: ${accountAddress}`);
+  const accountAddress = registryInstance
+    .connect(owner)
+    .account(
+      IERC6551AccountContractAddress,
+      chainId,
+      UserProfileNFTAddress,
+      tokenId,
+      salt
+    );
+  console.log(`Account Address: ${await accountAddress}`);
 
   let callData = await carProofOfPurchaseInstance.interface.encodeFunctionData(
     "mint",
-    [accountAddress, 0]
+    [await accountAddress, 0]
   );
-
-  let accountConnection = await accountInstance.connect(owner);
 
   console.log(`about to excute the mint function via 6155`);
 
-  let delegatedMintOfCarNFT = await accountConnection.execute(
-    carNftContractAddress,
-    0,
-    callData,
-    0
-  );
+  let delegatedMintOfCarNFT = await accountInstance
+    .connect(owner)
+    .execute(carNftContractAddress, 0, callData, 0);
   console.log(
     `this is the delegatedMintOfCarNFT result : ${delegatedMintOfCarNFT}`
   );
