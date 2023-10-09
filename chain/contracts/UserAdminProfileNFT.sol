@@ -8,7 +8,7 @@ import "@openzeppelin/contracts/access/Ownable.sol";
 
 contract UserAdminProfileNFT is ERC721, Ownable {
     constructor() ERC721("DHuffer", "DHUFF") {}
-    function mintNFT(address to, uint256 tokenId) public onlyOwner {
+    function mintNFT(address to, uint256 tokenId) public {
         _safeMint(to, tokenId);
     }
 }

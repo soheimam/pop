@@ -30,7 +30,7 @@ async function checkHardhatNode() {
       // Run the deployment script
       console.log("Running deployment script...");
       const { stderr: deployError } = await execAsync(
-        "npx hardhat run ./scripts/deploy.ts"
+        "npx hardhat run ./scripts/deploy.ts --network localhost"
       );
       if (deployError) {
         console.error("Error running deployment script:", deployError);

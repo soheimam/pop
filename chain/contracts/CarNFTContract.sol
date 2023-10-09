@@ -1,15 +1,15 @@
 // SPDX-License-Identifier: MIT 
 pragma solidity ^0.8.0;
 import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
+import "./ICarStuff.sol";
 
-contract CarNFT is ERC721 {
+contract CarNFT is ERC721, ICarNFT {
 
-    constructor(string memory name_, string memory symbol_) ERC721(name_, symbol_) {
-
+    constructor() ERC721("CAR","WOO") {
     }
 
-    function sayHello() public returns (string memory) {
-        return "Hello World";
+    function hello() external pure returns (string memory) {
+        return "hello";
     }
 
     function mint(address to, uint256 tokenId) public {
