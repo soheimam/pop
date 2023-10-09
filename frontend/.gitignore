@@ -41,3 +41,4 @@ public/*.js
 public/*.js.map
 
 .env
+.env.local
