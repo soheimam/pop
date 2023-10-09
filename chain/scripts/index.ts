@@ -1,24 +1,22 @@
 import { ethers } from "hardhat";
-import { ContractFactory } from "ethers";
+import { Wallet, BigNumberish, BytesLike } from "ethers";
 import { deployedContracts } from "./deployedContractAddresses";
-const { Wallet } = require("ethers");
 import { account1publicKey, account1privateKey } from "./accountData";
-import { CarNFT, ERC6551Account, ERC6551Registry } from "../typechain-types";
-import { UserProfileNFT } from "../typechain-types/contracts/UserProfileNFT.sol";
+import {
+  CarNFT,
+  ERC6551Account,
+  ERC6551Registry,
+  UserAdminProfileNFT,
+} from "../typechain-types";
 
 async function main() {
-  function sleep(ms: number) {
-    return new Promise((resolve) => setTimeout(resolve, ms));
-  }
-
   // Constants
-  // const chainId: Uint256 = 31337;
-  let chainId = ethers.toBigInt(1337);
-  const tokenId = ethers.toBigInt(1); // Since we minted only one token and the tokenId starts from 0
-  const salt = ethers.getBigInt(111);
+  const chainId = "80001";
+  const tokenId = "1";
+  const salt = "0";
   const initData = "0x";
   // Definitions
-  let UserProfileNFT: UserProfileNFT;
+  let UserAdminProfileNFT: UserAdminProfileNFT;
   let ERC6551Registry: ERC6551Registry;
   let ERC6551Account: ERC6551Account;
   let CarNFT: CarNFT;
@@ -27,25 +25,28 @@ async function main() {
     deployedContracts.ERC6551Registry;
   let IERC6551AccountContractAddress: string = deployedContracts.ERC6551Account;
   let carNftContractAddress: string = deployedContracts.CarNFT;
-  let UserProfileNFTAddress: string = deployedContracts.UserProfileNFT;
+  let UserAdminProfileNFTAddress: string =
+    deployedContracts.UserAdminProfileNFT;
   // Factories
-  UserProfileNFT = await ethers.getContractFactory("UserProfileNFT");
+  UserAdminProfileNFT = await ethers.getContractFactory("UserAdminProfileNFT");
   ERC6551Registry = await ethers.getContractFactory("ERC6551Registry");
   ERC6551Account = await ethers.getContractFactory("ERC6551Account");
   CarNFT = await ethers.getContractFactory("CarNFT");
   // Instances
-  let userProfileInstance = (await UserProfileNFT.attach(
-    UserProfileNFTAddress
-  )) as UserProfileNFT; // UserProfileNFT - Not really needed, but just for reference
-  let registryInstance = await ERC6551Registry.attach(
+  let userProfileInstance = (await UserAdminProfileNFT.attach(
+    UserAdminProfileNFTAddress
+  )) as UserAdminProfileNFT; // UserAdminProfileNFT - Not really needed, but just for reference
+  let registryInstance = (await ERC6551Registry.attach(
     IERC6551RegistryContractAddress
-  );
-  let accountInstance = await ERC6551Account.attach(
+  )) as ERC6551Registry;
+  let accountInstance = (await ERC6551Account.attach(
     IERC6551AccountContractAddress
-  );
+  )) as ERC6551Account;
   let carProofOfPurchaseInstance = await CarNFT.attach(carNftContractAddress);
 
-  const provider = new ethers.JsonRpcProvider("http://127.0.0.1:8545");
+  const provider = new ethers.JsonRpcProvider(
+    "https://polygon-mumbai.infura.io/v3/cfd227411813452cb3c81dec14c167ec"
+  );
   const owner = new Wallet(account1privateKey, provider);
   console.log(`owner address : ${owner.address}`);
 
@@ -67,19 +68,39 @@ async function main() {
     `Admin token #2 transaction : ${JSON.stringify(admin2MintResult)}\n\n`
   );
 
+  let tokenOneOwner = await userProfileInstance.connect(owner).ownerOf(0);
+  console.log(`tokenOneOwner = ${tokenOneOwner}`);
+
   console.log(
-    `addressess before = ${IERC6551AccountContractAddress} ,  ${UserProfileNFTAddress}`
+    `addressess before = ${IERC6551AccountContractAddress} ,  ${UserAdminProfileNFTAddress}`
   );
+  interface ContractArgs {
+    implementation_: string; // Ethereum address as string
+    chainId_: any; // BigNumerishish to handle large integers
+    tokenContract_: string; // Ethereum address as string
+    tokenId_: any; // BigNumerishish to handle large integers
+    salt_: any; // BigNumerishish to handle large integers
+    initData: BytesLike; // Bytes to handle arbitrary data
+  }
+
+  let args: ContractArgs = {
+    implementation_: IERC6551AccountContractAddress,
+    chainId_: ethers.toBigInt(chainId),
+    tokenContract_: UserAdminProfileNFTAddress,
+    tokenId_: ethers.toBigInt(tokenId),
+    salt_: ethers.toBigInt(salt),
+    initData: "0x", // Bytes to handle arbitrary data
+  };
 
   //@ts-ignore
   let accountCreation = await registryInstance
     .connect(owner)
     .createAccount(
-      IERC6551AccountContractAddress,
-      chainId,
-      UserProfileNFTAddress,
-      tokenId,
-      salt,
+      args.implementation_,
+      args.chainId_,
+      args.tokenContract_,
+      args.tokenId_,
+      args.salt_,
       initData
     );
 
@@ -92,16 +113,16 @@ async function main() {
   }
 
   console.log(
-    `addressess after = ${IERC6551AccountContractAddress} ,  ${UserProfileNFTAddress}`
+    `addressess after = ${IERC6551AccountContractAddress} ,  ${UserAdminProfileNFTAddress}`
   );
   const accountAddress = registryInstance
     .connect(owner)
     .account(
-      IERC6551AccountContractAddress,
-      chainId,
-      UserProfileNFTAddress,
-      tokenId,
-      salt
+      args.implementation_,
+      args.chainId_,
+      args.tokenContract_,
+      args.tokenId_,
+      args.salt_
     );
   console.log(`Account Address: ${await accountAddress}`);
 

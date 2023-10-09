@@ -4,7 +4,7 @@ import { deployedContracts } from "./deployedContractAddresses";
 const { Wallet } = require("ethers");
 import { account2publicKey, account2privateKey } from "./accountData";
 import { CarNFT, ERC6551Account, ERC6551Registry } from "../typechain-types";
-import { UserProfileNFT } from "../typechain-types/contracts/UserProfileNFT.sol";
+import { UserAdminProfileNFT } from "../typechain-types/contracts/UserAdminProfileNFT.sol";
 
 async function main() {
   function sleep(ms: number) {
@@ -17,7 +17,7 @@ async function main() {
   const salt = ethers.getBigInt(123456789);
   const initData = "0x";
   // Definitions
-  let UserProfileNFT: UserProfileNFT;
+  let UserAdminProfileNFT: UserAdminProfileNFT;
   let ERC6551Registry: ERC6551Registry;
   let ERC6551Account: ERC6551Account;
   let CarNFT: CarNFT;
@@ -27,17 +27,17 @@ async function main() {
   let IERC6551AccountContractAddress: string =
     "0x9fE46736679d2D9a65F0992F2272dE9f3c7fa6e0";
   let carNftContractAddress: string = deployedContracts.CarNFT;
-  let UserProfileNFTAddress: string =
+  let UserAdminProfileNFTAddress: string =
     "0x5FbDB2315678afecb367f032d93F642f64180aa3";
   // Factories
-  UserProfileNFT = await ethers.getContractFactory("UserProfileNFT");
+  UserAdminProfileNFT = await ethers.getContractFactory("UserAdminProfileNFT");
   ERC6551Registry = await ethers.getContractFactory("ERC6551Registry");
   ERC6551Account = await ethers.getContractFactory("ERC6551Account");
   CarNFT = await ethers.getContractFactory("CarNFT");
   // Instances
-  let userProfileInstance = (await UserProfileNFT.attach(
-    UserProfileNFTAddress
-  )) as UserProfileNFT;
+  let userProfileInstance = (await UserAdminProfileNFT.attach(
+    UserAdminProfileNFTAddress
+  )) as UserAdminProfileNFT;
   let registryInstance = await ERC6551Registry.attach(
     IERC6551RegistryContractAddress
   );

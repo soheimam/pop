@@ -1,14 +1,12 @@
 // SPDX-License-Identifier: MIT 
-pragma solidity ^0.8.0;
+pragma solidity ^0.8.9;
 
 import "@openzeppelin/contracts/utils/introspection/IERC165.sol";
 import "@openzeppelin/contracts/token/ERC721/IERC721.sol";
 import "@openzeppelin/contracts/interfaces/IERC1271.sol";
-import "@openzeppelin/contracts/utils/cryptography/SignatureChecker.sol";
 import "./IERC6551Account.sol";
 import "./IERC6551Executable.sol";
-import "hardhat/console.sol";
-
+import "@openzeppelin/contracts/utils/cryptography/SignatureChecker.sol";
 
 contract ERC6551Account is IERC165, IERC1271, IERC6551Account, IERC6551Executable {
     uint256 public state;
@@ -21,7 +19,6 @@ contract ERC6551Account is IERC165, IERC1271, IERC6551Account, IERC6551Executabl
         bytes calldata data,
         uint256 operation
     ) external payable returns (bytes memory result) {
-        console.log(msg.sender);
         require(_isValidSigner(msg.sender), "Invalid signer");
         require(operation == 0, "Only call operations are supported");
 
@@ -38,7 +35,6 @@ contract ERC6551Account is IERC165, IERC1271, IERC6551Account, IERC6551Executabl
     }
 
     function isValidSigner(address signer, bytes calldata) external view returns (bytes4) {
-
         if (_isValidSigner(signer)) {
             return IERC6551Account.isValidSigner.selector;
         }
@@ -66,17 +62,6 @@ contract ERC6551Account is IERC165, IERC1271, IERC6551Account, IERC6551Executabl
             interfaceId == type(IERC6551Executable).interfaceId);
     }
 
-
-function tokenFooter() public view returns (bytes memory) {
-    bytes memory footer = new bytes(0x60);
-
-    assembly {
-        extcodecopy(address(), add(footer, 0x20), 0x4d, 0x60)
-    }
-
-    return footer;
-}
-
     function token()
         public
         view
@@ -87,7 +72,6 @@ function tokenFooter() public view returns (bytes memory) {
         )
     {
         bytes memory footer = new bytes(0x60);
-        
 
         assembly {
             extcodecopy(address(), add(footer, 0x20), 0x4d, 0x60)
@@ -97,19 +81,13 @@ function tokenFooter() public view returns (bytes memory) {
     }
 
     function owner() public view returns (address) {
-        console.log("In owner");
         (uint256 chainId, address tokenContract, uint256 tokenId) = token();
-        console.log(chainId);
-        console.log(tokenContract);
-        console.log(tokenId);
-        console.log(block.chainid);
         if (chainId != block.chainid) return address(0);
+
         return IERC721(tokenContract).ownerOf(tokenId);
     }
 
     function _isValidSigner(address signer) internal view returns (bool) {
-        console.log("In _isValidSigner");
-        console.log(signer);
         return signer == owner();
     }
 }

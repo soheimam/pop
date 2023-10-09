@@ -78,4 +78,4 @@ async function parseFile() {
   console.log(`Data saved to ${deploymentPath}`);
 }
 
-setTimeout(checkHardhatNode, 20000);
+setTimeout(checkHardhatNode, 30000);

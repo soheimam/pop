@@ -3,13 +3,13 @@ import { ContractFactory, Contract, Signer } from "ethers";
 import { expect } from "chai";
 import {
   ERC6551Registry,
-  UserProfileNFT,
+  UserAdminProfileNFT,
   ERC6551Account,
   CarNFT,
 } from "../typechain-types";
 
 describe("ERC6551 Workflow", function () {
-  let UserProfileNFT: ContractFactory;
+  let UserAdminProfileNFT: ContractFactory;
   let ERC6551Registry: ContractFactory;
   let ERC6551Account: ContractFactory;
   let CarNFT: ContractFactory;
@@ -17,7 +17,7 @@ describe("ERC6551 Workflow", function () {
   let owner: Signer;
   let otherAccount: Signer;
 
-  let userProfileNFTInstance: UserProfileNFT;
+  let UserAdminProfileNFTInstance: UserAdminProfileNFT;
   let ERC6551RegistryInstance: ERC6551Registry;
   let ERC6551AccountInstance: ERC6551Account;
   let carProofOfPurchase: CarNFT;
@@ -28,12 +28,12 @@ describe("ERC6551 Workflow", function () {
   // before(async () => {
   //   [owner, otherAccount] = await ethers.getSigners();
 
-  //   UserProfileNFT = await ethers.getContractFactory("UserProfileNFT");
+  //   UserAdminProfileNFT = await ethers.getContractFactory("UserAdminProfileNFT");
   //   ERC6551Registry = await ethers.getContractFactory("ERC6551Registry");
   //   ERC6551Account = await ethers.getContractFactory("ERC6551Account");
   //   CarNFT = await ethers.getContractFactory("CarNFT");
 
-  //   userProfileNFTInstance = await UserProfileNFT.deploy();
+  //   UserAdminProfileNFTInstance = await UserAdminProfileNFT.deploy();
   //   ERC6551RegistryInstance = await ERC6551Registry.deploy();
   //   ERC6551AccountInstance = await ERC6551Account.deploy();
   //   carProofOfPurchase = await CarNFT.deploy("ProofOfPurchase", "POP");
@@ -43,13 +43,15 @@ describe("ERC6551 Workflow", function () {
     console.log("WHAT IS GOING ON");
     [owner, otherAccount] = await ethers.getSigners();
     let onwerAddress = await owner.getAddress();
-    UserProfileNFT = await ethers.getContractFactory("UserProfileNFT");
+    UserAdminProfileNFT = await ethers.getContractFactory(
+      "UserAdminProfileNFT"
+    );
     ERC6551Registry = await ethers.getContractFactory("ERC6551Registry");
     ERC6551Account = await ethers.getContractFactory("ERC6551Account");
     CarNFT = await ethers.getContractFactory("CarNFT");
 
-    userProfileNFTInstance = await UserProfileNFT.deploy();
-    await userProfileNFTInstance.waitForDeployment();
+    UserAdminProfileNFTInstance = await UserAdminProfileNFT.deploy();
+    await UserAdminProfileNFTInstance.waitForDeployment();
     ERC6551RegistryInstance = await ERC6551Registry.deploy();
     await ERC6551RegistryInstance.waitForDeployment();
     ERC6551AccountInstance = await ERC6551Account.deploy();
@@ -57,11 +59,11 @@ describe("ERC6551 Workflow", function () {
     carProofOfPurchase = await CarNFT.deploy("ProofOfPurchase", "POP");
     await carProofOfPurchase.waitForDeployment();
     // Mint user profile NFT
-    let nftMint = await userProfileNFTInstance.mintNFT(onwerAddress, 1);
+    let nftMint = await UserAdminProfileNFTInstance.mintNFT(onwerAddress, 1);
     await nftMint.wait();
-    expect(await userProfileNFTInstance.ownerOf(1)).to.equal(onwerAddress);
+    expect(await UserAdminProfileNFTInstance.ownerOf(1)).to.equal(onwerAddress);
     const chainId = await ethers.provider.send("eth_chainId");
-    const tokenContractAddress = await userProfileNFTInstance.getAddress();
+    const tokenContractAddress = await UserAdminProfileNFTInstance.getAddress();
     const tokenId = 1;
     const salt = ethers.hexlify(ethers.randomBytes(32));
     const initData = "0x";
