@@ -21,13 +21,13 @@ function ConnectWallet({
     if (isConnected) {
       return (
         <>
-          <CheckIcon width={20} height={20} />
+          <ExitIcon width={20} height={20} />
           <a
             href={`https://mumbai.polygonscan.com/address/${wallet.getAddress()}`}
             target="_blank"
             className="text-xs mt-1"
           >
-            {"Logged in"}
+            {"Log out"}
           </a>
         </>
       );
@@ -39,7 +39,12 @@ function ConnectWallet({
         </>
       );
     } else {
-      return "Login";
+      return (
+        <>
+          {" "}
+          <EnterIcon width="24" height="24" /> {"Log In"}
+        </>
+      );
     }
   };
 
@@ -51,7 +56,6 @@ function ConnectWallet({
           className="text-white text-xs bg-blue-500 hover:bg-blue-600 transition ease-in-out p-4 rounded-tr-md rounded-br-md flex flex-col items-center justify-center"
           onClick={connect}
         >
-          <EnterIcon width="24" height="24" />
           {getTextButton()}
         </button>
       ) : (
