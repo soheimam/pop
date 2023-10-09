@@ -3,7 +3,7 @@ pragma solidity ^0.8.0;
 
 import "./Create2.sol";
 import "./IERC6551Registry.sol";
-import "./ERC6551BytecodeLib.sol";
+import "./lib/ERC6551BytecodeLib.sol";
 
 contract ERC6551Registry is IERC6551Registry {
     error AccountCreationFailed();

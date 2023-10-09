@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: MIT
-pragma solidity ^0.8.13;
+pragma solidity ^0.8.9;
 
-import "forge-std/Script.sol";
+import "forge-contracts/contracts/Script.sol";
 import "@openzeppelin/contracts/utils/Create2.sol";
 import "../contracts/ERC6551RegistryImpl.sol";
 
@@ -14,5 +14,6 @@ contract ComputeRegistryAddress is Script {
         );
 
         console.log(registry);
+ 
     }
 }
