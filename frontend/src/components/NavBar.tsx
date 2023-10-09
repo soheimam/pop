@@ -20,44 +20,48 @@ function NavBar() {
       <div className="flex justify-between max-w-screen-md mx-auto">
         <Link href="/" passHref legacyBehavior>
           <a
-            className="text-white bg-blue-500 hover:bg-blue-600 p-4 rounded-tl-md rounded-bl-md transition ease-in-out"
+            className="text-white text-xs bg-blue-500 hover:bg-blue-600 transition ease-in-out p-4 rounded-tr-md rounded-br-md flex flex-col items-center justify-center rounded-bl-md rounded-tl-md"
             aria-label="Home"
           >
             <HomeIcon width="24" height="24" />
+            Home
           </a>
         </Link>
         <Link href="/createListing" passHref legacyBehavior>
           <a
-            className="text-white bg-blue-500 hover:bg-blue-600 p-4 overflow-hidden transition ease-in-out"
+            className="text-white text-xs bg-blue-500 hover:bg-blue-600 transition ease-in-out p-4 rounded-tr-md rounded-br-md flex flex-col items-center justify-center"
             aria-label="Profile"
           >
             <PersonIcon width="24" height="24" />
+            Dashboard
           </a>
         </Link>
         <Link href="/inbox" passHref legacyBehavior>
           <a
-            className="text-white bg-blue-500 hover:bg-blue-600 p-4 transition ease-in-out"
+            className="text-white text-xs bg-blue-500 hover:bg-blue-600 transition ease-in-out p-4 rounded-tr-md rounded-br-md flex flex-col items-center justify-center"
             aria-label="Inbox"
           >
             <ChatBubbleIcon width="24" height="24" />
+            Inbox
           </a>
         </Link>
         <Link href="/notifications" passHref legacyBehavior>
           <a
-            className="text-white bg-blue-500 hover:bg-blue-600 p-4 transition ease-in-out"
+            className="text-white text-xs bg-blue-500 hover:bg-blue-600 transition ease-in-out p-4 rounded-tr-md rounded-br-md flex flex-col items-center justify-center"
             aria-label="Notifications"
           >
             <BellIcon width="24" height="24" />
+            Notifications
           </a>
         </Link>
-        <Link href="/wallet" passHref legacyBehavior>
+        {/* <Link href="/wallet" passHref legacyBehavior>
           <a
             className="text-white bg-blue-500 hover:bg-blue-600 transition ease-in-out p-4 rounded-tr-md rounded-br-md"
             aria-label="Wallet"
           >
             <ExitIcon width="24" height="24" />
           </a>
-        </Link>
+        </Link> */}
         <ConnectWallet
           isConnected={isConnected}
           isConnecting={isConnecting}

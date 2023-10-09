@@ -1,6 +1,6 @@
 import { Icons } from "@/components/ui/Icons";
 import { ComethWallet } from "@cometh/connect-sdk";
-import { CheckIcon } from "@radix-ui/react-icons";
+import { CheckIcon, ExitIcon, EnterIcon } from "@radix-ui/react-icons";
 
 interface ConnectWalletProps {
   connectionError: string | null;
@@ -25,8 +25,9 @@ function ConnectWallet({
           <a
             href={`https://mumbai.polygonscan.com/address/${wallet.getAddress()}`}
             target="_blank"
+            className="text-xs mt-1"
           >
-            {"Wallet connected"}
+            {"Logged in"}
           </a>
         </>
       );
@@ -34,11 +35,11 @@ function ConnectWallet({
       return (
         <>
           <Icons.spinner className="h-6 w-6 animate-spin" />
-          {"Getting wallet..."}
+          {"Logging in..."}
         </>
       );
     } else {
-      return "Get your Wallet";
+      return "Login";
     }
   };
 
@@ -47,9 +48,10 @@ function ConnectWallet({
       {!connectionError ? (
         <button
           disabled={isConnecting || isConnected || !!connectionError}
-          className="flex items-center justify-center gap-x-2.5 p-3 font-semibold text-gray-900 hover:bg-gray-100 disabled:bg-white"
+          className="text-white text-xs bg-blue-500 hover:bg-blue-600 transition ease-in-out p-4 rounded-tr-md rounded-br-md flex flex-col items-center justify-center"
           onClick={connect}
         >
+          <EnterIcon width="24" height="24" />
           {getTextButton()}
         </button>
       ) : (
