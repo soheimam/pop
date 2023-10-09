@@ -1,11 +1,11 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.9;
 
-// import "forge-contracts/contracts/Script.sol";
-// import "@openzeppelin/contracts/utils/Create2.sol";
+import "forge-contracts/contracts/Script.sol";
+import "@openzeppelin/contracts/utils/Create2.sol";
 import "./ERC6551RegistryImpl.sol";
 
-contract ComputeRegistryAddress {
+contract ComputeRegistryAddress is Script {
     function run() external view {
         address registry = Create2.computeAddress(
             0x6551655165516551655165516551655165516551655165516551655165516551,
