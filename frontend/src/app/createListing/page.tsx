@@ -7,7 +7,7 @@ function Page({ params }: { params: { id: string } }) {
   // If the profile is not found, display a message
   console.log(params, "listing");
 
-  const handleImageCapture = (imageFile) => {
+  const handleImageCapture = (imageFile: React.SetStateAction<null>) => {
     // Store the image file from the Camera component in state
     setCapturedImage(imageFile);
   };
