@@ -3,8 +3,10 @@ import { deployedContracts } from "./deployedContractAddresses";
 import { Wallet, BigNumberish, BytesLike } from "ethers";
 import { account1publicKey, account1privateKey } from "./accountData";
 import { ComputeRegistryAddress } from "../typechain-types";
-
+require("dotenv").config();
 async function main() {
+  const privateKey = process.env.PRIVATE_KEY;
+
   const [deployer] = await ethers.getSigners();
   console.log(`Deploying from: ${deployer.address}`);
 
@@ -16,10 +18,7 @@ async function main() {
   console.log(computeInstance);
 
   const provider = new ethers.JsonRpcProvider("http://127.0.0.1:8545");
-  const owner = new Wallet(
-    `0x052dd1e481a2790416040640f2e8cebb8a8a69a68365a851c2ec403a7cfc6294`,
-    provider
-  );
+  const owner = new Wallet(privateKey!, provider);
 
   console.log(owner.address);
 

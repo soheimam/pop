@@ -1,7 +1,7 @@
 import { ethers } from "hardhat";
 import { Wallet, BigNumberish, BytesLike } from "ethers";
 import { deployedContracts } from "./deployedContractAddresses";
-import { account1publicKey, account1privateKey } from "./accountData";
+
 import {
   CarNFT,
   ERC6551Account,
@@ -9,8 +9,14 @@ import {
   UserAdminProfileNFT,
   ICarNFT,
 } from "../typechain-types";
+require("dotenv").config();
+
 
 async function main() {
+  
+  async function main() {
+    const privateKey = process.env.PRIVATE_KEY;
+
   // Constants
   const REGISTRY_COMPUTED_ADDRESS =
     "0x0b0c71f325faB660A39d2DAa67e1336230070389";
@@ -52,14 +58,14 @@ async function main() {
   )) as ICarNFT;
 
   const provider = new ethers.JsonRpcProvider("http://127.0.0.1:8545");
-  const owner = new Wallet(account1privateKey, provider);
+  const owner = new Wallet(privateKey!, provider);
   console.log(`owner address : ${owner.address}`);
 
-  // let admin1 = await userProfileInstance.mintNFT(owner.address, 0);
-  // let admin1MintResult = await admin1.wait();
-  // console.log(
-  //   `Admin token #1 transaction : ${JSON.stringify(admin1MintResult)}\n\n`
-  // );
+  let admin1 = await userProfileInstance.mintNFT(owner.address, 0);
+  let admin1MintResult = await admin1.wait();
+  console.log(
+    `Admin token #1 transaction : ${JSON.stringify(admin1MintResult)}\n\n`
+  );
 
   // // // Mint the 'Admin' User profile NFT (tokenId = 0)
   // let admin2 = await userProfileInstance
