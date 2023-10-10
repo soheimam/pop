@@ -12,10 +12,13 @@ import {
 
 async function main() {
   // Constants
+  const REGISTRY_COMPUTED_ADDRESS =
+    "0x0b0c71f325faB660A39d2DAa67e1336230070389";
   const chainId = "31337";
   const tokenId = "1";
-  const salt = "0";
-  const initData = "0x";
+  const salt =
+    "0x6551655165516551655165516551655165516551655165516551655165516551";
+  const initData = "0x0b0c71f325faB660A39d2DAa67e1336230070389";
   // Definitions
   let UserAdminProfileNFT: UserAdminProfileNFT;
   let ERC6551Registry: ERC6551Registry;
@@ -88,17 +91,17 @@ async function main() {
     initData: "0x", // Bytes to handle arbitrary data
   };
 
-  // // @ts-ignore
-  // let accountCreation = await registryInstance
-  //   .connect(owner)
-  //   .createAccount(
-  //     args.implementation_,
-  //     args.chainId_,
-  //     args.tokenContract_,
-  //     args.tokenId_,
-  //     args.salt_,
-  //     initData
-  //   );
+  // @ts-ignore
+  let accountCreation = await registryInstance
+    .connect(owner)
+    .createAccount(
+      args.implementation_,
+      args.chainId_,
+      args.tokenContract_,
+      args.tokenId_,
+      args.salt_,
+      initData
+    );
 
   // console.log(JSON.stringify(accountCreation));
   // const receipt = await accountCreation.wait();

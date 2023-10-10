@@ -5,6 +5,7 @@
     "@nomicfoundation/hardhat-toolbox": "^3.0.0",
     "@types/fs-extra": "^11.0.2",
     "@types/node": "^20.8.3",
+    "dotenv": "^16.3.1",
     "hardhat": "^2.18.0"
   },
   "dependencies": {

@@ -153,17 +153,38 @@ hardhat_metadata (17)
 hardhat_metadata (18)
 hardhat_metadata (19)
 hardhat_metadata (20)
+eth_accounts
+hardhat_metadata
+hardhat_metadata (2)
+hardhat_metadata (3)
+hardhat_metadata (4)
+hardhat_metadata (5)
+hardhat_metadata (6)
+hardhat_metadata (7)
+hardhat_metadata (8)
+hardhat_metadata (9)
+hardhat_metadata (10)
+hardhat_metadata (11)
+hardhat_metadata (12)
+hardhat_metadata (13)
+hardhat_metadata (14)
+hardhat_metadata (15)
+hardhat_metadata (16)
+hardhat_metadata (17)
+hardhat_metadata (18)
+hardhat_metadata (19)
+hardhat_metadata (20)
 eth_blockNumber
 eth_getBlockByNumber
 eth_feeHistory
 eth_sendTransaction
   Contract deployment: UserAdminProfileNFT
   Contract address:    0x5fbdb2315678afecb367f032d93f642f64180aa3
-  Transaction:         0x3d06f151a8ee1d4c8b67a74b10819e546b439a98824a9669d32937be423b2866
+  Transaction:         0x38c5ffff41f8d10fcf93ddca756a861d2696d47abeefddc3208d1dee38616b04
   From:                0xf39fd6e51aad88f6f4ce6ab8827279cfffb92266
   Value:               0 ETH
-  Gas used:            2354214 of 30000000
-  Block #1:            0x779165b41ba1c6b47d63796e24a47e386cc26b42f040211ca2ae1635b5ac9108
+  Gas used:            2353415 of 30000000
+  Block #1:            0xe3570305cd6a7fb7e1b8552dfe914dd469857407fceb8761b6263b6a92b6c24c
 
 eth_getTransactionByHash
 eth_getTransactionReceipt
@@ -171,13 +192,13 @@ eth_blockNumber
 eth_blockNumber (2)
 eth_feeHistory
 eth_sendTransaction
-  Contract deployment: <UnrecognizedContract>
+  Contract deployment: ERC6551Registry
   Contract address:    0xe7f1725e7734ce288f8367e1bb143e90bb3f0512
-  Transaction:         0x412539a520d3db28ba011834a1c81e78a48f87b68af36170dbe2eefe661fd8b6
+  Transaction:         0x9444a47d6e05011842be6bf09dcce02d0dc497b2cc44c2162622de4563a4a53f
   From:                0xf39fd6e51aad88f6f4ce6ab8827279cfffb92266
   Value:               0 ETH
-  Gas used:            506393 of 30000000
-  Block #2:            0x02c337ebe75941b97945b9bd26c6fffdbd1b54d9f641829abe30cd6e73244581
+  Gas used:            504221 of 30000000
+  Block #2:            0xe9032e14dbba3b3f88ecd3cf5061fc1c003980535bee7c65fa0034c9342166c1
 
 eth_getTransactionByHash
 eth_getTransactionReceipt
@@ -185,13 +206,13 @@ eth_blockNumber
 eth_blockNumber (2)
 eth_feeHistory
 eth_sendTransaction
-  Contract deployment: <UnrecognizedContract>
+  Contract deployment: ERC6551Account
   Contract address:    0x9fe46736679d2d9a65f0992f2272de9f3c7fa6e0
-  Transaction:         0x37031b92d450945b82a427627f138358b72f6be4449b56cef4f81f4e0ddb0e7e
+  Transaction:         0x2c400271468ffe1130e416c80cd99cffe1d10a8eecd719687e082bbd86b8ac64
   From:                0xf39fd6e51aad88f6f4ce6ab8827279cfffb92266
   Value:               0 ETH
-  Gas used:            1122284 of 30000000
-  Block #3:            0xd7ac0f4c088c8e1fb0e179fdaf0f7358927a4d11b55f58b5b9f50f7ca7389fb0
+  Gas used:            1116455 of 30000000
+  Block #3:            0x8f8b38804a9341593e6cee9f4f9af8f2d3117e32b2cb8604ae6751f376eb1700
 
 eth_getTransactionByHash
 eth_getTransactionReceipt
@@ -201,487 +222,37 @@ eth_feeHistory
 eth_sendTransaction
   Contract deployment: CarNFT
   Contract address:    0xcf7ed3acca5a467e9e704c703e8d87f634fb0fc9
-  Transaction:         0x9320e4ba70a4830c62b531e745a401e9fd89de389c45f4c209c8c4e9026b19c8
+  Transaction:         0x8bdc21c886185ce04cf920a1806b70894e71368f8160d1253f915913fc853c0f
   From:                0xf39fd6e51aad88f6f4ce6ab8827279cfffb92266
   Value:               0 ETH
-  Gas used:            2134750 of 30000000
-  Block #4:            0x6bd3de993c8e99d9b9107ff77a011f0bdc949dd2d83637d16c1104c633228a09
+  Gas used:            2134189 of 30000000
+  Block #4:            0x50f9d29355845967c556a5e69d492d0fcbb0be995a5871b2102483c84ab90846
 
 eth_getTransactionByHash
 eth_getTransactionReceipt
 eth_blockNumber
-eth_accounts
-hardhat_metadata
-hardhat_metadata (2)
-hardhat_metadata (3)
-hardhat_metadata (4)
-hardhat_metadata (5)
-hardhat_metadata (6)
-hardhat_metadata (7)
-hardhat_metadata (8)
-hardhat_metadata (9)
-hardhat_metadata (10)
-hardhat_metadata (11)
-hardhat_metadata (12)
-hardhat_metadata (13)
-hardhat_metadata (14)
-hardhat_metadata (15)
-hardhat_metadata (16)
-hardhat_metadata (17)
-hardhat_metadata (18)
-hardhat_metadata (19)
-hardhat_metadata (20)
-eth_accounts
-hardhat_metadata
-hardhat_metadata (2)
-hardhat_metadata (3)
-hardhat_metadata (4)
-hardhat_metadata (5)
-hardhat_metadata (6)
-hardhat_metadata (7)
-hardhat_metadata (8)
-hardhat_metadata (9)
-hardhat_metadata (10)
-hardhat_metadata (11)
-hardhat_metadata (12)
-hardhat_metadata (13)
-hardhat_metadata (14)
-hardhat_metadata (15)
-hardhat_metadata (16)
-hardhat_metadata (17)
-hardhat_metadata (18)
-hardhat_metadata (19)
-hardhat_metadata (20)
-eth_accounts
-hardhat_metadata
-hardhat_metadata (2)
-hardhat_metadata (3)
-hardhat_metadata (4)
-hardhat_metadata (5)
-hardhat_metadata (6)
-hardhat_metadata (7)
-hardhat_metadata (8)
-hardhat_metadata (9)
-hardhat_metadata (10)
-hardhat_metadata (11)
-hardhat_metadata (12)
-hardhat_metadata (13)
-hardhat_metadata (14)
-hardhat_metadata (15)
-hardhat_metadata (16)
-hardhat_metadata (17)
-hardhat_metadata (18)
-hardhat_metadata (19)
-hardhat_metadata (20)
-eth_accounts
-hardhat_metadata
-hardhat_metadata (2)
-hardhat_metadata (3)
-hardhat_metadata (4)
-hardhat_metadata (5)
-hardhat_metadata (6)
-hardhat_metadata (7)
-hardhat_metadata (8)
-hardhat_metadata (9)
-hardhat_metadata (10)
-hardhat_metadata (11)
-hardhat_metadata (12)
-hardhat_metadata (13)
-hardhat_metadata (14)
-hardhat_metadata (15)
-hardhat_metadata (16)
-hardhat_metadata (17)
-hardhat_metadata (18)
-hardhat_metadata (19)
-hardhat_metadata (20)
-eth_chainId
-eth_getTransactionCount
-eth_chainId
-eth_estimateGas
-eth_chainId
-eth_chainId (2)
-eth_getBlockByNumber
-eth_gasPrice
-eth_blockNumber
-eth_sendRawTransaction
-  Contract call:       UserAdminProfileNFT#mintNFT
-  Transaction:         0x847287566df32c00ccac8c4161362068ac27f987cab8c290ff58e5ad1dfb39c0
-  From:                0x70997970c51812dc3a010c7d01b50e0d17dc79c8
-  To:                  0x5fbdb2315678afecb367f032d93f642f64180aa3
+eth_blockNumber (2)
+eth_feeHistory
+eth_sendTransaction
+  Contract deployment: ComputeRegistryAddress
+  Contract address:    0xdc64a140aa3e981100a9beca4e685f962f0cf6c9
+  Transaction:         0x601bc2a8ad16fae3dc0272271f987b093fe0b41a9b1ae4cf60b776dbb0eb2802
+  From:                0xf39fd6e51aad88f6f4ce6ab8827279cfffb92266
   Value:               0 ETH
-  Gas used:            69846 of 69846
-  Block #5:            0x7ce8b910389f49fbfc5a6ccfb4eab8caae19b2d1d712ba0e111dbdc3c95baf7f
+  Gas used:            751853 of 30000000
+  Block #5:            0xf05e43ed68e87f6420e1f49c8e6e893bd52198e29734bb24721434675bcb7ecd
 
-eth_chainId
-eth_chainId (2)
+eth_getTransactionByHash
 eth_getTransactionReceipt
-eth_chainId
 eth_blockNumber
 eth_chainId
-eth_getTransactionReceipt
-eth_getTransactionCount
-eth_chainId
-eth_estimateGas
-eth_chainId
-eth_chainId (2)
-eth_getBlockByNumber
-eth_gasPrice
-eth_sendRawTransaction
-  Contract call:       <UnrecognizedContract>
-  Transaction:         0xc4eddf43a487058e5cdf53d9a297ebc30898025d5a147e5f6faf6cdfeb3c9e54
-  From:                0x70997970c51812dc3a010c7d01b50e0d17dc79c8
-  To:                  0xe7f1725e7734ce288f8367e1bb143e90bb3f0512
-  Value:               0 ETH
-  Gas used:            98949 of 99335
-  Block #6:            0xd0cb2623de6a44358bb0d6c1243816610eb78bd9b0765d0c31951b9fc127d1d9
-
-eth_chainId
-eth_chainId (2)
-eth_getTransactionReceipt
-eth_chainId
-eth_blockNumber
-eth_chainId
-eth_getTransactionReceipt
 eth_call
-  Contract call:       <UnrecognizedContract>
+  Contract call:       ComputeRegistryAddress#getComputeValue
   From:                0x70997970c51812dc3a010c7d01b50e0d17dc79c8
-  To:                  0xe7f1725e7734ce288f8367e1bb143e90bb3f0512
+  To:                  0xdc64a140aa3e981100a9beca4e685f962f0cf6c9
+
+  console.log:
+    Computed Registry Address: 0x0b0c71f325fab660a39d2daa67e1336230070389
 
 eth_chainId
-eth_getTransactionCount
-eth_chainId
-eth_chainId (2)
-eth_getBlockByNumber
-eth_gasPrice
-eth_sendRawTransaction
-
-  Nonce too low. Expected nonce to be 2 but got 0.
-
-eth_chainId
-eth_accounts
-hardhat_metadata
-hardhat_metadata (2)
-hardhat_metadata (3)
-hardhat_metadata (4)
-hardhat_metadata (5)
-hardhat_metadata (6)
-hardhat_metadata (7)
-hardhat_metadata (8)
-hardhat_metadata (9)
-hardhat_metadata (10)
-hardhat_metadata (11)
-hardhat_metadata (12)
-hardhat_metadata (13)
-hardhat_metadata (14)
-hardhat_metadata (15)
-hardhat_metadata (16)
-hardhat_metadata (17)
-hardhat_metadata (18)
-hardhat_metadata (19)
-hardhat_metadata (20)
-eth_accounts
-hardhat_metadata
-hardhat_metadata (2)
-hardhat_metadata (3)
-hardhat_metadata (4)
-hardhat_metadata (5)
-hardhat_metadata (6)
-hardhat_metadata (7)
-hardhat_metadata (8)
-hardhat_metadata (9)
-hardhat_metadata (10)
-hardhat_metadata (11)
-hardhat_metadata (12)
-hardhat_metadata (13)
-hardhat_metadata (14)
-hardhat_metadata (15)
-hardhat_metadata (16)
-hardhat_metadata (17)
-hardhat_metadata (18)
-hardhat_metadata (19)
-hardhat_metadata (20)
-eth_accounts
-hardhat_metadata
-hardhat_metadata (2)
-hardhat_metadata (3)
-hardhat_metadata (4)
-hardhat_metadata (5)
-hardhat_metadata (6)
-hardhat_metadata (7)
-hardhat_metadata (8)
-hardhat_metadata (9)
-hardhat_metadata (10)
-hardhat_metadata (11)
-hardhat_metadata (12)
-hardhat_metadata (13)
-hardhat_metadata (14)
-hardhat_metadata (15)
-hardhat_metadata (16)
-hardhat_metadata (17)
-hardhat_metadata (18)
-hardhat_metadata (19)
-hardhat_metadata (20)
-eth_accounts
-hardhat_metadata
-hardhat_metadata (2)
-hardhat_metadata (3)
-hardhat_metadata (4)
-hardhat_metadata (5)
-hardhat_metadata (6)
-hardhat_metadata (7)
-hardhat_metadata (8)
-hardhat_metadata (9)
-hardhat_metadata (10)
-hardhat_metadata (11)
-hardhat_metadata (12)
-hardhat_metadata (13)
-hardhat_metadata (14)
-hardhat_metadata (15)
-hardhat_metadata (16)
-hardhat_metadata (17)
-hardhat_metadata (18)
-hardhat_metadata (19)
-hardhat_metadata (20)
-eth_chainId
-eth_call
-  Contract call:       <UnrecognizedContract>
-  From:                0x70997970c51812dc3a010c7d01b50e0d17dc79c8
-  To:                  0xe7f1725e7734ce288f8367e1bb143e90bb3f0512
-
-eth_chainId
-eth_getTransactionCount
-eth_chainId
-eth_estimateGas
-  Contract call:       <UnrecognizedContract>
-  From:                0x70997970c51812dc3a010c7d01b50e0d17dc79c8
-  To:                  0x9fe46736679d2d9a65f0992f2272de9f3c7fa6e0
-  Value:               0 ETH
-
-  Error: Transaction reverted without a reason string
-      at <UnrecognizedContract>.<unknown> (0x9fe46736679d2d9a65f0992f2272de9f3c7fa6e0)
-      at processTicksAndRejections (node:internal/process/task_queues:95:5)
-      at async EthModule._estimateGasAction (/mnt/c/Users/Daniel/Desktop/hackathon/pop/chain/node_modules/hardhat/src/internal/hardhat-network/provider/modules/eth.ts:439:7)
-      at async HardhatNetworkProvider._sendWithLogging (/mnt/c/Users/Daniel/Desktop/hackathon/pop/chain/node_modules/hardhat/src/internal/hardhat-network/provider/provider.ts:145:22)
-      at async HardhatNetworkProvider.request (/mnt/c/Users/Daniel/Desktop/hackathon/pop/chain/node_modules/hardhat/src/internal/hardhat-network/provider/provider.ts:122:18)
-      at async JsonRpcHandler._handleRequest (/mnt/c/Users/Daniel/Desktop/hackathon/pop/chain/node_modules/hardhat/src/internal/hardhat-network/jsonrpc/handler.ts:191:20)
-      at async JsonRpcHandler._handleSingleRequest (/mnt/c/Users/Daniel/Desktop/hackathon/pop/chain/node_modules/hardhat/src/internal/hardhat-network/jsonrpc/handler.ts:152:17)
-      at async Server.JsonRpcHandler.handleHttp (/mnt/c/Users/Daniel/Desktop/hackathon/pop/chain/node_modules/hardhat/src/internal/hardhat-network/jsonrpc/handler.ts:52:21)
-
-eth_accounts
-hardhat_metadata
-hardhat_metadata (2)
-hardhat_metadata (3)
-hardhat_metadata (4)
-hardhat_metadata (5)
-hardhat_metadata (6)
-hardhat_metadata (7)
-hardhat_metadata (8)
-hardhat_metadata (9)
-hardhat_metadata (10)
-hardhat_metadata (11)
-hardhat_metadata (12)
-hardhat_metadata (13)
-hardhat_metadata (14)
-hardhat_metadata (15)
-hardhat_metadata (16)
-hardhat_metadata (17)
-hardhat_metadata (18)
-hardhat_metadata (19)
-hardhat_metadata (20)
-eth_accounts
-hardhat_metadata
-hardhat_metadata (2)
-hardhat_metadata (3)
-hardhat_metadata (4)
-hardhat_metadata (5)
-hardhat_metadata (6)
-hardhat_metadata (7)
-hardhat_metadata (8)
-hardhat_metadata (9)
-hardhat_metadata (10)
-hardhat_metadata (11)
-hardhat_metadata (12)
-hardhat_metadata (13)
-hardhat_metadata (14)
-hardhat_metadata (15)
-hardhat_metadata (16)
-hardhat_metadata (17)
-hardhat_metadata (18)
-hardhat_metadata (19)
-hardhat_metadata (20)
-eth_accounts
-hardhat_metadata
-hardhat_metadata (2)
-hardhat_metadata (3)
-hardhat_metadata (4)
-hardhat_metadata (5)
-hardhat_metadata (6)
-hardhat_metadata (7)
-hardhat_metadata (8)
-hardhat_metadata (9)
-hardhat_metadata (10)
-hardhat_metadata (11)
-hardhat_metadata (12)
-hardhat_metadata (13)
-hardhat_metadata (14)
-hardhat_metadata (15)
-hardhat_metadata (16)
-hardhat_metadata (17)
-hardhat_metadata (18)
-hardhat_metadata (19)
-hardhat_metadata (20)
-eth_accounts
-hardhat_metadata
-hardhat_metadata (2)
-hardhat_metadata (3)
-hardhat_metadata (4)
-hardhat_metadata (5)
-hardhat_metadata (6)
-hardhat_metadata (7)
-hardhat_metadata (8)
-hardhat_metadata (9)
-hardhat_metadata (10)
-hardhat_metadata (11)
-hardhat_metadata (12)
-hardhat_metadata (13)
-hardhat_metadata (14)
-hardhat_metadata (15)
-hardhat_metadata (16)
-hardhat_metadata (17)
-hardhat_metadata (18)
-hardhat_metadata (19)
-hardhat_metadata (20)
-eth_chainId
-eth_call
-  Contract call:       <UnrecognizedContract>
-  From:                0x70997970c51812dc3a010c7d01b50e0d17dc79c8
-  To:                  0xe7f1725e7734ce288f8367e1bb143e90bb3f0512
-
-eth_chainId
-eth_getTransactionCount
-eth_chainId
-eth_estimateGas
-  Contract call:       <UnrecognizedContract>
-  From:                0x70997970c51812dc3a010c7d01b50e0d17dc79c8
-  To:                  0x9fe46736679d2d9a65f0992f2272de9f3c7fa6e0
-  Value:               0 ETH
-
-  Error: Transaction reverted without a reason string
-      at <UnrecognizedContract>.<unknown> (0x9fe46736679d2d9a65f0992f2272de9f3c7fa6e0)
-      at processTicksAndRejections (node:internal/process/task_queues:95:5)
-      at async EthModule._estimateGasAction (/mnt/c/Users/Daniel/Desktop/hackathon/pop/chain/node_modules/hardhat/src/internal/hardhat-network/provider/modules/eth.ts:439:7)
-      at async HardhatNetworkProvider._sendWithLogging (/mnt/c/Users/Daniel/Desktop/hackathon/pop/chain/node_modules/hardhat/src/internal/hardhat-network/provider/provider.ts:145:22)
-      at async HardhatNetworkProvider.request (/mnt/c/Users/Daniel/Desktop/hackathon/pop/chain/node_modules/hardhat/src/internal/hardhat-network/provider/provider.ts:122:18)
-      at async JsonRpcHandler._handleRequest (/mnt/c/Users/Daniel/Desktop/hackathon/pop/chain/node_modules/hardhat/src/internal/hardhat-network/jsonrpc/handler.ts:191:20)
-      at async JsonRpcHandler._handleSingleRequest (/mnt/c/Users/Daniel/Desktop/hackathon/pop/chain/node_modules/hardhat/src/internal/hardhat-network/jsonrpc/handler.ts:152:17)
-      at async Server.JsonRpcHandler.handleHttp (/mnt/c/Users/Daniel/Desktop/hackathon/pop/chain/node_modules/hardhat/src/internal/hardhat-network/jsonrpc/handler.ts:52:21)
-
-eth_accounts
-hardhat_metadata
-hardhat_metadata (2)
-hardhat_metadata (3)
-hardhat_metadata (4)
-hardhat_metadata (5)
-hardhat_metadata (6)
-hardhat_metadata (7)
-hardhat_metadata (8)
-hardhat_metadata (9)
-hardhat_metadata (10)
-hardhat_metadata (11)
-hardhat_metadata (12)
-hardhat_metadata (13)
-hardhat_metadata (14)
-hardhat_metadata (15)
-hardhat_metadata (16)
-hardhat_metadata (17)
-hardhat_metadata (18)
-hardhat_metadata (19)
-hardhat_metadata (20)
-eth_accounts
-hardhat_metadata
-hardhat_metadata (2)
-hardhat_metadata (3)
-hardhat_metadata (4)
-hardhat_metadata (5)
-hardhat_metadata (6)
-hardhat_metadata (7)
-hardhat_metadata (8)
-hardhat_metadata (9)
-hardhat_metadata (10)
-hardhat_metadata (11)
-hardhat_metadata (12)
-hardhat_metadata (13)
-hardhat_metadata (14)
-hardhat_metadata (15)
-hardhat_metadata (16)
-hardhat_metadata (17)
-hardhat_metadata (18)
-hardhat_metadata (19)
-hardhat_metadata (20)
-eth_accounts
-hardhat_metadata
-hardhat_metadata (2)
-hardhat_metadata (3)
-hardhat_metadata (4)
-hardhat_metadata (5)
-hardhat_metadata (6)
-hardhat_metadata (7)
-hardhat_metadata (8)
-hardhat_metadata (9)
-hardhat_metadata (10)
-hardhat_metadata (11)
-hardhat_metadata (12)
-hardhat_metadata (13)
-hardhat_metadata (14)
-hardhat_metadata (15)
-hardhat_metadata (16)
-hardhat_metadata (17)
-hardhat_metadata (18)
-hardhat_metadata (19)
-hardhat_metadata (20)
-eth_accounts
-hardhat_metadata
-hardhat_metadata (2)
-hardhat_metadata (3)
-hardhat_metadata (4)
-hardhat_metadata (5)
-hardhat_metadata (6)
-hardhat_metadata (7)
-hardhat_metadata (8)
-hardhat_metadata (9)
-hardhat_metadata (10)
-hardhat_metadata (11)
-hardhat_metadata (12)
-hardhat_metadata (13)
-hardhat_metadata (14)
-hardhat_metadata (15)
-hardhat_metadata (16)
-hardhat_metadata (17)
-hardhat_metadata (18)
-hardhat_metadata (19)
-hardhat_metadata (20)
-eth_chainId
-eth_call
-  Contract call:       <UnrecognizedContract>
-  From:                0x70997970c51812dc3a010c7d01b50e0d17dc79c8
-  To:                  0xe7f1725e7734ce288f8367e1bb143e90bb3f0512
-
-eth_chainId
-eth_getTransactionCount
-eth_chainId
-eth_estimateGas
-  Contract call:       <UnrecognizedContract>
-  From:                0x70997970c51812dc3a010c7d01b50e0d17dc79c8
-  To:                  0x9fe46736679d2d9a65f0992f2272de9f3c7fa6e0
-  Value:               0 ETH
-
-  Error: Transaction reverted without a reason string
-      at <UnrecognizedContract>.<unknown> (0x9fe46736679d2d9a65f0992f2272de9f3c7fa6e0)
-      at processTicksAndRejections (node:internal/process/task_queues:95:5)
-      at async EthModule._estimateGasAction (/mnt/c/Users/Daniel/Desktop/hackathon/pop/chain/node_modules/hardhat/src/internal/hardhat-network/provider/modules/eth.ts:439:7)
-      at async HardhatNetworkProvider._sendWithLogging (/mnt/c/Users/Daniel/Desktop/hackathon/pop/chain/node_modules/hardhat/src/internal/hardhat-network/provider/provider.ts:145:22)
-      at async HardhatNetworkProvider.request (/mnt/c/Users/Daniel/Desktop/hackathon/pop/chain/node_modules/hardhat/src/internal/hardhat-network/provider/provider.ts:122:18)
-      at async JsonRpcHandler._handleRequest (/mnt/c/Users/Daniel/Desktop/hackathon/pop/chain/node_modules/hardhat/src/internal/hardhat-network/jsonrpc/handler.ts:191:20)
-      at async JsonRpcHandler._handleSingleRequest (/mnt/c/Users/Daniel/Desktop/hackathon/pop/chain/node_modules/hardhat/src/internal/hardhat-network/jsonrpc/handler.ts:152:17)
-      at async Server.JsonRpcHandler.handleHttp (/mnt/c/Users/Daniel/Desktop/hackathon/pop/chain/node_modules/hardhat/src/internal/hardhat-network/jsonrpc/handler.ts:52:21)
-
+Killed
