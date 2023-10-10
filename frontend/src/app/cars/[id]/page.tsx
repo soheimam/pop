@@ -1,3 +1,5 @@
+"use client";
+
 import Image from "next/image";
 import {
   Accordion,
@@ -5,10 +7,29 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
+import { useEffect, useState } from "react";
 
 function Page({ params }: { params: { id: string } }) {
   // If the car is not found, display a message
   console.log(params);
+  const [loading, setLoading] = useState(true);
+  const [content, setContent] = useState({});
+
+  useEffect(() => {
+    const _fetch = async () => {
+      const data = await fetch(`/cars/api?address=0x123`, {
+        method: "GET",
+        headers: {},
+      });
+      console.log(data);
+      const jsonData = await data.json();
+      setContent(jsonData.tokens);
+      setLoading(false);
+    };
+    _fetch();
+  }, []);
+  console.log(content, "car details");
+
   const squares = Array(3).fill(null);
   return (
     <main>
@@ -53,6 +74,7 @@ function Page({ params }: { params: { id: string } }) {
         <h4 className="mt-8 mb-2 text-xl font-semibold tracking-tight text-blue-800 col-span-2 col-start-1">
           Confirmed Details
         </h4>
+
         <Accordion
           type="single"
           collapsible
