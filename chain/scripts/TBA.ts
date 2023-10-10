@@ -50,16 +50,22 @@ async function main() {
 
   async function mint721UserTBA() {
     // Call the function
+    let userFactory = await ethers.getContractFactory(
+      "UserAdminProfileNFT",
+      owner
+    );
     let amountToSend = ethers.parseEther("1"); // sending 1 Ether
-    let test = await ethers.getContractFactory("UserAdminProfileNFT", owner);
-    await test.mintNFT(await owner.getAddress(), ethers.toBigInt(1), {
-      value: amountToSend,
-    });
+    let instance = new ethers.Contract(
+      "0x4453c80716300CA58C9fA10B95FaC877b82890aE",
+      userFactory.interface.format(),
+      owner
+    ) as unknown as UserAdminProfileNFT;
+    let transaction = await instance.mintNFT(owner.address, 1);
+    // let transaction = await instance.mintNFT(owner.address, 1, {
+    //   value: amountToSend,
+    // });
 
-    let transactionResult: ContractTransactionReceipt | null =
-      await pendingUserTransaction.wait();
-    console.log(transactionResult);
-    return transactionResult;
+    return transaction;
   }
 
   async function registry() {
@@ -93,7 +99,7 @@ async function main() {
       ),
       chainId_: ethers.toBigInt(31337),
       tokenContract_: ethers.getAddress(
-        "0xf7a8a843b9fe1179a3172770a157b2913fb4cf27"
+        "0x4453c80716300ca58c9fa10b95fac877b82890ae"
       ),
       tokenId_: ethers.toBigInt(1),
       salt_:
@@ -127,7 +133,7 @@ async function main() {
       ),
       chainId_: ethers.toBigInt(31337),
       tokenContract_: ethers.getAddress(
-        "0xf7a8a843b9fe1179a3172770a157b2913fb4cf27"
+        "0x4453c80716300ca58c9fa10b95fac877b82890ae"
       ),
       tokenId_: ethers.toBigInt(1),
       salt_:
@@ -136,7 +142,7 @@ async function main() {
 
     // Source the contract
     const registryInstance: ERC6551Registry = new ethers.Contract(
-      `0x70993A5438c3dd991D508f8FBAB33C0164d3Ed18`,
+      `0x83073adbcd7a46018cfa438bd1673496351bb499`,
       _reg.interface.format(),
       owner
     ) as unknown as ERC6551Registry;
@@ -172,19 +178,14 @@ async function main() {
   //     console.log("...Finished sleeping for 10 seconds");
   // }
 
-  await IEC721_TBA_DEPLOY();
-  // await sleep(10000);
-  // await createTBA();
-  // await sleep(10000);
+  // await IEC721_TBA_DEPLOY();
   // await mint721UserTBA();
-  // await sleep(10000);
+  // await createTBA();
   // await registry();
-  // await sleep(10000);
   // await accountContract();
-  // await sleep(10000);
   // await getTBAAddress();
-  // await sleep(10000);
-  // await deployTest();
+  //
+  await deployTest();
 
   // async function mintACar() {
   //   //get the contract
@@ -308,44 +309,35 @@ async function main() {
   //   },
   // ];
 
-  // async function executeMintTransaction() {
-  //   let ABI = ["function setValue(uint256 newValue)"];
-  //   let iface = new ethers.Interface(ABI);
-  //   let calldata = iface.encodeFunctionData("setValue", [
-  //     "0xAD6d5fFEeA5Cc649938b0FA06D452c3ca14695a6",
-  //     1,
-  //   ]);
+  async function executeMintTransaction() {
+    let ABI = ["function setValue(uint256 newValue)"];
+    let iface = new ethers.Interface(ABI);
+    // const simpleStorageInterface = new ethers.Interface(ABI);
+    const calldata = iface.encodeFunctionData("setValue", [123]);
+    console.log("Calldata for setValue(123):", calldata);
 
-  //   const simpleStorageInterface = new ethers.Interface(ABI);
-  //   const calldata = simpleStorageInterface.encodeFunctionData("setValue", [
-  //     123,
-  //   ]);
-  //   console.log("Calldata for setValue(123):", calldata);
+    // If you need to decode:
+    const decoded = iface.decodeFunctionData("setValue", calldata);
+    console.log("Decoded:", decoded);
 
-  //   // If you need to decode:
-  //   const decoded = simpleStorageInterface.decodeFunctionData(
-  //     "setValue",
-  //     calldata
-  //   );
-  //   console.log("Decoded:", decoded);
-  //   const account = await ethers.getContractFactory("ERC6551Account");
-  //   const accountOneContract: ERC6551Account = new ethers.Contract(
-  //     `0x6e947870361964AfA76ca3C68d5190C95AB00143`,
-  //     account.interface.format(),
-  //     owner
-  //   ) as unknown as ERC6551Account;
+    const account = await ethers.getContractFactory("ERC6551Account");
+    const accountOneContract: ERC6551Account = new ethers.Contract(
+      `0x3aE0Fe9Af9B86d26c21bf1A09985C878e5D27565`,
+      account.interface.format(),
+      owner
+    ) as unknown as ERC6551Account;
 
-  //   let accountMintCar = await accountOneContract.execute(
-  //     ethers.getAddress("0x9174558A29574439bFe1EEc05154393D2A176869"),
-  //     0,
-  //     calldata,
-  //     0
-  //   );
-  //   let accountMintCarTransaction = await accountMintCar.wait();
-  //   console.log(accountMintCarTransaction);
-  // }
+    let accountMintCar = await accountOneContract.execute(
+      ethers.getAddress("0xa5787607134fA965E4626896Fa51A5F7199FEfee"),
+      0,
+      calldata,
+      0
+    );
+    let accountMintCarTransaction = await accountMintCar.wait();
+    console.log(accountMintCarTransaction);
+  }
 
-  //await executeMintTransaction();
+  await executeMintTransaction();
 }
 
 main()
