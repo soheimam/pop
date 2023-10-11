@@ -185,7 +185,7 @@ async function main() {
   // await accountContract();
   // await getTBAAddress();
   //
-  await deployTest();
+  // await deployTest();
 
   // async function mintACar() {
   //   //get the contract
