@@ -23,7 +23,6 @@ export async function GET(request: Request, response: Response) {
   let carPath = await getBase64FromImageUrl(
     "https://www.topgear.com/sites/default/files/2021/11/PCGB21_1364_fine.jpg?w=1784&h=1004"
   );
-  console.log(carPath);
 
   const apiKey = process.env.NEXT_PUBLIC_CARS_API_KEY!;
   console.log(apiKey);
