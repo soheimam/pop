@@ -126,7 +126,7 @@ async function main() {
     console.log(accountCreationTransaction);
   }
 
-  async function getTBAAddress() {
+  async function getTBAAddressForTokenID(tokenId: number) {
     let args: AccountCreationArgs = {
       implementation_: ethers.getAddress(
         "0x6e947870361964AfA76ca3C68d5190C95AB00143"
@@ -135,7 +135,7 @@ async function main() {
       tokenContract_: ethers.getAddress(
         "0x4453c80716300ca58c9fa10b95fac877b82890ae"
       ),
-      tokenId_: ethers.toBigInt(1),
+      tokenId_: ethers.toBigInt(tokenId),
       salt_:
         "0x6551655165516551655165516551655165516551655165516551655165516551",
     };
@@ -156,6 +156,7 @@ async function main() {
     );
 
     console.log(accountAddress);
+    return accountAddress;
   }
 
   async function deployTest() {
@@ -337,7 +338,203 @@ async function main() {
     console.log(accountMintCarTransaction);
   }
 
-  await executeMintTransaction();
+  async function executeGetValue() {
+    let testABI = await ethers.getContractFactory("SimpleStorage", owner);
+    console.log(`Json format test ABI = ${testABI.interface.format()}`);
+    // const ifacetest= new Interface(jsonAbi);
+    // ifacetest.format(FormatTypes.minimal);
+
+    let ABI = ["function getValue() view returns (uint256)"];
+    let iface = new ethers.Interface(ABI);
+    // const simpleStorageInterface = new ethers.Interface(ABI);
+    const calldata = iface.encodeFunctionData("getValue", []);
+    // console.log("Calldata for setValue(123):", calldata);
+
+    // If you need to decode:
+    const decoded = iface.decodeFunctionData("getValue", calldata);
+    console.log("Decoded:", decoded);
+
+    const account = await ethers.getContractFactory("ERC6551Account");
+    const accountOneContract: ERC6551Account = new ethers.Contract(
+      `0x3aE0Fe9Af9B86d26c21bf1A09985C878e5D27565`,
+      account.interface.format(),
+      owner
+    ) as unknown as ERC6551Account;
+
+    let accountMintCar = await accountOneContract.execute(
+      ethers.getAddress("0xa5787607134fA965E4626896Fa51A5F7199FEfee"),
+      0,
+      calldata,
+      0
+    );
+
+    console.log(
+      `getValue transaction result = ${JSON.stringify(accountMintCar)}`
+    );
+
+    console.log(`transaction data = ${accountMintCar.data}`);
+
+    // let demo = ethers.AbiCoder.defaultAbiCoder().encode(["uint256"], [123]);
+    // // console.log(demo);
+    // const decodedValuesdemo = ethers.AbiCoder.defaultAbiCoder().decode(
+    //   ["uint256"],
+    //   demo
+    // );
+
+    // console.log(decodedValuesdemo);
+
+    const decodedValues = ethers.AbiCoder.defaultAbiCoder().decode(
+      ["uint256"],
+      accountMintCar.data
+    );
+
+    console.log(`decodedValues = ${decodedValues}`);
+
+    // const uint256Value = decodedValues[0];
+
+    // console.log(uint256Value.toString()); // To display the value
+
+    let accountMintCarTransaction = await accountMintCar.wait();
+    console.log(accountMintCarTransaction);
+  }
+
+  const setValue = async (value: number, storageAddress: string) => {
+    let testABI = await ethers.getContractFactory("SimpleStorage", owner);
+    console.log(`Json format test ABI = ${testABI.interface.format()}`);
+    let jsonABI = testABI.interface.formatJson();
+    let iface = new ethers.Interface(jsonABI);
+    // const simpleStorageInterface = new ethers.Interface(ABI);
+    const calldata = iface.encodeFunctionData("setValue", [
+      ethers.getBigInt(value),
+    ]);
+
+    console.log(`call data = ${calldata}`);
+
+    const account = await ethers.getContractFactory("ERC6551Account");
+    const accountOneContract: ERC6551Account = new ethers.Contract(
+      `0x3aE0Fe9Af9B86d26c21bf1A09985C878e5D27565`,
+      account.interface.format(),
+      owner
+    ) as unknown as ERC6551Account;
+
+    console.log(
+      `account one address = ${await accountOneContract.getAddress()}`
+    );
+
+    let user = new ethers.Contract(
+      "0x4453c80716300ca58c9fa10b95fac877b82890ae",
+      userFactory.interface.format(),
+      owner
+    ) as unknown as UserAdminProfileNFT;
+
+    const accountOwner = await accountOneContract.connect(owner).owner();
+    const nftOwner = await user.ownerOf(1);
+
+    console.log(`account owner address = ${accountOwner}`);
+    console.log(`owner of token 1 address = ${nftOwner}`);
+
+    if (accountOwner.toLowerCase() === nftOwner.toLowerCase()) {
+      console.log("The ownership is consistent!");
+    } else {
+      console.log("Mismatch in ownership!");
+    }
+
+    let accountMintCar = await accountOneContract.execute(
+      storageAddress,
+      5,
+      calldata,
+      0,
+      { gasLimit: 1000000 }
+    );
+
+    console.log(`accountMintCar = ${JSON.stringify(accountMintCar)}`);
+    let accountMintCarTransaction = await accountMintCar.wait();
+    console.log(accountMintCarTransaction);
+    return accountMintCarTransaction;
+  };
+
+  const getValue = async () => {
+    let testABI = await ethers.getContractFactory("SimpleStorage", owner);
+    let humanABI = testABI.interface.formatJson();
+    console.log(JSON.stringify(humanABI));
+    let iface = new ethers.Interface(humanABI);
+    // const simpleStorageInterface = new ethers.Interface(ABI);
+    const calldata = iface.encodeFunctionData("getValue", undefined);
+
+    const account = await ethers.getContractFactory("ERC6551Account");
+    const accountOneContract: ERC6551Account = new ethers.Contract(
+      `0x3aE0Fe9Af9B86d26c21bf1A09985C878e5D27565`,
+      account.interface.format(),
+      owner
+    ) as unknown as ERC6551Account;
+
+    let accountMintCar = await accountOneContract.execute(
+      ethers.getAddress("0xa5787607134fA965E4626896Fa51A5F7199FEfee"),
+      0,
+      calldata,
+      0
+    );
+
+    console.log(`data = ${accountMintCar.data}`);
+
+    console.log(`accountMintCar = ${JSON.stringify(accountMintCar)}`);
+    let accountMintCarTransaction = await accountMintCar.wait();
+    console.log(accountMintCarTransaction);
+  };
+
+  // let result = await setValue();
+  // let result = await getValue();
+
+  // let userFactory = await ethers.getContractFactory(
+  //   "UserAdminProfileNFT",
+  //   owner
+  // );
+
+  // let user = new ethers.Contract(
+  //   "0x4453c80716300ca58c9fa10b95fac877b82890ae",
+  //   userFactory.interface.format(),
+  //   owner
+  // ) as unknown as UserAdminProfileNFT;
+
+  // console.log(await user.ownerOf(1));
+
+  // await setValue(200);
+
+  let testABI = await ethers.getContractFactory("SimpleStorage", owner);
+  let humanABI = testABI.interface.formatJson();
+  const simpleStorage = new ethers.Contract(
+    "0x294fd61e997f75c2e62c21a21a46387f9534fbcf",
+    humanABI,
+    owner
+  );
+
+  let ssaddress = await simpleStorage.getAddress();
+  console.log(ssaddress);
+
+  let proxySetTransaction = await setValue(200, ssaddress);
+  console.log(proxySetTransaction);
+
+  // const setthevalue = await simpleStorage.setValue(10);
+  // console.log(setthevalue);
+
+  // // Wait for the transaction to be mined
+  // const receipt = await setthevalue.wait();
+  // console.log(receipt); // This will print the transaction receipt, including logs.
+
+  // const value = await simpleStorage.getValue();
+  // console.log(value.toString());
+  // console.log(`VALUE = ${value.toString()}`);
+
+  // let acc = await getTBAAddressForTokenID(1);
+  // console.log(`acc = ${acc}`); // 0x3aE0Fe9Af9B86d26c21bf1A09985C878e5D27565
+
+  // console.log(`result = ${JSON.stringify(result)}`);
+
+  // let setValue =
+
+  // await executeMintTransaction();
+  //let value = await executeGetValue();
+  //console.log(`value = ${value}`);
 }
 
 main()

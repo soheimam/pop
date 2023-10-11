@@ -8,6 +8,8 @@ import "./IERC6551Account.sol";
 import "./IERC6551Executable.sol";
 import "@openzeppelin/contracts/utils/cryptography/SignatureChecker.sol";
 
+import "hardhat/console.sol";
+
 contract ERC6551Account is IERC165, IERC1271, IERC6551Account, IERC6551Executable {
     uint256 public state;
 
@@ -19,14 +21,15 @@ contract ERC6551Account is IERC165, IERC1271, IERC6551Account, IERC6551Executabl
         bytes calldata data,
         uint256 operation
     ) external payable returns (bytes memory result) {
+        console.log("Starting execute with message.sender ", msg.sender);
         require(_isValidSigner(msg.sender), "Invalid signer");
         require(operation == 0, "Only call operations are supported");
-
+        console.log("In execute and have made it past the requirements");
         ++state;
 
         bool success;
         (success, result) = to.call{value: value}(data);
-
+        console.log("execute was a success: ", success);
         if (!success) {
             assembly {
                 revert(add(result, 32), mload(result))
