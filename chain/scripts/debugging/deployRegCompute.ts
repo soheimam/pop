@@ -15,7 +15,7 @@ async function main() {
   console.log(`computedValue ${computedValue}`);
 
   let computedValue2 = await computeInstance.getComputeValue2();
-  console.log(`computedValue ${computedValue}`);
+  console.log(`computedValue ${computedValue2}`);
 }
 
 main()

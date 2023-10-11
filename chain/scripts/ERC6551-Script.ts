@@ -25,6 +25,7 @@ account address = 0x83073adBCD7a46018CfA438Bd1673496351Bb499
 simpleStorage address = 0x6C680227ED93267eC50676704dfe7653dD551361
 */
 
+//TODO: Overwrite these variables with the addresses of your deployed contracts
 const USER_ADMIN_PROFILE_NFT_ADDRESS = `0x4453c80716300ca58c9fa10b95fac877b82890ae`;
 const REGISTRY_CONTRACT_ADDRESSS = `0x7fb1baeef4573af779c141dad3d67e710a70cee2`;
 const ACCOUNT_CONTRACT_ADDRESS = `0x83073adbcd7a46018cfa438bd1673496351bb499`;
@@ -40,6 +41,7 @@ interface AccountCreationArgs {
   initData?: BytesLike; // Bytes to handle arbitrary data
 }
 
+//TODO: RUn this function once to get all the contract addresses
 let deployments = async () => {
   // Factories
   const userFactory = await ethers.getContractFactory("UserAdminProfileNFT");
@@ -191,6 +193,7 @@ let main = async () => {
   const accountFactory = await ethers.getContractFactory("ERC6551Account");
   const simpleStorageFactory = await ethers.getContractFactory("SimpleStorage");
 
+  //TODO: Mint a user NFT, create a TBA, and get the TBA address, then comment out or remove
   // await mintUserNFT(USER_ADMIN_PROFILE_NFT_ADDRESS, userFactory);
   // await createTBA(registryFactory);
   // await getTBAAddressForTokenID(1, registryFactory);
