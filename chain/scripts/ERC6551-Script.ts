@@ -110,7 +110,7 @@ let mintUserNFT = async (contractAddress: string, factory: any) => {
   let transaction = await instance.mintNFT(owner.address, 1);
   console.log(`transaction = ${JSON.stringify}`);
   let transactionReceipt = transaction.wait();
-  console.log(`transactionReceipt = ${JSON.stringify(transactionReceipt)}`);
+  console.log(transactionReceipt);
 };
 
 async function getTBAAddressForTokenID(tokenId: number, registryFactory: any) {
@@ -193,12 +193,14 @@ let main = async () => {
   const accountFactory = await ethers.getContractFactory("ERC6551Account");
   const simpleStorageFactory = await ethers.getContractFactory("SimpleStorage");
 
-  //TODO: Mint a user NFT, create a TBA, and get the TBA address, then comment out or remove
+  //TODO: Run this first and then comment out or remove, replace address constants above
+  // await deployments();
+  //TODO: Mint a user NFT, create a TBA, and get the TBA address, then comment out or remove, it's required to uncomment then comment these functions and run one at a time to ensure stability
   // await mintUserNFT(USER_ADMIN_PROFILE_NFT_ADDRESS, userFactory);
   // await createTBA(registryFactory);
   // await getTBAAddressForTokenID(1, registryFactory);
-  await setSimpleStorageValue(20, simpleStorageFactory, accountFactory);
-  await getSimpleStorageValue(simpleStorageFactory);
+  // await setSimpleStorageValue(20, simpleStorageFactory, accountFactory);
+  // await getSimpleStorageValue(simpleStorageFactory);
 };
 
 main()
