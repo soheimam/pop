@@ -24,15 +24,4 @@ contract ComputeRegistryAddress {
         console.log("Computed Registry Address: %s", expectedAddress);
         return expectedAddress;
     }
-
-    // This function is now redundant since it's doing the same as `run()`
-    // You might want to remove it for clarity
-    function getComputeValue() public pure returns (address) {  
-        return run();
-    }
-
-    // This function is now redundant too
-    function getComputeValue2() public pure returns (address) {  
-        return run();
-    }
 }
