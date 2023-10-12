@@ -32,7 +32,7 @@ const ACCOUNT_CONTRACT_ADDRESS = `0x83073adbcd7a46018cfa438bd1673496351bb499`;
 const SIMPLE_STORAGE_CONTRACT_ADDRESS = `0x6c680227ed93267ec50676704dfe7653dd551361`;
 const ACCOUNT_TOKEN_ONE_ADDRESS = "0x6F7f7f15F443DFb32a1A302C3c7C1e2acCD3D085";
 
-interface AccountCreationArgs {
+export interface AccountCreationArgs {
   implementation_: string; // Ethereum address as string
   chainId_: any; // BigNumerishish to handle large integers
   tokenContract_: string; // Ethereum address as string

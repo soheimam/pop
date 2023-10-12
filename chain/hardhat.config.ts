@@ -29,6 +29,10 @@ const config: HardhatUserConfig = {
       url: "http://127.0.0.1:8545", // Default for both Hardhat's node and Ganache
       accounts: [privateKey],
     },
+    mumbai: {
+      url: "https://polygon-mumbai.infura.io/v3/0cc2884f03d545ada8f5d794b5fa9bd2",
+      accounts: [privateKey],
+    },
   },
 };
 
