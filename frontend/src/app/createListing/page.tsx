@@ -1,4 +1,5 @@
 "use client";
+
 import React, { useState } from "react";
 import Camera from "@/components/Camera";
 
@@ -21,16 +22,25 @@ function fileToBase64(file: File): Promise<string> {
 
 function Page({ params }: { params: { id: string } }) {
   const [capturedImage, setCapturedImage] = useState<File | null>(null);
-  // If the profile is not found, display a message
-  console.log(params, "listing");
+  const [carApiData, setCarApiData] = useState<any>(null);
 
-  const handleImageCapture = (imageFile: File) => {
+  const handleImageCapture = async (imageFile: File) => {
     console.log(imageFile);
-    // Store the image file from the Camera component in state
     setCapturedImage(imageFile);
+    const base64 = await fileToBase64(imageFile);
+    const data = await fetch(`/cars/api`, {
+      method: "PUT",
+      body: JSON.stringify({
+        base64: base64,
+      }),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+    setCarApiData(await data.json());
   };
 
-  const handleConfirm = (imageUrl) => {
+  const handleConfirm = (imageUrl: any) => {
     console.log("Image URL Confirmed:", imageUrl);
     // Actions upon confirming the image, possibly updating some state with the image URL, or making API calls.
   };
@@ -39,7 +49,6 @@ function Page({ params }: { params: { id: string } }) {
     if (!capturedImage) return;
     console.log(capturedImage);
     const base64 = await fileToBase64(capturedImage);
-    console.log(base64);
 
     const data = await fetch(`/cars/api`, {
       method: "POST",
@@ -51,10 +60,6 @@ function Page({ params }: { params: { id: string } }) {
       },
     });
     console.log(data);
-    // const jsonData = await data.json();
-    // Implement logic to upload the image.
-    // For example, using `fetch` and FormData:
-    alert("Image uploaded! (or implement actual upload functionality)");
   };
 
   return (
@@ -66,9 +71,8 @@ function Page({ params }: { params: { id: string } }) {
       <div className="grid grid-cols-6 md:grid-cols-12 gap-4">
         <Camera onCapture={handleImageCapture} onConfirm={handleConfirm} />
       </div>
-
-      {/* Only show the "Upload Photo" button when an image is captured */}
       {capturedImage && <button onClick={handleUpload}>Submit</button>}
+      {carApiData ? JSON.stringify(carApiData) : null}
     </main>
   );
 }
