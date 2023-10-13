@@ -30,6 +30,11 @@ function Page({ params }: { params: { id: string } }) {
     setCapturedImage(imageFile);
   };
 
+  const handleConfirm = (imageUrl) => {
+    console.log("Image URL Confirmed:", imageUrl);
+    // Actions upon confirming the image, possibly updating some state with the image URL, or making API calls.
+  };
+
   const handleUpload = async () => {
     if (!capturedImage) return;
     console.log(capturedImage);
@@ -54,12 +59,12 @@ function Page({ params }: { params: { id: string } }) {
 
   return (
     <main>
-      <h2 className=" max-w-[200px]  border-b pb-2 text-3xl font-semibold tracking-tight transition-colors  text-blue-500 my-20">
+      <h2 className=" max-w-[200px]  border-b pb-2 text-3xl font-semibold tracking-tight transition-colors  text-blue-500 my-8">
         Snap & Sell List Car
       </h2>
 
       <div className="grid grid-cols-6 md:grid-cols-12 gap-4">
-        <Camera onCapture={handleImageCapture} />
+        <Camera onCapture={handleImageCapture} onConfirm={handleConfirm} />
       </div>
 
       {/* Only show the "Upload Photo" button when an image is captured */}
