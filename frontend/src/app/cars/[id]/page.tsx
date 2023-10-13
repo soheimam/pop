@@ -11,13 +11,15 @@ import { useEffect, useState } from "react";
 
 function Page({ params }: { params: { id: string } }) {
   // If the car is not found, display a message
-  console.log(params);
+
   const [loading, setLoading] = useState(true);
   const [content, setContent] = useState({});
 
+  const { id } = params;
+
   useEffect(() => {
     const _fetch = async () => {
-      const data = await fetch(`/cars/api?address=0x123`, {
+      const data = await fetch(`/cars/${id}`, {
         method: "GET",
         headers: {},
       });
@@ -47,7 +49,7 @@ function Page({ params }: { params: { id: string } }) {
       <div className="grid grid-cols-6 md:grid-cols-12 gap-4">
         <div className="col-span-6 md:col-span-12">
           <h3 className="mt-5 scroll-m-20 text-2xl font-semibold tracking-tight text-blue-800 ">
-            Car Name
+            {id}
           </h3>
           <div className="flex">
             <Image src="/engine.svg" height={20} width={20} alt="engine icon" />

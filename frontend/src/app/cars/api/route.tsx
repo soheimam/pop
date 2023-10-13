@@ -33,6 +33,8 @@ export async function GET(request: Request, response: Response) {
   body.append("upload", carPath);
   // body.append("upload", fs.createReadStream(carPath));
 
+  // body.append("mmc", "false");
+
   const req = await fetch("https://api.platerecognizer.com/v1/plate-reader/", {
     method: "POST",
     headers: {

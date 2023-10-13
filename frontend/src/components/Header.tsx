@@ -12,7 +12,7 @@ function Header() {
       <NextLink href="/">
         <Image src="/pop_logo.svg" alt="pop logo" width={100} height={50} />
       </NextLink>
-      <div className="flex items-center  border-white border text-ellipsis overflow-hidden ... bg-white/20 text-blue-900 rounded-full p-2 text-bold max-w-xs text-left">
+      <div className="flex items-center border-white border text-ellipsis overflow-hidden ... bg-white/20 text-blue-900 rounded-full p-2 text-bold max-w-xs text-left">
         {wallet?.getAddress()}
       </div>
     </header>
