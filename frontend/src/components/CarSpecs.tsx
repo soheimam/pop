@@ -1,3 +1,4 @@
+"use client";
 import React from "react";
 import StatisticCard from "./StatisticCard";
 import { Skeleton } from "@/components/ui/skeleton";
