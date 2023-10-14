@@ -3,6 +3,7 @@
 import React, { useContext, useState } from "react";
 import Camera from "@/components/Camera";
 // import { WalletContext } from "@/app/(context)/context";
+import { Button } from "@/components/ui/button";
 
 import {
   CAR_ABI,
@@ -150,24 +151,34 @@ function Page({ params }: { params: { id: string } }) {
       </div>
       {carApiData ? <CarSpecs highScores={carApiData.highScores} /> : null}
 
-      <div className="flex">
+      <div className="flex ">
         {provider != null ? (
-          <div className="flex-col">
+          <>
             <div>
-              <button onClick={async () => await mintCarNFT()}>Mint Car</button>
+              {capturedImage && (
+                <Button
+                  className="mr-4"
+                  onClick={async () => {
+                    handleUpload();
+                    await mintCarNFT();
+                  }}
+                >
+                  Mint Car
+                </Button>
+              )}
             </div>
 
             <div>
-              <button onClick={async () => await createTBA(11)}>
-                Create TBA For Minted Car
-              </button>
+              {/* this is the tba button */}
+              <Button onClick={async () => await createTBA(11)}>
+                Add documents
+              </Button>
             </div>
-          </div>
+          </>
         ) : (
           <></>
         )}
       </div>
-      {capturedImage && <button onClick={handleUpload}>Submit</button>}
     </main>
   );
 }
