@@ -137,9 +137,9 @@ function Page({ params }: { params: { id: string } }) {
         "Content-Type": "application/json",
       },
     });
-    console.log(data);
+    // console.log(data);
   };
-
+  console.log(carApiData, "logging for chat");
   return (
     <main>
       <h2 className=" max-w-[200px]  border-b pb-2 text-3xl font-semibold tracking-tight transition-colors  text-blue-500 my-8">
@@ -149,7 +149,7 @@ function Page({ params }: { params: { id: string } }) {
       <div className="grid grid-cols-6 md:grid-cols-12 gap-4">
         <Camera onCapture={handleImageCapture} onConfirm={handleConfirm} />
       </div>
-      {carApiData ? <CarSpecs highScores={carApiData.highScores} /> : null}
+      {carApiData ? <CarSpecs highScores={carApiData} /> : null}
 
       <div className="flex ">
         {provider != null ? (

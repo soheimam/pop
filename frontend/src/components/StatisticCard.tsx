@@ -2,11 +2,11 @@ import React from "react";
 
 interface StatisticCard {
   keyName: string;
-  value: string;
+  value: any;
 }
 function StatisticCard({ keyName, value }: StatisticCard) {
   return (
-    <article className="bg-primary/40 py-6 px-4 col-span-2 rounded-sm">
+    <article className="bg-primary/10 py-6 px-4 col-span-2 rounded-sm">
       <div>
         <p className="text-sm text-gray-500 dark:text-gray-400">{keyName}</p>
 

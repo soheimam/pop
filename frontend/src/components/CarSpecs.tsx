@@ -1,5 +1,5 @@
 "use client";
-import React from "react";
+import React, { useState, useEffect } from "react";
 import StatisticCard from "./StatisticCard";
 import { Skeleton } from "@/components/ui/skeleton";
 
@@ -16,7 +16,15 @@ interface CarSpecsProps {
 }
 
 const CarSpecs: React.FC<CarSpecsProps> = ({ highScores }: CarSpecsProps) => {
-  console.log(highScores, "hs anything");
+  const [highScoresArray, setHighScoresArray] = useState<[string, any][]>([]);
+
+  useEffect(() => {
+    // Check if highScores.data.highestScores is defined before calling Object.entries()
+    if (highScores && highScores.data && highScores.data.highestScores) {
+      setHighScoresArray(Object.entries(highScores.data.highestScores));
+    }
+  }, [highScores]);
+
   if (!highScores) {
     return (
       <div className="grid grid-cols-6 py-4 gap-4">
@@ -34,8 +42,6 @@ const CarSpecs: React.FC<CarSpecsProps> = ({ highScores }: CarSpecsProps) => {
     );
   }
 
-  const highScoresArray = Object.entries(highScores);
-
   return (
     <div className=" py-4">
       <div className=" grid col-span-6 md:col-span-12 space-y-1 ">
@@ -47,7 +53,7 @@ const CarSpecs: React.FC<CarSpecsProps> = ({ highScores }: CarSpecsProps) => {
           based on your photo.
         </p>
       </div>
-      <div className="grid grid-cols-6 py-4">
+      <div className="grid grid-cols-6 gap-4 py-4">
         {highScoresArray.map(([key, value], index) => (
           <StatisticCard key={index} keyName={key} value={value} />
         ))}
