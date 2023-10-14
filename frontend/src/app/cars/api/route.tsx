@@ -134,32 +134,6 @@ async function getBase64FromImageUrl(url: string) {
   return base64Image;
 }
 
-// export async function GET(request: Request, response: Response) {
-//   let carPath = await getBase64FromImageUrl(
-//     "https://www.topgear.com/sites/default/files/2021/11/PCGB21_1364_fine.jpg?w=1784&h=1004"
-//   );
-
-//   const apiKey = process.env.NEXT_PUBLIC_CARS_API_KEY!;
-//   let body = new FormData();
-//   // Or body.append('upload', base64Image);
-//   body.append("regions", "us-ca"); // Change to your country
-//   // body.append("mmc", "true");
-//   body.append("upload", carPath);
-//   body.append("mmc", "true");
-
-//   const req = await fetch("https://api.platerecognizer.com/v1/plate-reader/", {
-//     method: "POST",
-//     headers: {
-//       Authorization: `Token ${apiKey}`,
-//     },
-//     body: body,
-//   });
-//   const json = await req.json();
-//   const processedJson = processJson(json);
-//   console.log(processedJson);
-//   return NextResponse.json({ data: processedJson });
-// }
-
 export async function PUT(request: Request, response: Response) {
   const res = await request.json();
   const base64Body = res?.base64;

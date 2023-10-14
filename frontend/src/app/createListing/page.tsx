@@ -18,11 +18,20 @@ import {
 } from "@ethersproject/abstract-provider";
 import { ethers } from "ethers";
 import { useWalletContext } from "../(hooks)/useWalletContext";
+import CarSpecs from "@/components/CarSpecs";
 
 function fileToBase64(file: File): Promise<string> {
   return new Promise((resolve, reject) => {
     const reader = new FileReader();
     reader.readAsDataURL(file);
+    reader.onload = () => {
+      const result: string = reader.result as string;
+      const base64: string = result.split(",")[1];
+      resolve(base64);
+    };
+    reader.onerror = (error) => {
+      reject(error);
+    };
   });
 }
 
@@ -31,6 +40,7 @@ function Page({ params }: { params: { id: string } }) {
   const [carApiData, setCarApiData] = useState<any>(null);
   const { wallet, provider } = useWalletContext();
 
+  console.log(wallet, provider);
   const handleImageCapture = async (imageFile: File) => {
     console.log(imageFile);
     setCapturedImage(imageFile);
@@ -38,7 +48,9 @@ function Page({ params }: { params: { id: string } }) {
 
   const handleConfirm = async (imageUrl: any) => {
     console.log("Image URL Confirmed:", imageUrl);
+    console.log(capturedImage);
     const base64 = await fileToBase64(capturedImage!);
+    console.log(base64);
     const data = await fetch(`/cars/api`, {
       method: "PUT",
       body: JSON.stringify({
@@ -49,16 +61,40 @@ function Page({ params }: { params: { id: string } }) {
       },
     });
     const _data = await data.json();
+    console.log(_data);
     setCarApiData(_data);
   };
 
   const mintCarNFT = async () => {
+    const _walletAddress = wallet?.getAddress();
+
     const _getCarContract = await getCarContract(provider!);
     console.log(_getCarContract);
     console.log(`attempting a mint`);
-    console.log(`wallet address = ${wallet?.getAddress()}`);
+    console.log(`wallet address = ${_walletAddress}`);
+
+    const estimatedGasLimit = await _getCarContract.estimateGas.mintCar(
+      _walletAddress
+    );
+    // const approveTxUnsigned = await _getCarContract.populateTransaction.mintCar(
+    //   _walletAddress
+    // );
+    // approveTxUnsigned.gasLimit = estimatedGasLimit;
+    // approveTxUnsigned.gasPrice = await provider!.getGasPrice();
+    // approveTxUnsigned.nonce = await provider!.getTransactionCount(
+    //   _walletAddress!
+    // );
+
+    // const approveTxSigned = await wallet!.signTransaction(approveTxUnsigned!);
+    // const submittedTx = await provider!.sendTransaction(approveTxSigned);
+    // const approveReceipt = await submittedTx.wait();
+    // if (approveReceipt.status === 0)
+    //   throw new Error("Approve transaction failed");
+
     const mintTransaction: RelayTransactionResponse =
-      await _getCarContract.mintCar(wallet?.getAddress()); // need a way here to get back the tokenId that was just minted
+      await _getCarContract.mintCar(wallet?.getAddress(), {
+        gasLimit: estimatedGasLimit,
+      }); // need a way here to get back the tokenId that was just minted
     console.log(mintTransaction);
     console.log(`should wait for receipt now ..`);
     const mintReceipt: any = await mintTransaction.wait(); // Wait for the transaction to complete
@@ -69,6 +105,7 @@ function Page({ params }: { params: { id: string } }) {
   //TODO: Need a check or some way to get what the tokenId should be
   const createTBA = async (tokenId: number) => {
     console.log(`starting TBA creation...`);
+
     const tbaCreateTransaction: RelayTransactionResponse =
       await createTBAAccount(provider!, tokenId);
     console.log(`tbaCreateTransaction = ${tbaCreateTransaction}`);
@@ -111,8 +148,7 @@ function Page({ params }: { params: { id: string } }) {
       <div className="grid grid-cols-6 md:grid-cols-12 gap-4">
         <Camera onCapture={handleImageCapture} onConfirm={handleConfirm} />
       </div>
-      {capturedImage && <button onClick={handleUpload}>Submit</button>}
-      {carApiData ? JSON.stringify(carApiData) : null}
+      {carApiData ? <CarSpecs highScores={carApiData.highScores} /> : null}
 
       <div className="flex">
         {provider != null ? (
@@ -131,6 +167,7 @@ function Page({ params }: { params: { id: string } }) {
           <></>
         )}
       </div>
+      {capturedImage && <button onClick={handleUpload}>Submit</button>}
     </main>
   );
 }
