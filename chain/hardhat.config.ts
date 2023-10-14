@@ -30,7 +30,7 @@ const config: HardhatUserConfig = {
       accounts: [privateKey],
     },
     mumbai: {
-      url: "https://polygon-mumbai.infura.io/v3/0cc2884f03d545ada8f5d794b5fa9bd2",
+      url: "https://polygon-mumbai.infura.io/v3/9c17b4ee03bf4c75829e260cbea6a92a",
       accounts: [privateKey],
     },
   },

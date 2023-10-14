@@ -1,8 +1,5 @@
 import { ethers } from "hardhat";
-import { deployedContracts } from "./deployedContractAddresses";
 import { Wallet, BigNumberish, BytesLike } from "ethers";
-import { account1publicKey, account1privateKey } from "./accountData";
-import { ComputeRegistryAddress } from "../typechain-types";
 require("dotenv").config();
 async function main() {
   const privateKey = process.env.PRIVATE_KEY;
@@ -13,7 +10,7 @@ async function main() {
   let compute = await ethers.getContractFactory("ComputeRegistryAddress");
   let computeInstance = (await compute.attach(
     "0xf7a8a843B9fE1179A3172770a157B2913fb4cf27"
-  )) as ComputeRegistryAddress;
+  )) as any;
 
   console.log(computeInstance);
 
