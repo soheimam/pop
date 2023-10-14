@@ -9,6 +9,7 @@ import Image from "next/image";
 const Camera = ({ onCapture, onConfirm }: any) => {
   const [imageUrl, setImageUrl] = useState<any>(null);
   const inputRef = useRef<any>();
+  const [buttonsVisible, setButtonsVisible] = useState<boolean>(false);
 
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     console.log("Running handleImageChange");
@@ -17,6 +18,7 @@ const Camera = ({ onCapture, onConfirm }: any) => {
       const localImageUrl = URL.createObjectURL(file);
       setImageUrl(localImageUrl);
       onCapture(file); // pass the file to the parent component
+      setButtonsVisible(true);
     }
   };
 
@@ -27,10 +29,12 @@ const Camera = ({ onCapture, onConfirm }: any) => {
 
   const handleRetake = () => {
     setImageUrl(null); // Clear the current image
+    setButtonsVisible(false);
     inputRef.current.click(); // Reopen the file input
   };
 
   const handleConfirm = () => {
+    setButtonsVisible(false);
     onConfirm(imageUrl); // Pass the image URL to the parent component
   };
 
@@ -46,14 +50,16 @@ const Camera = ({ onCapture, onConfirm }: any) => {
               objectFit="cover"
             />
           </figure>
-          <div className="absolute bottom-0   pt-8 flex gap-4 p-4">
-            <Button onClick={handleConfirm} variant="secondary" size="icon">
-              <CheckIcon className="h-4 w-4" />
-            </Button>
-            <Button onClick={handleRetake} variant="secondary" size="icon">
-              <Cross2Icon className="h-4 w-4" />
-            </Button>
-          </div>
+          {buttonsVisible && (
+            <div className="absolute bottom-0 pt-8 flex gap-4 p-4">
+              <Button onClick={handleConfirm} variant="secondary" size="icon">
+                <CheckIcon className="h-4 w-4" />
+              </Button>
+              <Button onClick={handleRetake} variant="secondary" size="icon">
+                <Cross2Icon className="h-4 w-4" />
+              </Button>
+            </div>
+          )}
         </>
       ) : (
         <button
