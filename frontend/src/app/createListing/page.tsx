@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useContext, useState } from "react";
+import React, { useEffect, useState } from "react";
 import Camera from "@/components/Camera";
 // import { WalletContext } from "@/app/(context)/context";
 import { Button } from "@/components/ui/button";
@@ -23,6 +23,7 @@ import { BigNumber, ethers } from "ethers";
 import { useWalletContext } from "../(hooks)/useWalletContext";
 import CarSpecs from "@/components/CarSpecs";
 import Stepper from "@/components/stepper";
+import { insertRow } from "@/lib/tableland";
 
 function convertToTraitTypeValue(jsonObj: any) {
   const highestScores = jsonObj.highestScores;
@@ -71,6 +72,16 @@ function Page({ params }: { params: { id: string } }) {
   );
   const [mintedTokenId, setMintedTokenId] = useState<number>(0);
   const { wallet, provider } = useWalletContext();
+
+  //TODO: here is example of insert row
+  async function runner() {
+    await insertRow();
+  }
+
+  useEffect(() => {
+    console.log("attempting to insert a row ...");
+    runner();
+  });
 
   console.log(wallet, provider);
   const handleImageCapture = async (imageFile: File) => {
@@ -140,6 +151,8 @@ function Page({ params }: { params: { id: string } }) {
     });
     console.log(data);
   };
+
+  const saveToTableLand = () => {};
 
   //TODO: Need a check or some way to get what the tokenId should be
   const createTBA = async (tokenId: number) => {
