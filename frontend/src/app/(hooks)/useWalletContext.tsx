@@ -1,5 +1,5 @@
 import { useContext } from "react";
-import { WalletContext } from "../(context)/context";
+import { WalletContext } from "../(context)/cometh-context";
 
 export function useWalletContext() {
   const {
