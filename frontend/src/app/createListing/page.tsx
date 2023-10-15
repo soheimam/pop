@@ -4,6 +4,7 @@ import React, { useContext, useState } from "react";
 import Camera from "@/components/Camera";
 // import { WalletContext } from "@/app/(context)/context";
 import { Button } from "@/components/ui/button";
+import MintButton from "@/components/MintButton";
 
 import {
   CAR_ABI,
@@ -154,15 +155,16 @@ function Page({ params }: { params: { id: string } }) {
           <>
             <div>
               {capturedImage && (
-                <Button
-                  className="mr-4"
-                  onClick={async () => {
-                    handleUpload();
-                    await mintCarNFT();
-                  }}
-                >
-                  Mint Car
-                </Button>
+                // <Button
+                //   className="mr-4"
+                //   onClick={async () => {
+                //     handleUpload();
+                //     await mintCarNFT();
+                //   }}
+                // >
+                //   Mint Car
+                // </Button>
+                <MintButton onUpload={handleUpload} onMint={mintCarNFT} />
               )}
             </div>
 
