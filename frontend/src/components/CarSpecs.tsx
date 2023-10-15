@@ -28,7 +28,7 @@ const CarSpecs: React.FC<CarSpecsProps> = ({ highScores }: CarSpecsProps) => {
   if (!highScores) {
     return (
       <div className="grid grid-cols-6 py-4 gap-4">
-        <h2 className=" max-w-[200px]  border-b pb-2 col-span-6 text-3xl font-semibold tracking-tight transition-colors  text-blue-500 my-8">
+        <h2 className=" max-w-[200px]   pb-2 col-span-6 text-3xl font-semibold tracking-tight transition-colors  text-blue-500 my-8">
           Snap & Sell List Car
         </h2>
 

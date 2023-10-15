@@ -42,12 +42,13 @@ const Camera = ({ onCapture, onConfirm }: any) => {
     <div className="relative col-span-6 md:col-span-12 flex items-center justify-center bg-blue-200 hover:bg-blue-300 rounded-md  ">
       {imageUrl ? (
         <>
-          <figure className=" rounded-md inset-0 flex flex-col items-center justify-center h-48 pb-8">
+          <figure className="  inset-0 flex flex-col items-center justify-center h-48 pb-8">
             <Image
               src={imageUrl}
               alt="Preview"
               layout="fill"
               objectFit="cover"
+              className="rounded-md"
             />
           </figure>
           {buttonsVisible && (

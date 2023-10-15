@@ -48,8 +48,6 @@ function Page({ params }: { params: { id: string } }) {
   };
 
   const handleConfirm = async (imageUrl: any) => {
-    console.log("Image URL Confirmed:", imageUrl);
-    console.log(capturedImage);
     const base64 = await fileToBase64(capturedImage!);
     console.log(base64);
     const data = await fetch(`/cars/api`, {
@@ -142,14 +140,14 @@ function Page({ params }: { params: { id: string } }) {
   console.log(carApiData, "logging for chat");
   return (
     <main>
-      <h2 className=" max-w-[200px]  border-b pb-2 text-3xl font-semibold tracking-tight transition-colors  text-blue-500 my-8">
+      <h2 className=" max-w-[200px]   pb-2 text-3xl font-semibold tracking-tight transition-colors  text-blue-500 my-8">
         Snap & Sell List Car
       </h2>
 
       <div className="grid grid-cols-6 md:grid-cols-12 gap-4">
         <Camera onCapture={handleImageCapture} onConfirm={handleConfirm} />
       </div>
-      {carApiData ? <CarSpecs highScores={carApiData} /> : null}
+      <CarSpecs highScores={carApiData} />
 
       <div className="flex ">
         {provider != null ? (
