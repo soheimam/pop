@@ -5,6 +5,7 @@ import Camera from "@/components/Camera";
 // import { WalletContext } from "@/app/(context)/context";
 import { Button } from "@/components/ui/button";
 import MintButton from "@/components/MintButton";
+import { Progress } from "@/components/ui/progress";
 
 import {
   CAR_ABI,
@@ -18,9 +19,34 @@ import {
   TransactionReceipt,
   TransactionResponse,
 } from "@ethersproject/abstract-provider";
-import { ethers } from "ethers";
+import { BigNumber, ethers } from "ethers";
 import { useWalletContext } from "../(hooks)/useWalletContext";
 import CarSpecs from "@/components/CarSpecs";
+import Stepper from "@/components/stepper";
+
+function convertToTraitTypeValue(jsonObj: any) {
+  const highestScores = jsonObj.highestScores;
+  const traitTypeValueArray = Object.keys(highestScores).map((key) => {
+    return { trait_type: key, value: highestScores[key] };
+  });
+  return traitTypeValueArray;
+}
+
+function getTokenId(transactionReceipt: any) {
+  // Find the CarMinted event in the events array
+  const carMintedEvent = transactionReceipt.events.find(
+    (event: { event: string }) => event.event === "CarMinted"
+  );
+
+  if (!carMintedEvent) {
+    throw new Error("CarMinted event not found in transaction receipt");
+  }
+
+  // Extract the tokenId from the CarMinted event
+  const tokenId = carMintedEvent.args[1];
+  console.log("Minted token was: ", tokenId);
+  return tokenId;
+}
 
 function fileToBase64(file: File): Promise<string> {
   return new Promise((resolve, reject) => {
@@ -40,6 +66,10 @@ function fileToBase64(file: File): Promise<string> {
 function Page({ params }: { params: { id: string } }) {
   const [capturedImage, setCapturedImage] = useState<File | null>(null);
   const [carApiData, setCarApiData] = useState<any>(null);
+  const [mintButtonVisible, setMintButtonVisible] = useState(
+    Boolean(carApiData)
+  );
+  const [mintedTokenId, setMintedTokenId] = useState<number>(0);
   const { wallet, provider } = useWalletContext();
 
   console.log(wallet, provider);
@@ -60,9 +90,16 @@ function Page({ params }: { params: { id: string } }) {
         "Content-Type": "application/json",
       },
     });
-    const _data = await data.json();
-    console.log(_data);
-    setCarApiData(_data);
+    console.log(data);
+    if (data.status === 200) {
+      const _data = await data.json();
+      setMintButtonVisible(true);
+      console.log(_data);
+      setCarApiData(_data);
+    } else {
+      console.log("error");
+      // Toast Here to say its an error
+    }
   };
 
   const mintCarNFT = async () => {
@@ -76,30 +113,32 @@ function Page({ params }: { params: { id: string } }) {
     const estimatedGasLimit = await _getCarContract.estimateGas.mintCar(
       _walletAddress
     );
-    // const approveTxUnsigned = await _getCarContract.populateTransaction.mintCar(
-    //   _walletAddress
-    // );
-    // approveTxUnsigned.gasLimit = estimatedGasLimit;
-    // approveTxUnsigned.gasPrice = await provider!.getGasPrice();
-    // approveTxUnsigned.nonce = await provider!.getTransactionCount(
-    //   _walletAddress!
-    // );
-
-    // const approveTxSigned = await wallet!.signTransaction(approveTxUnsigned!);
-    // const submittedTx = await provider!.sendTransaction(approveTxSigned);
-    // const approveReceipt = await submittedTx.wait();
-    // if (approveReceipt.status === 0)
-    //   throw new Error("Approve transaction failed");
+    const _gasLimit = estimatedGasLimit.add(500000);
 
     const mintTransaction: RelayTransactionResponse =
       await _getCarContract.mintCar(wallet?.getAddress(), {
-        gasLimit: estimatedGasLimit,
+        gasLimit: _gasLimit,
       }); // need a way here to get back the tokenId that was just minted
     console.log(mintTransaction);
     console.log(`should wait for receipt now ..`);
     const mintReceipt: any = await mintTransaction.wait(); // Wait for the transaction to complete
-    console.log(`here is the receipt..`);
-    console.log(mintReceipt);
+    const tokenId = getTokenId(mintReceipt);
+    setMintedTokenId(tokenId.toString());
+
+    const traits = convertToTraitTypeValue(carApiData.data);
+    const base64 = await fileToBase64(capturedImage!);
+    const data = await fetch(`/cars/api`, {
+      method: "POST",
+      body: JSON.stringify({
+        base64,
+        tokenId: tokenId.toString(),
+        traits,
+      }),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+    console.log(data);
   };
 
   //TODO: Need a check or some way to get what the tokenId should be
@@ -125,27 +164,16 @@ function Page({ params }: { params: { id: string } }) {
   const handleUpload = async () => {
     if (!capturedImage) return;
     console.log(capturedImage);
-    const base64 = await fileToBase64(capturedImage);
-
-    const data = await fetch(`/cars/api`, {
-      method: "POST",
-      body: JSON.stringify({
-        base64: base64,
-      }),
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
-    // console.log(data);
   };
+
   console.log(carApiData, "logging for chat");
   return (
     <main>
       <h2 className=" max-w-[200px]   pb-2 text-3xl font-semibold tracking-tight transition-colors  text-blue-500 my-8">
         Snap & Sell List Car
       </h2>
-
-      <div className="grid grid-cols-6 md:grid-cols-12 gap-4">
+      <Stepper />
+      <div className="grid grid-cols-6 md:grid-cols-12 gap-4 mt-12">
         <Camera onCapture={handleImageCapture} onConfirm={handleConfirm} />
       </div>
       <CarSpecs highScores={carApiData} />
@@ -154,23 +182,14 @@ function Page({ params }: { params: { id: string } }) {
         {provider != null ? (
           <>
             <div>
-              {capturedImage && (
-                // <Button
-                //   className="mr-4"
-                //   onClick={async () => {
-                //     handleUpload();
-                //     await mintCarNFT();
-                //   }}
-                // >
-                //   Mint Car
-                // </Button>
+              {mintButtonVisible && capturedImage && (
                 <MintButton onUpload={handleUpload} onMint={mintCarNFT} />
               )}
             </div>
 
             <div>
               {/* this is the tba button */}
-              <Button onClick={async () => await createTBA(11)}>
+              <Button onClick={async () => await createTBA(mintedTokenId)}>
                 Add documents
               </Button>
             </div>

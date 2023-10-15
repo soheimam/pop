@@ -127,13 +127,6 @@ function getHighestScore(
   return label ? field[label] : field.score;
 }
 
-async function getBase64FromImageUrl(url: string) {
-  const response = await fetch(url);
-  const buffer = await response.arrayBuffer();
-  const base64Image = Buffer.from(buffer).toString("base64");
-  return base64Image;
-}
-
 export async function PUT(request: Request, response: Response) {
   const res = await request.json();
   const base64Body = res?.base64;
@@ -160,8 +153,10 @@ export async function PUT(request: Request, response: Response) {
 
 export async function POST(request: Request, response: Response) {
   const res = await request.json();
+  console.log(res);
   const base64Body = res?.base64;
   const traits = res?.traits;
+  const tokenId = res?.tokenId;
   const metafuseAPIKey = process.env.METAFUSE_API_KEY!;
   const metafuseAPI = "https://gateway.metafuse.me/v1/item";
 
@@ -175,7 +170,7 @@ export async function POST(request: Request, response: Response) {
       visibility: "PUBLIC",
       image: base64Body,
       traits: traits,
-      tokenId: 1,
+      tokenId: +tokenId,
       projectId: "be82af4a-9515-4c14-979f-27685ede3bbd",
     }),
   });

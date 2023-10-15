@@ -20,7 +20,7 @@ function MintButton({ onUpload, onMint }) {
 
   return (
     <Button className="mr-4" onClick={handleClick} disabled={loading}>
-      {loading ? <Loader2 /> : "Mint Car"}
+      {loading ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : "Mint Car"}
     </Button>
   );
 }
