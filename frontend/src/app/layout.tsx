@@ -10,6 +10,7 @@ import { WalletProvider } from "./(context)/cometh-context";
 // import { WalletProvider } from "./(context)/privy-context";
 
 import Header from "@/components/Header";
+// import { TablelandProvider } from "./(context)/tableland-context";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -24,7 +25,9 @@ export default function RootLayout({ children }: any) {
       <body className={`${inter.className} bg-blue-50 mx-10  lg:mx-24 pb-40`}>
         <WalletProvider>
           <Header />
+          {/* <TablelandProvider> */}
           {children}
+          {/* </TablelandProvider> */}
           <NavBar />
         </WalletProvider>
       </body>
