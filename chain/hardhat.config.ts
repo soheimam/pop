@@ -4,9 +4,9 @@ require("dotenv").config();
 
 const privateKey = process.env.PRIVATE_KEY;
 
-if (!privateKey || !privateKey.startsWith("0x") || privateKey.length !== 66) {
-  throw new Error("Invalid or missing PRIVATE_KEY environment variable");
-}
+// if (!privateKey || !privateKey.startsWith("0x") || privateKey.length !== 66) {
+//   throw new Error("Invalid or missing PRIVATE_KEY environment variable");
+// }
 
 const config: HardhatUserConfig = {
   solidity: "0.8.19",
@@ -17,20 +17,24 @@ const config: HardhatUserConfig = {
     tests: "./test",
   },
   networks: {
-    hardhat: {
-      accounts: [
-        {
-          privateKey: privateKey,
-          balance: `2000000000000000000000`,
-        },
-      ],
-    },
+    // hardhat: {
+    //   accounts: [
+    //     {
+    //       privateKey: privateKey,
+    //       balance: `2000000000000000000000`,
+    //     },
+    //   ],
+    // },
     localhost: {
       url: "http://127.0.0.1:8545", // Default for both Hardhat's node and Ganache
       accounts: [privateKey],
     },
     mumbai: {
       url: "https://polygon-mumbai.infura.io/v3/9c17b4ee03bf4c75829e260cbea6a92a",
+      accounts: [privateKey],
+    },
+    base: {
+      url: "https://goerli.base.org/",
       accounts: [privateKey],
     },
   },
