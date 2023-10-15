@@ -48,8 +48,8 @@ function Page({ params }: { params: { id: string } }) {
   }
 
   useEffect(() => {
-    // console.log("attempting to insert a row ...");
-    // runner();
+    console.log("attempting to insert a row ...");
+    runner();
   });
 
   console.log(wallet, provider);

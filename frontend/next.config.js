@@ -4,6 +4,9 @@ const nextConfig = {
   publicRuntimeConfig: {
     manifestPath: "/manifest.json",
   },
+  experimental: {
+    serverActions: true,
+  },
 };
 
 const withPWA = require("next-pwa")({

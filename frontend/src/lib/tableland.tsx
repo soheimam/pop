@@ -1,3 +1,5 @@
+"use server";
+
 import { Database } from "@tableland/sdk";
 import { ethers } from "ethers";
 
@@ -17,18 +19,17 @@ const provider = ethers.getDefaultProvider(
   "https://polygon-mumbai.infura.io/v3/9c17b4ee03bf4c75829e260cbea6a92a"
 );
 const signer = wallet.connect(provider);
-const tableName = "cli_pop_table_80001_7745";
+const tableName = "cli_pop_table_80001_7750";
 // Connect to the database
 const db = new Database({ signer });
 
 export const insertRow = async () => {
-  // Insert a row into the table
+  //   // Insert a row into the table
   const { meta: insert } = await db
     .prepare(
-      `INSERT INTO ${tableName} (id, userAddress, userTba, bid, bidderAddress) VALUES (?1, ?2, ?3, ?4, ?5);`
+      `INSERT INTO ${tableName} (userAddress, userTba, bid, bidderAddress) VALUES (?1, ?2, ?3, ?4);`
     )
     .bind(
-      0,
       "0xb6D9f614907368499bAF7b288b54B839fC891660",
       "0xb6D9f614907368499bAF7b288b54B839fC891660",
       100,
@@ -38,7 +39,7 @@ export const insertRow = async () => {
 
   await insert.txn?.wait();
 
-  const { results } = await db.prepare(`SELECT * FROM ${tableName};`).all();
+  const { results } = await db.prepare(`SELECT ROWID FROM ${tableName};`).all();
 
   console.log(results);
 };
