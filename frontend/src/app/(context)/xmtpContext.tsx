@@ -4,11 +4,20 @@ import { Client } from "@xmtp/xmtp-js";
 import { ethers } from "ethers";
 import { Stream } from "@xmtp/react-sdk";
 
+// The useStreamMessages hook streams new conversation messages on mount
+// and exposes an error state.
+import { useStreamMessages } from "@xmtp/react-sdk";
+import type { CachedConversation, DecodedMessage } from "@xmtp/react-sdk";
+
 const AppContext = createContext({} as IXMTPProvider);
 
+declare global {
+  interface Window {
+    ethereum?: any;
+  }
+}
+
 interface IXMTPProvider {
-  conversations: Map<string, any>;
-  setConversations: any;
   isListenEnabled: any;
   setIsListenEnabled: any;
   xmtpClient: any;
@@ -17,31 +26,69 @@ interface IXMTPProvider {
   killXMTPStream: () => void;
   startXMTPStream: () => void;
   sendXMTPMessage: (to: string, msg: string) => void;
-  loadAllMessages: (to: string) => void;
-  listenForMessages: () => void;
 }
 
 export function XmtpProvider({ children }: any) {
-  const [conversations, setConversations] = useState<Map<string, any>>(
-    new Map()
-  );
+  // const [conversations, setConversations] = useState<Map<string, any>>(
+  //   new Map()
+  // );
   const [isListenEnabled, setIsListenEnabled] = useState<boolean>(false);
   const [xmtpClient, setXmtpClient] = useState<any>(null);
   const [xmtpStream, setXmtpStream] = useState<Stream<any>>();
 
-  const init = async () => {
+  const delay = (ms: number) =>
+    new Promise((resolve) => setTimeout(resolve, ms));
+
+  async function updateConversationsAfterDelay() {}
+
+  const runner = async () => {
+    await delay(2000);
+    // Your code to run after the 2-second delay goes here
     const provider = new ethers.BrowserProvider(window?.ethereum);
     const xmtp = await Client.create(await provider.getSigner(), {
       env: "dev",
     });
     console.log(`setting xmtp client...`);
     await setXmtpClient(xmtp);
-    await listenForMessages(xmtp);
+    const allConversations = await xmtp.conversations.list();
+    // let conversationsMap = new Map();
+    // setConversations(conversationsMap);
+    console.log(`all conversations...`);
+    console.log(allConversations);
+
+    for (const conversation of await xmtp.conversations.list()) {
+      // All parameters are optional and can be omitted
+      const opts = {
+        // Only show messages from last 24 hours
+        startTime: new Date(new Date().setDate(new Date().getDate() - 1)),
+        endTime: new Date(),
+      };
+      const messagesInConversation = await conversation.messages(opts);
+      console.log(messagesInConversation);
+    }
+  };
+
+  const initListener = async () => {
+    await listenForMessages(xmtpClient);
   };
 
   useEffect(() => {
-    init();
-  }, []);
+    if (!xmtpClient) {
+      runner();
+    }
+  }, [xmtpClient]);
+
+  const receiveAllMessagesInConvo = async () => {
+    for (const conversation of await xmtpClient.conversations.list()) {
+      // All parameters are optional and can be omitted
+      const opts = {
+        // Only show messages from last 24 hours
+        startTime: new Date(new Date().setDate(new Date().getDate() - 1)),
+        endTime: new Date(),
+      };
+      const messagesInConversation = await conversation.messages(opts);
+    }
+  };
 
   const killXMTPStream = async () => {
     if (xmtpStream) await xmtpStream.return();
@@ -55,15 +102,18 @@ export function XmtpProvider({ children }: any) {
     return stream;
   };
 
-  const loadAllMessages = async (to: string) => {
-    if (conversations.has(to)) {
-      return await conversations.get(to).messages();
-    } else {
-      return "No conversation found";
-    }
-  };
+  // const loadAllMessages = async (to: string) => {
+  //   let conversatoin = await xmtpClient.conversations.list().filter((convo: any) => convo.peerAddress === to)
+  //   if (conversatoin) {
+  //     return await conversations.get(to).messages();
+  //   } else {
+  //     return "No conversation found";
+  //   }
+  // };
 
   const listenForMessages = async (xmtp: any) => {
+    console.log(xmtp);
+    console.log(`is xmtp defined ? ${xmtp}`);
     const conversation = await xmtp.conversations.newConversation(
       "0x937C0d4a6294cdfa575de17382c7076b579DC176"
     );
@@ -98,30 +148,24 @@ export function XmtpProvider({ children }: any) {
   };
 
   const sendXMTPMessage = async (to: string, msg: string) => {
-    if (conversations.has(to)) {
-      const conversation = conversations.get(to);
-      await conversation.send(msg);
+    console.log("Here is the to addres " + to);
+    let conversatoin = (await xmtpClient.conversations.list()).filter(
+      (convo: any) => convo.peerAddress === to
+    );
+    if (conversatoin) {
+      console.log("Sending a message with existing convo...");
+      await conversatoin.send();
     } else {
       console.log("Starting a new conversation...");
       const conversation = await xmtpClient.conversations.newConversation(to);
-
-      let send = await conversation.send(msg);
-      console.log("Send result...");
-      console.log(send);
-      // Create a new Map based on the previous state
-      const updatedConversations = new Map(conversations);
-      // Set the new key-value pair in the new Map
-      updatedConversations.set(to, conversation);
-      // Update the state with the new Map
-      setConversations(updatedConversations);
+      console.log("Sending a message...");
+      await conversatoin.send();
     }
   };
 
   return (
     <AppContext.Provider
       value={{
-        conversations,
-        setConversations,
         isListenEnabled,
         setIsListenEnabled,
         xmtpClient,
@@ -130,8 +174,6 @@ export function XmtpProvider({ children }: any) {
         killXMTPStream,
         startXMTPStream,
         sendXMTPMessage,
-        loadAllMessages,
-        listenForMessages,
       }}
     >
       {children}
