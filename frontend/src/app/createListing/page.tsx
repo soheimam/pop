@@ -35,6 +35,7 @@ import { CAR_ABI, MUMBAI_CAR_CONTRACT_ADDRESS } from "@/lib/chainUtils";
 import { toast } from "@/components/ui/use-toast";
 import { useCreateTBA } from "../(hooks)/useCreateTBA";
 import { ToastAction } from "@/components/ui/toast";
+import SubNFTUpload from "@/components/SubNFTUpload";
 
 // import { useConnectWallet } from "@privy-io/react-auth";
 
@@ -253,6 +254,7 @@ function Page({ params }: { params: { id: string } }) {
           </div>
         </>
       </div>
+      <SubNFTUpload />
       {currentStep >= 2 && <button>Test</button>}
       {currentStep === 3 && <div>Hello Third</div>}
     </main>
