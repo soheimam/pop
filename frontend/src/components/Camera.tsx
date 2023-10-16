@@ -63,10 +63,9 @@ const Camera = ({ onCapture, onConfirm }: any) => {
           )}
         </>
       ) : (
-        <button
-          className="text-center w-full flex flex-col items-center align-center text-blue-900 p-12"
-          type="button"
-          onClick={handleClick}
+        <label
+          className="text-center w-full flex flex-col items-center align-center text-blue-900 p-12 cursor-pointer"
+          htmlFor="cameraInput"
         >
           <input
             type="file"
@@ -77,14 +76,11 @@ const Camera = ({ onCapture, onConfirm }: any) => {
             id="cameraInput"
             ref={inputRef}
           />
-          <label
-            className="text-xl text-center font-semibold tracking-tight flex flex-col items-center justify-center"
-            htmlFor="cameraInput"
-          >
+          <div className="text-xl text-center font-semibold tracking-tight flex flex-col items-center justify-center">
             <CameraIcon className="text-blue-900 h-12 w-12 mb-4" />
             Take Photo
-          </label>
-        </button>
+          </div>
+        </label>
       )}
     </div>
   );

@@ -12,6 +12,7 @@ if (!privateKey) {
 }
 
 //TODO: This private key won't work no matter what unless hard coded
+
 const wallet = new ethers.Wallet(privateKey);
 // To avoid connecting to the browser wallet (locally, port 8545).
 // For example: "https://polygon-mumbai.g.alchemy.com/v2/YOUR_ALCHEMY_KEY"
@@ -38,11 +39,16 @@ export const insertRow = async () => {
     )
     .run();
 
-  await insert.txn?.wait();
+  try {
+    await insert.txn?.wait();
+    const { results } = await db
+      .prepare(`SELECT ROWID FROM ${tableName};`)
+      .all();
 
-  const { results } = await db.prepare(`SELECT ROWID FROM ${tableName};`).all();
-
-  console.log(results);
+    console.log(results);
+  } catch (error) {
+    console.log(error);
+  }
 };
 
 export const findUserOfTokenId = async (tokenId: number) => {

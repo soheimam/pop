@@ -9,12 +9,9 @@ import {
 } from "@/components/ui/accordion";
 import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
-import { ethers } from "ethers";
-import { xmtpMessageSeller } from "@/lib/xmtp";
+// import { SendMessage } from "@/components/SendMessage";
+// import { useConversations } from "@xmtp/react-sdk";
 import { useXmtpProvider } from "@/app/(context)/xmtpContext";
-import { SendMessage } from "@/components/SendMessage";
-import { useConversations } from "@xmtp/react-sdk";
-import { StartConversation } from "@/components/StartANewConversation";
 
 function Page({ params }: { params: { id: string } }) {
   // If the car is not found, display a message
@@ -23,10 +20,25 @@ function Page({ params }: { params: { id: string } }) {
   const [content, setContent] = useState({});
   // const { sendXMTPMessage, listenForMessages } = useXmtpProvider();
   const [renderSendMessage, setRenderSendMessage] = useState(false);
-  const { conversations, error, isLoading } = useConversations();
+  // const { conversations, error, isLoading } = useConversations(); // THIS HOOK WILL THROW KEYSTORE ERROR
   const [carOwnerAddress, setCarOwnerAddress] = useState(
-    "0x937C0d4a6294cdfa575de17382c7076b579DC176"
+    "0x7516e89D7111fEfaa312b58A06130F5B5DcDd01D"
   );
+  const { xmtpClient } = useXmtpProvider();
+
+  const [conversations, setConversations] = useState<any>([]);
+
+  const fetchConvos = async () => {
+    const convos = await xmtpClient.conversations.list();
+    console.log(convos);
+    setConversations(convos);
+  };
+
+  useEffect(() => {
+    if (xmtpClient) {
+      fetchConvos();
+    }
+  }, [xmtpClient]);
 
   const { id } = params;
 
@@ -44,11 +56,15 @@ function Page({ params }: { params: { id: string } }) {
     _fetch();
   }, []);
 
+  // if (isLoading) {
+  //   return null;
+  // }
   const squares = Array(3).fill(null);
   return (
     <main>
+      {/* <SendMessage conversation={null} newConvoPeerAddress={carOwnerAddress} /> */}
       {/* if user clicks send message and there is already a conversation with this person cached */}
-      {renderSendMessage &&
+      {/* {renderSendMessage &&
       conversations.find(
         (conversation) => conversation.peerAddress == carOwnerAddress
       ) ? (
@@ -68,7 +84,7 @@ function Page({ params }: { params: { id: string } }) {
           }
           newConvoPeerAddress={carOwnerAddress}
         />
-      )}
+      )} */}
 
       <div className="grid grid-cols-6 md:grid-cols-12 gap-4">
         <div className="col-span-6 md:col-span-12 bg-gray-700 p-24 rounded-md"></div>
@@ -116,6 +132,37 @@ function Page({ params }: { params: { id: string } }) {
             key={"send msg"}
             onClick={async () => {
               setRenderSendMessage(true);
+              if (conversations != null) {
+                let doesContactExist = await conversations.find(
+                  (convo: any) => convo.peerAddress == carOwnerAddress
+                );
+
+                if (!doesContactExist) {
+                  doesContactExist =
+                    await xmtpClient.conversations.newConversation(
+                      carOwnerAddress
+                    );
+                }
+                console.log(doesContactExist);
+                const preparedTextMessage =
+                  await doesContactExist.prepareMessage(
+                    "I HATE YOU KEYSTORE ERROR"
+                  );
+                //After preparing an optimistic message, use its `send` method to send it.
+                try {
+                  console.log("SENDING MESSAGE");
+                  preparedTextMessage.send();
+                } catch (e) {
+                  // handle error, enable canceling and retries (see below)
+                  console.log("Error sending message... ");
+                  console.log(e);
+                }
+                let test = await doesContactExist.send(
+                  "Hello, I hate you key store!!!"
+                );
+                console.log(`DID THIS SEND ?`);
+                console.log(test);
+              }
               // // await listenForMessages();
             }}
           >

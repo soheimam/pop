@@ -35,10 +35,10 @@ export default function RootLayout({ children }: any) {
         <WagmiProvider>
           <Header />
 
-          <XmtpProvider>
-            {/* <TablelandProvider> */}
-            {children}
-          </XmtpProvider>
+          {/* <XmtpProvider> */}
+          {/* <TablelandProvider> */}
+          {children}
+          {/* </XmtpProvider> */}
           {/* </TablelandProvider> */}
           <NavBar />
         </WagmiProvider>

@@ -44,8 +44,9 @@ export function XmtpProvider({ children }: any) {
   const runner = async () => {
     await delay(2000);
     // Your code to run after the 2-second delay goes here
-    const provider = new ethers.BrowserProvider(window?.ethereum);
-    const xmtp = await Client.create(await provider.getSigner(), {
+    const provider = new ethers.providers.Web3Provider(window.ethereum);
+    const signer = provider.getSigner();
+    const xmtp = await Client.create(signer, {
       env: "dev",
     });
     console.log(`setting xmtp client...`);
