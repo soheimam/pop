@@ -8,12 +8,23 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion";
 import { useEffect, useState } from "react";
+import { Button } from "@/components/ui/button";
+import { ethers } from "ethers";
+import { xmtpMessageSeller } from "@/lib/xmtp";
+import { useXmtpProvider } from "@/app/(context)/xmtpContext";
+
+declare global {
+  interface Window {
+    ethereum?: any;
+  }
+}
 
 function Page({ params }: { params: { id: string } }) {
   // If the car is not found, display a message
 
   const [loading, setLoading] = useState(true);
   const [content, setContent] = useState({});
+  const { sendXMTPMessage, listenForMessages } = useXmtpProvider();
 
   const { id } = params;
 
@@ -30,7 +41,6 @@ function Page({ params }: { params: { id: string } }) {
     };
     _fetch();
   }, []);
-  console.log(content, "car details");
 
   const squares = Array(3).fill(null);
   return (
@@ -72,6 +82,30 @@ function Page({ params }: { params: { id: string } }) {
           </p>
         </div>
       </div>
+
+      <div className="">
+        <h4 className="mt-8 mb-2 text-xl font-semibold tracking-tight text-blue-800">
+          Purchase Details
+        </h4>
+        <div className="flex gap-x-3">
+          <Button
+            key={"send msg"}
+            onClick={async () => {
+              console.log("Clicked send message..");
+              sendXMTPMessage(
+                `0x937C0d4a6294cdfa575de17382c7076b579DC176`,
+                "HELLO BOT"
+              );
+              await listenForMessages();
+            }}
+          >
+            Message Seller
+          </Button>
+          <Button key={"bid"}>Place Bid</Button>
+          <Button key={"buyout"}>Buyout</Button>
+        </div>
+      </div>
+
       <div className="grid grid-cols-6 md:grid-cols-12 gap-4">
         <h4 className="mt-8 mb-2 text-xl font-semibold tracking-tight text-blue-800 col-span-2 col-start-1">
           Confirmed Details

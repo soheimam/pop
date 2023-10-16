@@ -5,20 +5,20 @@ import Camera from "@/components/Camera";
 // import { WalletContext } from "@/app/(context)/context";
 import { Button } from "@/components/ui/button";
 
-import {
-  CAR_ABI,
-  createTBAAccount,
-  getCarContract,
-  getRegistryContract,
-  getTBAAccount,
-} from "@/lib/chainUtils";
-import { RelayTransactionResponse } from "@cometh/connect-sdk";
+// import {
+//   CAR_ABI,
+//   createTBAAccount,
+//   getCarContract,
+//   getRegistryContract,
+//   getTBAAccount,
+// } from "@/lib/chainUtils";
+// import { RelayTransactionResponse } from "@cometh/connect-sdk";
 import {
   TransactionReceipt,
   TransactionResponse,
 } from "@ethersproject/abstract-provider";
 import { ethers } from "ethers";
-import { useWalletContext } from "../(hooks)/useWalletContext";
+// import { useWalletContext } from "../(hooks)/useWalletContext";
 import CarSpecs from "@/components/CarSpecs";
 import { insertRow } from "@/lib/tableland";
 
@@ -40,7 +40,7 @@ function fileToBase64(file: File): Promise<string> {
 function Page({ params }: { params: { id: string } }) {
   const [capturedImage, setCapturedImage] = useState<File | null>(null);
   const [carApiData, setCarApiData] = useState<any>(null);
-  const { wallet, provider } = useWalletContext();
+  // const { wallet, provider } = useWalletContext();
 
   //TODO: here is example of insert row
   async function runner() {
@@ -52,7 +52,7 @@ function Page({ params }: { params: { id: string } }) {
     runner();
   });
 
-  console.log(wallet, provider);
+  // console.log(wallet, provider);
   const handleImageCapture = async (imageFile: File) => {
     console.log(imageFile);
     setCapturedImage(imageFile);
@@ -78,16 +78,16 @@ function Page({ params }: { params: { id: string } }) {
   };
 
   const mintCarNFT = async () => {
-    const _walletAddress = wallet?.getAddress();
+    // const _walletAddress = wallet?.getAddress();
 
-    const _getCarContract = await getCarContract(provider!);
-    console.log(_getCarContract);
+    // const _getCarContract = await getCarContract(provider!);
+    // console.log(_getCarContract);
     console.log(`attempting a mint`);
-    console.log(`wallet address = ${_walletAddress}`);
+    // console.log(`wallet address = ${_walletAddress}`);
 
-    const estimatedGasLimit = await _getCarContract.estimateGas.mintCar(
-      _walletAddress
-    );
+    // const estimatedGasLimit = await _getCarContract.estimateGas.mintCar(
+    //   _walletAddress
+    // );
     // const approveTxUnsigned = await _getCarContract.populateTransaction.mintCar(
     //   _walletAddress
     // );
@@ -103,37 +103,37 @@ function Page({ params }: { params: { id: string } }) {
     // if (approveReceipt.status === 0)
     //   throw new Error("Approve transaction failed");
 
-    const mintTransaction: RelayTransactionResponse =
-      await _getCarContract.mintCar(wallet?.getAddress(), {
-        gasLimit: estimatedGasLimit,
-      }); // need a way here to get back the tokenId that was just minted
-    console.log(mintTransaction);
-    console.log(`should wait for receipt now ..`);
-    const mintReceipt: any = await mintTransaction.wait(); // Wait for the transaction to complete
-    console.log(`here is the receipt..`);
-    console.log(mintReceipt);
-  };
+    //   const mintTransaction: RelayTransactionResponse =
+    //     await _getCarContract.mintCar(wallet?.getAddress(), {
+    //       gasLimit: estimatedGasLimit,
+    //     }); // need a way here to get back the tokenId that was just minted
+    //   console.log(mintTransaction);
+    //   console.log(`should wait for receipt now ..`);
+    //   const mintReceipt: any = await mintTransaction.wait(); // Wait for the transaction to complete
+    //   console.log(`here is the receipt..`);
+    //   console.log(mintReceipt);
+    // };
 
-  const saveToTableLand = () => {};
+    // const saveToTableLand = () => {};
 
-  //TODO: Need a check or some way to get what the tokenId should be
-  const createTBA = async (tokenId: number) => {
-    console.log(`starting TBA creation...`);
+    // //TODO: Need a check or some way to get what the tokenId should be
+    // const createTBA = async (tokenId: number) => {
+    //   console.log(`starting TBA creation...`);
 
-    const tbaCreateTransaction: RelayTransactionResponse =
-      await createTBAAccount(provider!, tokenId);
-    console.log(`tbaCreateTransaction = ${tbaCreateTransaction}`);
-    const tbaCreationReceipt: any = await tbaCreateTransaction.wait();
-    console.log(tbaCreationReceipt);
-    const tbaCreationEvents = tbaCreationReceipt.events;
-    for (let k = 0; k < tbaCreationEvents.length; k++) {
-      if (tbaCreationEvents[k].event === "AccountCreated") {
-        console.log("AccountCreated event found!");
-        const account = await getTBAAccount(provider!, tokenId);
-        console.log(`TBA account address = ${account}`);
-        break;
-      }
-    }
+    //   const tbaCreateTransaction: RelayTransactionResponse =
+    //     await createTBAAccount(provider!, tokenId);
+    //   console.log(`tbaCreateTransaction = ${tbaCreateTransaction}`);
+    //   const tbaCreationReceipt: any = await tbaCreateTransaction.wait();
+    //   console.log(tbaCreationReceipt);
+    //   const tbaCreationEvents = tbaCreationReceipt.events;
+    //   for (let k = 0; k < tbaCreationEvents.length; k++) {
+    //     if (tbaCreationEvents[k].event === "AccountCreated") {
+    //       console.log("AccountCreated event found!");
+    //       const account = await getTBAAccount(provider!, tokenId);
+    //       console.log(`TBA account address = ${account}`);
+    //       break;
+    //     }
+    //   }
   };
 
   const handleUpload = async () => {
@@ -165,7 +165,7 @@ function Page({ params }: { params: { id: string } }) {
       {carApiData ? <CarSpecs highScores={carApiData} /> : null}
 
       <div className="flex ">
-        {provider != null ? (
+        {null ? (
           <>
             <div>
               {capturedImage && (
@@ -183,7 +183,7 @@ function Page({ params }: { params: { id: string } }) {
 
             <div>
               {/* this is the tba button */}
-              <Button onClick={async () => await createTBA(11)}>
+              <Button onClick={async () => () => console.log("Create tba")}>
                 Add documents
               </Button>
             </div>
