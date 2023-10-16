@@ -4,6 +4,11 @@ const nextConfig = {
   publicRuntimeConfig: {
     manifestPath: "/manifest.json",
   },
+  webpack: (config) => {
+    config.resolve.fallback = { fs: false, net: false, tls: false };
+
+    return config;
+  },
   experimental: {
     serverActions: true,
   },

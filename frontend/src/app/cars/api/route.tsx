@@ -1,7 +1,5 @@
 import { NextResponse } from "next/server";
 
-const fs = require("fs");
-
 type CreateCarResponse = {
   id: number;
   make: string;
