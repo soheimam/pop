@@ -16,6 +16,7 @@
     "@radix-ui/react-progress": "^1.0.3",
     "@radix-ui/react-separator": "^1.0.3",
     "@radix-ui/react-slot": "^1.0.2",
+    "@radix-ui/react-toast": "^1.1.5",
     "@tableland/sdk": "^4.5.3-dev.0",
     "@xmtp/react-sdk": "latest",
     "axios": "^1.4.0",

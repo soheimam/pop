@@ -2,8 +2,9 @@ import React, { useState } from "react";
 
 import { Button } from "@/components/ui/button";
 import { Loader2 } from "lucide-react";
+import { toast } from "./ui/use-toast";
 
-function MintButton({ onUpload, onMint }) {
+function MintButton({ onUpload, onMint, setCurrentStep }) {
   const [loading, setLoading] = useState(false);
 
   // const handleMint = async () => {
@@ -16,6 +17,10 @@ function MintButton({ onUpload, onMint }) {
     if (onUpload) await onUpload();
     if (onMint) await onMint();
     setLoading(false);
+    toast({
+      description: "Car Mint Complete",
+    });
+    setCurrentStep((prev: number) => prev + 1);
   };
 
   return (

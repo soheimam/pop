@@ -22,8 +22,9 @@ import {
 import { BigNumber, ethers } from "ethers";
 import { useWalletContext } from "../(hooks)/useWalletContext";
 import CarSpecs from "@/components/CarSpecs";
-import Stepper from "@/components/stepper";
+
 import { insertRow } from "@/lib/tableland";
+import Stepper from "@/components/stepper";
 
 function convertToTraitTypeValue(jsonObj: any) {
   const highestScores = jsonObj.highestScores;
@@ -72,6 +73,7 @@ function Page({ params }: { params: { id: string } }) {
   );
   const [mintedTokenId, setMintedTokenId] = useState<number>(0);
   const { wallet, provider } = useWalletContext();
+  const [currentStep, setCurrentStep] = useState(1);
 
   //TODO: here is example of insert row
   async function runner() {
@@ -83,7 +85,6 @@ function Page({ params }: { params: { id: string } }) {
     runner();
   });
 
-  console.log(wallet, provider);
   const handleImageCapture = async (imageFile: File) => {
     console.log(imageFile);
     setCapturedImage(imageFile);
@@ -91,7 +92,7 @@ function Page({ params }: { params: { id: string } }) {
 
   const handleConfirm = async (imageUrl: any) => {
     const base64 = await fileToBase64(capturedImage!);
-    console.log(base64);
+
     const data = await fetch(`/cars/api`, {
       method: "PUT",
       body: JSON.stringify({
@@ -134,6 +135,8 @@ function Page({ params }: { params: { id: string } }) {
     console.log(`should wait for receipt now ..`);
     const mintReceipt: any = await mintTransaction.wait(); // Wait for the transaction to complete
     const tokenId = getTokenId(mintReceipt);
+
+    setCurrentStep(2);
     setMintedTokenId(tokenId.toString());
 
     const traits = convertToTraitTypeValue(carApiData.data);
@@ -185,7 +188,7 @@ function Page({ params }: { params: { id: string } }) {
       <h2 className=" max-w-[200px]   pb-2 text-3xl font-semibold tracking-tight transition-colors  text-blue-500 my-8">
         Snap & Sell List Car
       </h2>
-      <Stepper />
+      <Stepper currentStep={currentStep} />
       <div className="grid grid-cols-6 md:grid-cols-12 gap-4 mt-12">
         <Camera onCapture={handleImageCapture} onConfirm={handleConfirm} />
       </div>
@@ -196,7 +199,11 @@ function Page({ params }: { params: { id: string } }) {
           <>
             <div>
               {mintButtonVisible && capturedImage && (
-                <MintButton onUpload={handleUpload} onMint={mintCarNFT} />
+                <MintButton
+                  onUpload={handleUpload}
+                  onMint={mintCarNFT}
+                  setCurrentStep={setCurrentStep}
+                />
               )}
             </div>
 
@@ -211,6 +218,8 @@ function Page({ params }: { params: { id: string } }) {
           <></>
         )}
       </div>
+      {currentStep >= 2 && <button>Test</button>}
+      {currentStep === 3 && <div>Hello Third</div>}
     </main>
   );
 }
