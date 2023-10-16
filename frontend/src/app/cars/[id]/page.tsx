@@ -12,19 +12,21 @@ import { Button } from "@/components/ui/button";
 import { ethers } from "ethers";
 import { xmtpMessageSeller } from "@/lib/xmtp";
 import { useXmtpProvider } from "@/app/(context)/xmtpContext";
-
-declare global {
-  interface Window {
-    ethereum?: any;
-  }
-}
+import { SendMessage } from "@/components/SendMessage";
+import { useConversations } from "@xmtp/react-sdk";
+import { StartConversation } from "@/components/StartANewConversation";
 
 function Page({ params }: { params: { id: string } }) {
   // If the car is not found, display a message
 
   const [loading, setLoading] = useState(true);
   const [content, setContent] = useState({});
-  const { sendXMTPMessage, listenForMessages } = useXmtpProvider();
+  // const { sendXMTPMessage, listenForMessages } = useXmtpProvider();
+  const [renderSendMessage, setRenderSendMessage] = useState(false);
+  const { conversations, error, isLoading } = useConversations();
+  const [carOwnerAddress, setCarOwnerAddress] = useState(
+    "0x937C0d4a6294cdfa575de17382c7076b579DC176"
+  );
 
   const { id } = params;
 
@@ -45,7 +47,29 @@ function Page({ params }: { params: { id: string } }) {
   const squares = Array(3).fill(null);
   return (
     <main>
-      {/* {params.id} */}
+      {/* if user clicks send message and there is already a conversation with this person cached */}
+      {renderSendMessage &&
+      conversations.find(
+        (conversation) => conversation.peerAddress == carOwnerAddress
+      ) ? (
+        <SendMessage
+          conversation={
+            conversations.find(
+              (conversation) => conversation.peerAddress == carOwnerAddress
+            )!
+          }
+        />
+      ) : (
+        <SendMessage
+          conversation={
+            conversations.find(
+              (conversation) => conversation.peerAddress == carOwnerAddress
+            )!
+          }
+          newConvoPeerAddress={carOwnerAddress}
+        />
+      )}
+
       <div className="grid grid-cols-6 md:grid-cols-12 gap-4">
         <div className="col-span-6 md:col-span-12 bg-gray-700 p-24 rounded-md"></div>
 
@@ -91,12 +115,8 @@ function Page({ params }: { params: { id: string } }) {
           <Button
             key={"send msg"}
             onClick={async () => {
-              console.log("Clicked send message..");
-              sendXMTPMessage(
-                `0x937C0d4a6294cdfa575de17382c7076b579DC176`,
-                "HELLO BOT"
-              );
-              await listenForMessages();
+              setRenderSendMessage(true);
+              // // await listenForMessages();
             }}
           >
             Message Seller
