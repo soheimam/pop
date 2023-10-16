@@ -5,26 +5,25 @@ import Camera from "@/components/Camera";
 // import { WalletContext } from "@/app/(context)/context";
 import { Button } from "@/components/ui/button";
 import MintButton from "@/components/MintButton";
-import { Progress } from "@/components/ui/progress";
+import CarSpecs from "@/components/CarSpecs";
+import { insertRow } from "@/lib/tableland";
+import Stepper from "@/components/stepper";
 
-import {
-  CAR_ABI,
-  createTBAAccount,
-  getCarContract,
-  getRegistryContract,
-  getTBAAccount,
-} from "@/lib/chainUtils";
-import { RelayTransactionResponse } from "@cometh/connect-sdk";
+// import {
+//   CAR_ABI,
+//   createTBAAccount,
+//   getCarContract,
+//   getRegistryContract,
+//   getTBAAccount,
+// } from "@/lib/chainUtils";
+// import { RelayTransactionResponse } from "@cometh/connect-sdk";
 import {
   TransactionReceipt,
   TransactionResponse,
 } from "@ethersproject/abstract-provider";
 import { BigNumber, ethers } from "ethers";
-import { useWalletContext } from "../(hooks)/useWalletContext";
-import CarSpecs from "@/components/CarSpecs";
 
-import { insertRow } from "@/lib/tableland";
-import Stepper from "@/components/stepper";
+// import { useWalletContext } from "../(hooks)/useWalletContext";
 
 function convertToTraitTypeValue(jsonObj: any) {
   const highestScores = jsonObj.highestScores;
@@ -72,8 +71,9 @@ function Page({ params }: { params: { id: string } }) {
     Boolean(carApiData)
   );
   const [mintedTokenId, setMintedTokenId] = useState<number>(0);
-  const { wallet, provider } = useWalletContext();
+
   const [currentStep, setCurrentStep] = useState(1);
+  // const { wallet, provider } = useWalletContext();
 
   //TODO: here is example of insert row
   async function runner() {
@@ -102,7 +102,7 @@ function Page({ params }: { params: { id: string } }) {
         "Content-Type": "application/json",
       },
     });
-    console.log(data);
+
     if (data.status === 200) {
       const _data = await data.json();
       setMintButtonVisible(true);
@@ -115,66 +115,62 @@ function Page({ params }: { params: { id: string } }) {
   };
 
   const mintCarNFT = async () => {
-    const _walletAddress = wallet?.getAddress();
+    // const _walletAddress = wallet?.getAddress();
 
-    const _getCarContract = await getCarContract(provider!);
-    console.log(_getCarContract);
+    // const _getCarContract = await getCarContract(provider!);
+    // console.log(_getCarContract);
     console.log(`attempting a mint`);
-    console.log(`wallet address = ${_walletAddress}`);
+    // console.log(`wallet address = ${_walletAddress}`);
 
-    const estimatedGasLimit = await _getCarContract.estimateGas.mintCar(
-      _walletAddress
-    );
-    const _gasLimit = estimatedGasLimit.add(500000);
+    // const estimatedGasLimit = await _getCarContract.estimateGas.mintCar(
+    //   _walletAddress
+    // );
+    // const approveTxUnsigned = await _getCarContract.populateTransaction.mintCar(
+    //   _walletAddress
+    // );
+    // approveTxUnsigned.gasLimit = estimatedGasLimit;
+    // approveTxUnsigned.gasPrice = await provider!.getGasPrice();
+    // approveTxUnsigned.nonce = await provider!.getTransactionCount(
+    //   _walletAddress!
+    // );
 
-    const mintTransaction: RelayTransactionResponse =
-      await _getCarContract.mintCar(wallet?.getAddress(), {
-        gasLimit: _gasLimit,
-      }); // need a way here to get back the tokenId that was just minted
-    console.log(mintTransaction);
-    console.log(`should wait for receipt now ..`);
-    const mintReceipt: any = await mintTransaction.wait(); // Wait for the transaction to complete
-    const tokenId = getTokenId(mintReceipt);
+    // const approveTxSigned = await wallet!.signTransaction(approveTxUnsigned!);
+    // const submittedTx = await provider!.sendTransaction(approveTxSigned);
+    // const approveReceipt = await submittedTx.wait();
+    // if (approveReceipt.status === 0)
+    //   throw new Error("Approve transaction failed");
 
-    setCurrentStep(2);
-    setMintedTokenId(tokenId.toString());
+    //   const mintTransaction: RelayTransactionResponse =
+    //     await _getCarContract.mintCar(wallet?.getAddress(), {
+    //       gasLimit: estimatedGasLimit,
+    //     }); // need a way here to get back the tokenId that was just minted
+    //   console.log(mintTransaction);
+    //   console.log(`should wait for receipt now ..`);
+    //   const mintReceipt: any = await mintTransaction.wait(); // Wait for the transaction to complete
+    //   console.log(`here is the receipt..`);
+    //   console.log(mintReceipt);
+    // };
 
-    const traits = convertToTraitTypeValue(carApiData.data);
-    const base64 = await fileToBase64(capturedImage!);
-    const data = await fetch(`/cars/api`, {
-      method: "POST",
-      body: JSON.stringify({
-        base64,
-        tokenId: tokenId.toString(),
-        traits,
-      }),
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
-    console.log(data);
-  };
+    // const saveToTableLand = () => {};
 
-  const saveToTableLand = () => {};
+    // //TODO: Need a check or some way to get what the tokenId should be
+    // const createTBA = async (tokenId: number) => {
+    //   console.log(`starting TBA creation...`);
 
-  //TODO: Need a check or some way to get what the tokenId should be
-  const createTBA = async (tokenId: number) => {
-    console.log(`starting TBA creation...`);
-
-    const tbaCreateTransaction: RelayTransactionResponse =
-      await createTBAAccount(provider!, tokenId);
-    console.log(`tbaCreateTransaction = ${tbaCreateTransaction}`);
-    const tbaCreationReceipt: any = await tbaCreateTransaction.wait();
-    console.log(tbaCreationReceipt);
-    const tbaCreationEvents = tbaCreationReceipt.events;
-    for (let k = 0; k < tbaCreationEvents.length; k++) {
-      if (tbaCreationEvents[k].event === "AccountCreated") {
-        console.log("AccountCreated event found!");
-        const account = await getTBAAccount(provider!, tokenId);
-        console.log(`TBA account address = ${account}`);
-        break;
-      }
-    }
+    //   const tbaCreateTransaction: RelayTransactionResponse =
+    //     await createTBAAccount(provider!, tokenId);
+    //   console.log(`tbaCreateTransaction = ${tbaCreateTransaction}`);
+    //   const tbaCreationReceipt: any = await tbaCreateTransaction.wait();
+    //   console.log(tbaCreationReceipt);
+    //   const tbaCreationEvents = tbaCreationReceipt.events;
+    //   for (let k = 0; k < tbaCreationEvents.length; k++) {
+    //     if (tbaCreationEvents[k].event === "AccountCreated") {
+    //       console.log("AccountCreated event found!");
+    //       const account = await getTBAAccount(provider!, tokenId);
+    //       console.log(`TBA account address = ${account}`);
+    //       break;
+    //     }
+    //   }
   };
 
   const handleUpload = async () => {
@@ -195,7 +191,7 @@ function Page({ params }: { params: { id: string } }) {
       <CarSpecs highScores={carApiData} />
 
       <div className="flex ">
-        {provider != null ? (
+        {null ? (
           <>
             <div>
               {mintButtonVisible && capturedImage && (
@@ -209,7 +205,8 @@ function Page({ params }: { params: { id: string } }) {
 
             <div>
               {/* this is the tba button */}
-              <Button onClick={async () => await createTBA(mintedTokenId)}>
+              {/* <Button onClick={async () => await createTBA(mintedTokenId)}> */}
+              <Button onClick={async () => () => console.log("Create tba")}>
                 Add documents
               </Button>
             </div>

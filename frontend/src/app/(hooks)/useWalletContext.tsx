@@ -1,21 +1,21 @@
-import { useContext } from "react";
-import { WalletContext } from "../(context)/cometh-context";
+// import { useContext } from "react";
+// // import { WalletContext } from "../(context)/cometh-context";
 
-export function useWalletContext() {
-  const {
-    wallet,
-    setWallet,
-    provider,
-    setProvider,
-    counterContract,
-    setCounterContract,
-  } = useContext(WalletContext);
-  return {
-    wallet,
-    setWallet,
-    provider,
-    setProvider,
-    counterContract,
-    setCounterContract,
-  };
-}
+// export function useWalletContext() {
+//   const {
+//     wallet,
+//     setWallet,
+//     provider,
+//     setProvider,
+//     counterContract,
+//     setCounterContract,
+//   } = useContext(WalletContext);
+//   return {
+//     wallet,
+//     setWallet,
+//     provider,
+//     setProvider,
+//     counterContract,
+//     setCounterContract,
+//   };
+// }

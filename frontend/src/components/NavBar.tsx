@@ -1,8 +1,7 @@
-// components/Footer.js
 "use client";
 import React, { useState } from "react";
-import { useWalletAuth } from "../app/(hooks)/useWalletAuth";
-import ConnectWallet from "./ConnectWallet";
+// import { useWalletAuth } from "../app/(hooks)/useWalletAuth";
+// import ConnectWallet from "./ConnectWallet";
 import Link from "next/link";
 import {
   HomeIcon,
@@ -11,10 +10,11 @@ import {
   BellIcon,
   ExitIcon,
 } from "@radix-ui/react-icons";
+import { ConnectButton } from "@rainbow-me/rainbowkit";
 
 function NavBar() {
-  const { isConnecting, isConnected, connect, connectionError, wallet } =
-    useWalletAuth();
+  // const { isConnecting, isConnected, connect, connectionError, wallet } =
+  //   useWalletAuth();
   return (
     <footer className=" fixed bottom-0 max-w-2/3   bg-blue-500 rounded-md transform -translate-x-1/2 left-1/2">
       <div className="flex justify-between max-w-screen-md mx-auto">
@@ -62,13 +62,18 @@ function NavBar() {
             <ExitIcon width="24" height="24" />
           </a>
         </Link> */}
-        <ConnectWallet
+        <ConnectButton />
+        {/* <div className="flex items-center opacity-100">
+  
+        </div> */}
+
+        {/* <ConnectWallet
           isConnected={isConnected}
           isConnecting={isConnecting}
           connect={connect}
           connectionError={connectionError}
           wallet={wallet!}
-        />
+        /> */}
       </div>
     </footer>
   );
