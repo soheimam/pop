@@ -19,13 +19,15 @@ function InboxItem({
 }: InboxItemProps) {
   return (
     <Link className="col-span-6" href={`/inbox/${id}`} passHref>
-      <li className=" bg-blue-100 rounded-md p-4 flex cursor-pointer">
+      <li className="bg-blue-100 rounded-md p-4 flex cursor-pointer">
         <div className="relative ">
           <Avatar>
             <AvatarImage src={avatarSrc} />
             <AvatarFallback>{fallbackText}</AvatarFallback>
           </Avatar>
-          <span className="z-20 absolute top-0 right-0 bg-green-500 p-2 h-2 rounded-full animate-ping"></span>
+          {id === "1" && (
+            <span className="z-20 absolute top-0 right-0 bg-green-500 p-2 h-2 rounded-full animate-ping"></span>
+          )}
         </div>
 
         <div className="ml-4 space-y-1">
