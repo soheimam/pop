@@ -1,22 +1,18 @@
 "use client";
 
 import Image from "next/image";
-import {
-  Accordion,
-  AccordionContent,
-  AccordionItem,
-  AccordionTrigger,
-} from "@/components/ui/accordion";
+
 import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Input } from "@/components/ui/input";
 
 // import { SendMessage } from "@/components/SendMessage";
 // import { useConversations } from "@xmtp/react-sdk";
 import { useXmtpProvider } from "@/app/(context)/xmtpContext";
 import BidRow from "@/components/BidRow";
+import MaintanceCard from "@/components/MaintanceCard";
+import MaintenanceCard from "@/components/MaintanceCard";
 
 const mockData = [
   {
@@ -44,10 +40,48 @@ const mockData = [
     price: "$21,000",
   },
 ];
+const dummyCarData = [
+  {
+    eventTitle: "Engine Maintenance",
+    eventContext: "Oil Change",
+    blockchainConfirmation: "Confirmed on Block12345",
+    eventDate: "05.05.2023",
+  },
+  {
+    eventTitle: "Tire Replacement",
+    eventContext: "Replaced all four tires",
+    blockchainConfirmation: "Confirmed on Block12346",
+    eventDate: "06.05.2023",
+  },
+  {
+    eventTitle: "Brake Inspection",
+    eventContext: "Brake pads replaced",
+    blockchainConfirmation: "Confirmed on Block12347",
+    eventDate: "07.05.2023",
+  },
+  {
+    eventTitle: "Engine Maintenance",
+    eventContext: "Oil Change",
+    blockchainConfirmation: "Confirmed on Block12345",
+    eventDate: "05.05.2023",
+  },
+  {
+    eventTitle: "Tire Replacement",
+    eventContext: "Replaced all four tires",
+    blockchainConfirmation: "Confirmed on Block12346",
+    eventDate: "06.05.2023",
+  },
+  {
+    eventTitle: "Brake Inspection",
+    eventContext: "Brake pads replaced",
+    blockchainConfirmation: "Confirmed on Block12347",
+    eventDate: "07.05.2023",
+  },
+];
 
 function Page({ params }: { params: { id: string } }) {
   // If the car is not found, display a message
-
+  const [selectedTab, setSelectedTab] = useState("auction");
   const [loading, setLoading] = useState(true);
   const [content, setContent] = useState({});
   // const { sendXMTPMessage, listenForMessages } = useXmtpProvider();
@@ -197,78 +231,55 @@ function Page({ params }: { params: { id: string } }) {
         </div>
       </div>
 
-      <div className="my-10">
-        <Tabs defaultValue="auction">
-          <TabsList>
-            <TabsTrigger value="auction">Auction</TabsTrigger>
-            <TabsTrigger value="password">Car History</TabsTrigger>
-          </TabsList>
-          <TabsContent value="auction">
-            <h4 className="mt-6 mb-2 text-xl font-semibold tracking-tight text-blue-800">
-              Your Bid
-            </h4>
-            <div className="flex w-full max-w-sm items-center space-x-2 my-5  py-6 justify-center text-white rounded-md bg-blue-950">
-              <Input
-                className="max-w-[250px] "
-                type="text"
-                placeholder="Place your bid"
-              />
-              <Button key={"bid"} variant="secondary" type="submit">
-                Place Bid
-              </Button>
-            </div>
-            <h4 className="mt-6 mb-2 text-xl font-semibold tracking-tight text-blue-800">
-              Top Bidders
-            </h4>
-            {mockData.map((data, index) => (
-              <BidRow
-                key={index}
-                index={index}
-                avatarSrc={data.avatarSrc}
-                avatarFallback={data.avatarFallback}
-                address={data.address}
-                price={data.price}
-              />
-            ))}
-          </TabsContent>
-          <TabsContent value="Car History">
-            Change your password here.
-          </TabsContent>
-        </Tabs>
-      </div>
+      <Tabs defaultValue="history" className="w-full my-4">
+        <TabsList className="grid w-full grid-cols-2">
+          <TabsTrigger value="auction">Auction</TabsTrigger>
+          <TabsTrigger value="history">History</TabsTrigger>
+        </TabsList>
+        <TabsContent value="auction">
+          <h4 className="mt-6 mb-2 text-xl font-semibold tracking-tight text-blue-800">
+            Your Bid
+          </h4>
+          <div className="flex w-full  items-center space-x-2 my-5  py-6 justify-center text-white rounded-md bg-blue-950">
+            <Input
+              className=" border-0"
+              type="text"
+              placeholder="Place your bid"
+            />
+            <Button key={"bid"} variant="secondary" type="submit">
+              Place Bid
+            </Button>
+          </div>
+          <h4 className="mt-6 mb-2 text-xl font-semibold tracking-tight text-blue-800">
+            Top Bidders
+          </h4>
+          {mockData.map((data, index) => (
+            <BidRow
+              key={index}
+              index={index}
+              avatarSrc={data.avatarSrc}
+              avatarFallback={data.avatarFallback}
+              address={data.address}
+              price={data.price}
+            />
+          ))}
+        </TabsContent>
+        <TabsContent value="history">
+          <h4 className="mt-6 mb-2 text-xl font-semibold tracking-tight text-center text-blue-800">
+            Verified History
+          </h4>
 
-      <div className="grid grid-cols-6 md:grid-cols-12 gap-4">
-        <h4 className="mt-8 mb-2 text-xl font-semibold tracking-tight text-blue-800 col-span-2 col-start-1">
-          Confirmed Details
-        </h4>
-
-        {/* <Accordion
-          type="single"
-          collapsible
-          className="col-span-6 col-start-1 bg-white rounded-md p-4"
-        >
-          <AccordionItem value="item-1">
-            <AccordionTrigger>Is it accessible?</AccordionTrigger>
-            <AccordionContent>
-              Yes. It adheres to the WAI-ARIA design pattern.
-            </AccordionContent>
-          </AccordionItem>
-          <AccordionItem value="item-2">
-            <AccordionTrigger>Is it styled?</AccordionTrigger>
-            <AccordionContent>
-              Yes. It comes with default styles that matches the other
-              components&apos; aesthetic.
-            </AccordionContent>
-          </AccordionItem>
-          <AccordionItem value="item-3">
-            <AccordionTrigger>Is it animated?</AccordionTrigger>
-            <AccordionContent>
-              Yes. It's animated by default, but you can disable it if you
-              prefer.
-            </AccordionContent>
-          </AccordionItem>
-        </Accordion> */}
-      </div>
+          {dummyCarData.map((data, index) => (
+            <MaintenanceCard
+              key={index}
+              eventTitle={data.eventTitle}
+              eventContext={data.eventContext}
+              blockchainConfirmation={data.blockchainConfirmation}
+              eventDate={data.eventDate}
+            />
+          ))}
+        </TabsContent>
+      </Tabs>
     </main>
   );
 }
