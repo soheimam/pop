@@ -62,7 +62,7 @@ function NavBar() {
             <ExitIcon width="24" height="24" />
           </a>
         </Link> */}
-        <ConnectButton />
+
         {/* <div className="flex items-center opacity-100">
   
         </div> */}
