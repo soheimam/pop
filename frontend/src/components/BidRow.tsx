@@ -16,7 +16,7 @@ const BidRow: React.FC<BidRowProps> = ({
   price,
   index,
 }) => {
-  const backgroundColor = index % 2 === 0 ? "bg-white" : "";
+  const backgroundColor = index % 2 === 0 ? "bg-white/70" : "";
 
   return (
     <div

@@ -7,7 +7,7 @@ import { Button } from "@/components/ui/button";
 import MintButton from "@/components/MintButton";
 import CarSpecs from "@/components/CarSpecs";
 import { insertRow } from "@/lib/tableland";
-import Stepper from "@/components/stepper";
+import Stepper from "@/components/Stepper";
 import {
   useWalletClient,
   useTransaction,

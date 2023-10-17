@@ -1,31 +1,22 @@
 import React from "react";
 
 interface StepProps {
-  icon: React.ReactNode;
   text: string;
   isComplete: boolean;
 }
 
-const Step: React.FC<StepProps> = ({ icon, text, isComplete }) => (
-  <li
-    className={`relative flex ${
-      isComplete ? "text-blue-600" : "text-gray-600"
+const Step: React.FC<StepProps> = ({ text, isComplete }) => (
+  <div
+    className={`flex-grow relative text-center ${
+      isComplete ? "font-bold" : ""
     }`}
   >
-    <span
-      className={`absolute -bottom-[1.75rem] ${
-        isComplete ? "bg-blue-600" : "bg-gray-600"
-      } text-white rounded-full`}
-    >
-      {icon}
-    </span>
-    <span
-      className={` ${
-        isComplete ? "text-blue-600" : "text-gray-600"
-      }  hidden sm:block`}
-    >
-      {text}
-    </span>
-  </li>
+    {text}
+    <div
+      className={`absolute bottom-0 left-1/2 transform -translate-x-1/2 h-1 w-4/5 rounded-lg ${
+        isComplete ? "bg-blue-600" : "bg-gray-200"
+      }`}
+    ></div>
+  </div>
 );
 export default Step;

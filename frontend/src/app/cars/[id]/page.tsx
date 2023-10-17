@@ -11,7 +11,7 @@ import { Input } from "@/components/ui/input";
 // import { useConversations } from "@xmtp/react-sdk";
 import { useXmtpProvider } from "@/app/(context)/xmtpContext";
 import BidRow from "@/components/BidRow";
-import MaintanceCard from "@/components/MaintanceCard";
+
 import MaintenanceCard from "@/components/MaintanceCard";
 
 const mockData = [
@@ -186,7 +186,9 @@ function Page({ params }: { params: { id: string } }) {
           </p>
         </div>
         <div className="flex gap-x-3 col-span-6">
+          <Button key={"buyout"}>Buy</Button>
           <Button
+            variant="outline"
             key={"send msg"}
             onClick={async () => {
               setRenderSendMessage(true);
@@ -226,8 +228,6 @@ function Page({ params }: { params: { id: string } }) {
           >
             Message Seller
           </Button>
-
-          <Button key={"buyout"}>Buyout</Button>
         </div>
       </div>
 
@@ -242,7 +242,7 @@ function Page({ params }: { params: { id: string } }) {
           </h4>
           <div className="flex w-full  items-center space-x-2 my-5  py-6 justify-center text-white rounded-md bg-blue-950">
             <Input
-              className=" border-0"
+              className=" border-0 w-3/5"
               type="text"
               placeholder="Place your bid"
             />

@@ -3,11 +3,11 @@ import {
   connectorsForWallets,
   RainbowKitProvider,
 } from "@rainbow-me/rainbowkit";
+import { PrivyWagmiConnector } from "@privy-io/wagmi-connector";
 import { configureChains, createConfig, WagmiConfig } from "wagmi";
 
 import {
   arbitrum,
-  goerli,
   mainnet,
   optimism,
   polygon,
