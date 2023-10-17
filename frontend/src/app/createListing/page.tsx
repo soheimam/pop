@@ -7,7 +7,7 @@ import { Button } from "@/components/ui/button";
 import MintButton from "@/components/MintButton";
 import CarSpecs from "@/components/CarSpecs";
 import { insertRow } from "@/lib/tableland";
-import Stepper from "@/components/Stepper";
+
 import {
   useWalletClient,
   useTransaction,
@@ -36,6 +36,7 @@ import { toast } from "@/components/ui/use-toast";
 import { useCreateTBA } from "../(hooks)/useCreateTBA";
 import { ToastAction } from "@/components/ui/toast";
 import SubNFTUpload from "@/components/SubNFTUpload";
+import Stepper from "@/components/stepper";
 
 // import { useConnectWallet } from "@privy-io/react-auth";
 
@@ -223,40 +224,50 @@ function Page({ params }: { params: { id: string } }) {
 
   return (
     <main>
-      <h2 className=" max-w-[200px]   pb-2 text-3xl font-semibold tracking-tight transition-colors  text-blue-500 my-8">
+      <h2 className="max-w-[200px] pb-2 text-3xl font-semibold tracking-tight transition-colors text-blue-500 my-8">
         Snap & Sell List Car
       </h2>
-      <Stepper currentStep={currentStep} />
-      <div className="grid grid-cols-6 md:grid-cols-12 gap-4 mt-12">
-        <Camera onCapture={handleImageCapture} onConfirm={handleConfirm} />
-      </div>
-      <CarSpecs highScores={carApiData} />
 
-      <div className="flex ">
+      <Stepper currentStep={currentStep} />
+
+      {currentStep === 1 && (
         <>
-          <div>
-            {!account && mintButtonVisible && capturedImage && (
-              <MintButton
-                onUpload={handleUpload}
-                onMint={mintCarNFT}
-                setCurrentStep={setCurrentStep}
-                isLoading={isLoading}
-              />
-            )}
+          <div className="grid grid-cols-6 md:grid-cols-12 gap-4 mt-12">
+            <Camera onCapture={handleImageCapture} onConfirm={handleConfirm} />
           </div>
 
-          <div>
-            {/* this is the tba button */}
-            {/* <Button onClick={async () => await createTBA(mintedTokenId)}> */}
-            <Button onClick={async () => () => console.log("Create tba")}>
-              Add documents
-            </Button>
+          <CarSpecs highScores={carApiData} />
+
+          <div className="flex ">
+            <div>
+              {!account && mintButtonVisible && capturedImage && (
+                <MintButton
+                  onUpload={handleUpload}
+                  onMint={mintCarNFT}
+                  setCurrentStep={setCurrentStep}
+                  isLoading={isLoading}
+                />
+              )}
+            </div>
+
+            <div>
+              {/* this is the tba button */}
+              {/* <Button onClick={async () => await createTBA(mintedTokenId)}> */}
+              <Button onClick={async () => () => console.log("Create tba")}>
+                Add documents
+              </Button>
+            </div>
           </div>
         </>
-      </div>
-      <SubNFTUpload />
-      {currentStep >= 2 && <button>Test</button>}
-      {currentStep === 3 && <div>Hello Third</div>}
+      )}
+
+      {currentStep === 2 && (
+        <>
+          <SubNFTUpload />
+        </>
+      )}
+
+      {currentStep >= 3 && <button>Test</button>}
     </main>
   );
 }
