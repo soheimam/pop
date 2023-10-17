@@ -4,12 +4,14 @@ import Image from "next/image";
 
 import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
+import { useXmtpProvider } from "@/app/(context)/xmtpContext";
+import MessageSeller from "@/components/chat/SendMessageModal";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Input } from "@/components/ui/input";
 
 // import { SendMessage } from "@/components/SendMessage";
 // import { useConversations } from "@xmtp/react-sdk";
-import { useXmtpProvider } from "@/app/(context)/xmtpContext";
+
 import BidRow from "@/components/BidRow";
 
 import MaintenanceCard from "@/components/MaintanceCard";
@@ -79,27 +81,40 @@ const dummyCarData = [
   },
 ];
 
+export interface IMessageDetails {
+  to: string;
+  conversation: any;
+}
+
 function Page({ params }: { params: { id: string } }) {
+  const { xmtpClient } = useXmtpProvider();
   // If the car is not found, display a message
   const [selectedTab, setSelectedTab] = useState("auction");
   const [loading, setLoading] = useState(true);
   const [content, setContent] = useState({});
+  const [conversations, setConversations] = useState<any>([]);
   // const { sendXMTPMessage, listenForMessages } = useXmtpProvider();
   const [renderSendMessage, setRenderSendMessage] = useState(false);
   // const { conversations, error, isLoading } = useConversations(); // THIS HOOK WILL THROW KEYSTORE ERROR
   const [carOwnerAddress, setCarOwnerAddress] = useState(
     "0x7516e89D7111fEfaa312b58A06130F5B5DcDd01D"
   );
-  const { xmtpClient } = useXmtpProvider();
 
-  const [conversations, setConversations] = useState<any>([]);
-
+  /*
+    We want to check if we have an open convo with the seller of the car
+  */
   const fetchConvos = async () => {
-    const convos = await xmtpClient.conversations.list();
-    console.log(convos);
-    setConversations(convos);
+    // find any convo with car owner
+    const convo = (await xmtpClient.conversations.list()).find(
+      (convo: any) => convo.peerAddress === `${carOwnerAddress}`
+    );
+    console.log(convo);
+    setConversations(convo);
   };
 
+  /*
+    Init all convos and filter for convo with car owner
+  */
   useEffect(() => {
     if (xmtpClient) {
       fetchConvos();
@@ -116,42 +131,16 @@ function Page({ params }: { params: { id: string } }) {
       });
       console.log(data);
       const jsonData = await data.json();
+      //TODO: we weren't doing anything with loading and content
       setContent(jsonData.tokens);
       setLoading(false);
     };
     _fetch();
   }, []);
 
-  // if (isLoading) {
-  //   return null;
-  // }
   const squares = Array(3).fill(null);
   return (
     <main>
-      {/* <SendMessage conversation={null} newConvoPeerAddress={carOwnerAddress} /> */}
-      {/* if user clicks send message and there is already a conversation with this person cached */}
-      {/* {renderSendMessage &&
-      conversations.find(
-        (conversation) => conversation.peerAddress == carOwnerAddress
-      ) ? (
-        <SendMessage
-          conversation={
-            conversations.find(
-              (conversation) => conversation.peerAddress == carOwnerAddress
-            )!
-          }
-        />
-      ) : (
-        <SendMessage
-          conversation={
-            conversations.find(
-              (conversation) => conversation.peerAddress == carOwnerAddress
-            )!
-          }
-          newConvoPeerAddress={carOwnerAddress}
-        />
-      )} */}
-
       <div className="grid grid-cols-6 md:grid-cols-12 gap-4">
         {squares.map((square) => (
           <div
@@ -187,8 +176,8 @@ function Page({ params }: { params: { id: string } }) {
         </div>
         <div className="flex gap-x-3 col-span-6">
           <Button key={"buyout"}>Buy</Button>
-          <Button
-            variant="outline"
+          {/* did the component below do anything? */}
+          {/* <Button
             key={"send msg"}
             onClick={async () => {
               setRenderSendMessage(true);
@@ -225,10 +214,14 @@ function Page({ params }: { params: { id: string } }) {
               }
               // // await listenForMessages();
             }}
-          >
-            Message Seller
-          </Button>
+          ></Button> */}
+          <MessageSeller to={carOwnerAddress} conversation={conversations} />
         </div>
+      </div>
+      <div className="">
+        <h4 className="mt-8 mb-2 text-xl font-semibold tracking-tight text-blue-800">
+          Purchase Details
+        </h4>
       </div>
 
       <Tabs defaultValue="history" className="w-full my-4">
@@ -246,7 +239,7 @@ function Page({ params }: { params: { id: string } }) {
               type="text"
               placeholder="Place your bid"
             />
-            <Button key={"bid"} variant="secondary" type="submit">
+            <Button variant="secondary" type="submit">
               Place Bid
             </Button>
           </div>
@@ -283,5 +276,4 @@ function Page({ params }: { params: { id: string } }) {
     </main>
   );
 }
-
 export default Page;
