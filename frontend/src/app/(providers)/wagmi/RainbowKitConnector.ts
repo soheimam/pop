@@ -21,7 +21,6 @@ export const rainbowWeb3AuthConnector = ({ chains }: any) => {
     blockExplorer: chains[0].blockExplorers?.default.url[0],
   };
   const web3AuthInstance = new Web3Auth({
-    projectId: "web3auth.io",
     clientId:
       "BLnARNdBdBbMk-5xiFCf-4EYfvYnnMtVsHtt-rWyLl_-Yy8TYIkjPCNqlfrScHf25_MMbUQ4YURHvM2hKYEl6tQ",
     chainConfig,

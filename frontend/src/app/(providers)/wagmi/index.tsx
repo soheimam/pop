@@ -23,19 +23,8 @@ import {
 } from "@rainbow-me/rainbowkit/wallets";
 import { rainbowWeb3AuthConnector } from "./RainbowKitConnector";
 
-const { chains, publicClient, webSocketPublicClient } = configureChains(
-  [
-    mainnet,
-    polygon,
-    optimism,
-    arbitrum,
-    base,
-    zora,
-    polygonMumbai,
-    ...(process.env.NEXT_PUBLIC_ENABLE_TESTNETS === "true"
-      ? [polygonMumbai]
-      : [polygonMumbai]),
-  ],
+const { chains, publicClient } = configureChains(
+  [mainnet, polygon, optimism, arbitrum, base, zora, polygonMumbai],
   [publicProvider()]
 );
 declare global {
@@ -62,7 +51,6 @@ const wagmiConfig = createConfig({
   autoConnect: true,
   connectors,
   publicClient,
-  webSocketPublicClient,
 });
 
 const WagmiProvider = ({ children }: { children: React.ReactNode }) => {
