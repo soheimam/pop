@@ -9,9 +9,41 @@ import {
 } from "@/components/ui/accordion";
 import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Input } from "@/components/ui/input";
+
 // import { SendMessage } from "@/components/SendMessage";
 // import { useConversations } from "@xmtp/react-sdk";
 import { useXmtpProvider } from "@/app/(context)/xmtpContext";
+import BidRow from "@/components/BidRow";
+
+const mockData = [
+  {
+    avatarSrc: "https://github.com/bobs.png",
+    avatarFallback: "fall back",
+    address: "0x001",
+    price: "$12,000",
+  },
+  {
+    avatarSrc: "https://github.com/alice.png",
+    avatarFallback: "fall back",
+    address: "0x002",
+    price: "$15,000",
+  },
+  {
+    avatarSrc: "https://github.com/eve.png",
+    avatarFallback: "fall back",
+    address: "0x003",
+    price: "$18,000",
+  },
+  {
+    avatarSrc: "https://github.com/mallory.png",
+    avatarFallback: "fall back",
+    address: "0x004",
+    price: "$21,000",
+  },
+];
 
 function Page({ params }: { params: { id: string } }) {
   // If the car is not found, display a message
@@ -87,8 +119,6 @@ function Page({ params }: { params: { id: string } }) {
       )} */}
 
       <div className="grid grid-cols-6 md:grid-cols-12 gap-4">
-        <div className="col-span-6 md:col-span-12 bg-gray-700 p-24 rounded-md"></div>
-
         {squares.map((square) => (
           <div
             key={square}
@@ -121,13 +151,7 @@ function Page({ params }: { params: { id: string } }) {
             warranty. It drives pretty well too.
           </p>
         </div>
-      </div>
-
-      <div className="">
-        <h4 className="mt-8 mb-2 text-xl font-semibold tracking-tight text-blue-800">
-          Purchase Details
-        </h4>
-        <div className="flex gap-x-3">
+        <div className="flex gap-x-3 col-span-6">
           <Button
             key={"send msg"}
             onClick={async () => {
@@ -168,9 +192,49 @@ function Page({ params }: { params: { id: string } }) {
           >
             Message Seller
           </Button>
-          <Button key={"bid"}>Place Bid</Button>
+
           <Button key={"buyout"}>Buyout</Button>
         </div>
+      </div>
+
+      <div className="my-10">
+        <Tabs defaultValue="auction">
+          <TabsList>
+            <TabsTrigger value="auction">Auction</TabsTrigger>
+            <TabsTrigger value="password">Car History</TabsTrigger>
+          </TabsList>
+          <TabsContent value="auction">
+            <h4 className="mt-6 mb-2 text-xl font-semibold tracking-tight text-blue-800">
+              Your Bid
+            </h4>
+            <div className="flex w-full max-w-sm items-center space-x-2 my-5  py-6 justify-center text-white rounded-md bg-blue-950">
+              <Input
+                className="max-w-[250px] "
+                type="text"
+                placeholder="Place your bid"
+              />
+              <Button key={"bid"} variant="secondary" type="submit">
+                Place Bid
+              </Button>
+            </div>
+            <h4 className="mt-6 mb-2 text-xl font-semibold tracking-tight text-blue-800">
+              Top Bidders
+            </h4>
+            {mockData.map((data, index) => (
+              <BidRow
+                key={index}
+                index={index}
+                avatarSrc={data.avatarSrc}
+                avatarFallback={data.avatarFallback}
+                address={data.address}
+                price={data.price}
+              />
+            ))}
+          </TabsContent>
+          <TabsContent value="Car History">
+            Change your password here.
+          </TabsContent>
+        </Tabs>
       </div>
 
       <div className="grid grid-cols-6 md:grid-cols-12 gap-4">
@@ -178,7 +242,7 @@ function Page({ params }: { params: { id: string } }) {
           Confirmed Details
         </h4>
 
-        <Accordion
+        {/* <Accordion
           type="single"
           collapsible
           className="col-span-6 col-start-1 bg-white rounded-md p-4"
@@ -203,7 +267,7 @@ function Page({ params }: { params: { id: string } }) {
               prefer.
             </AccordionContent>
           </AccordionItem>
-        </Accordion>
+        </Accordion> */}
       </div>
     </main>
   );
