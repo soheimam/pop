@@ -1,6 +1,5 @@
 import { findUserOfTokenId } from "./tableland";
 import { Client } from "@xmtp/xmtp-js";
-import { ComethProvider, ComethWallet } from "@cometh/connect-sdk";
 import { ethers } from "ethers";
 
 declare global {

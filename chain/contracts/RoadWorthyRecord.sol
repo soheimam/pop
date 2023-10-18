@@ -6,25 +6,17 @@ import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
 import "@openzeppelin/contracts/utils/Strings.sol";
 
 
-contract PopCar is ERC721 {
+contract RoadWorthyRecord is ERC721 {
     uint256 private _currentTokenId = 0; // to keep track of the last minted token
-    string private _baseTokenURI = "https://api.metafuse.me/assets/be82af4a-9515-4c14-979f-27685ede3bbd/";
+    string private _baseTokenURI = "https://api.metafuse.me/assets/e56510e1-48c8-432e-9295-883b1531a0bc/";
 
 
-    event CarMinted(address indexed to, uint256 indexed tokenId);
+    event RoadWorthyRecordMinted(address indexed to, uint256 indexed tokenId);
 
-    modifier onlyAllowedAddresses() {
-        require(
-            msg.sender == 0x7516e89D7111fEfaa312b58A06130F5B5DcDd01D ||
-            msg.sender == 0x773660A24E683AA999bAe850ddF1B13B2b233135,
-            "Sender is not authorized"
-        );
-        _;
-    }
 
-    constructor() ERC721("Proof Of Purchase Car", "POP") {} 
+    constructor() ERC721("Proof of Road worthy", "POR") {} 
 
-    function setBaseURI(string memory baseURI) external onlyAllowedAddresses {
+    function setBaseURI(string memory baseURI) external {
         _baseTokenURI = baseURI;
     }
 
@@ -41,10 +33,10 @@ contract PopCar is ERC721 {
     }
 
 
-    function mintCar(address to) public payable returns (uint256) {
+    function mintRoadWorthyRecord(address to) public payable returns (uint256) {
         uint256 newTokenId = _getNextTokenId(); // get the next tokenId
         _mint(to, newTokenId); // mint the token
-        emit CarMinted(to, newTokenId); // emit the event
+        emit RoadWorthyRecordMinted(to, newTokenId); // emit the event
 
         return newTokenId; // return the new tokenId
     }

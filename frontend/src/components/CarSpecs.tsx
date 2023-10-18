@@ -28,16 +28,22 @@ const CarSpecs: React.FC<CarSpecsProps> = ({ highScores }: CarSpecsProps) => {
   if (!highScores) {
     return (
       <div className="grid grid-cols-6 py-4 gap-4">
-        <h4 className="text-sm font-medium leading-none col-span-6">
-          Specifications
-        </h4>
+        <div className=" grid col-span-6 md:col-span-12 space-y-1 ">
+          <h4 className="text-sm font-medium leading-none col-span-6">
+            Specifications
+          </h4>
+          <p className="text-sm text-muted-foreground col-span-4">
+            These specification are generated from our machine learning model
+            based on your photo.
+          </p>
+        </div>
 
-        <Skeleton className="col-span-2 py-6 rounded-sm" />
-        <Skeleton className="col-span-2 py-6 rounded-sm" />
-        <Skeleton className="col-span-2 py-6 rounded-sm" />
-        <Skeleton className="col-span-2 py-6 rounded-sm" />
-        <Skeleton className="col-span-2 py-6 rounded-sm" />
-        <Skeleton className="col-span-2 py-6 rounded-sm" />
+        <Skeleton className="col-span-2 py-6 rounded-sm h-[104px]" />
+        <Skeleton className="col-span-2 py-6 rounded-sm h-[104px]" />
+        <Skeleton className="col-span-2 py-6 rounded-sm h-[104px]" />
+        <Skeleton className="col-span-2 py-6 rounded-sm h-[104px]" />
+        <Skeleton className="col-span-2 py-6 rounded-sm h-[104px]" />
+        <Skeleton className="col-span-2 py-6 rounded-sm h-[104px]" />
       </div>
     );
   }

@@ -86,6 +86,7 @@ function Page({ params }: { params: { id: string } }) {
   const [mintButtonVisible, setMintButtonVisible] = useState(
     Boolean(carApiData)
   );
+  const [confirmCar, setConfirmCar] = useState(false);
   const { address } = useAccount();
   const [showEnableMinting, setShowEnableMinting] = useState<boolean>(false);
   const [mintedTokenId, setMintedTokenId] = useState<number>(0);
@@ -162,6 +163,7 @@ function Page({ params }: { params: { id: string } }) {
   };
 
   const handleConfirm = async () => {
+    setConfirmCar(true);
     const base64 = await fileToBase64(capturedImage!);
 
     const data = await fetch(`/cars/api`, {
@@ -236,7 +238,7 @@ function Page({ params }: { params: { id: string } }) {
             <Camera onCapture={handleImageCapture} onConfirm={handleConfirm} />
           </div>
 
-          <CarSpecs highScores={carApiData} />
+          {confirmCar ? <CarSpecs highScores={carApiData} /> : null}
 
           <div className="flex ">
             <div>
@@ -263,7 +265,16 @@ function Page({ params }: { params: { id: string } }) {
 
       {currentStep === 2 && (
         <>
-          <SubNFTUpload />
+          <h4 className="mt-6 mb-2 text-xl font-semibold tracking-tight text-blue-800">
+            Add Details
+          </h4>
+
+          <p className=" text-blue-400 text-small">
+            By adding more valid documents your car sales posting will have
+            higher trust score.
+          </p>
+          <SubNFTUpload title="Road Worthy Report" />
+          <SubNFTUpload title="Service Report" />
         </>
       )}
 

@@ -6,11 +6,11 @@ interface StatisticCard {
 }
 function StatisticCard({ keyName, value }: StatisticCard) {
   return (
-    <article className="bg-primary/10 py-6 px-4 col-span-2 rounded-sm">
+    <article className="bg-primary/10 py-6 px-4 col-span-2 rounded-sm overflow-hidden">
       <div>
-        <p className="text-sm text-gray-500 dark:text-gray-400">{keyName}</p>
+        <p className="text-lg text-blue-700 dark:text-gray-400">{keyName}</p>
 
-        <p className="text-2xl font-medium text-gray-900 dark:text-white">
+        <p className="text-sm font-medium text-blue-950 dark:text-white">
           {value}
         </p>
       </div>

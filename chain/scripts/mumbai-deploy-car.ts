@@ -1,12 +1,12 @@
 import { ethers } from "hardhat";
-import { PopCar } from "../typechain-types";
+import { ServiceRecord } from "../typechain-types";
 
 const main = async () => {
-  let popCar: PopCar;
-  const carFactory = await ethers.getContractFactory("PopCar");
-  popCar = (await carFactory.deploy()) as PopCar;
-  const carDeployment = await popCar.waitForDeployment();
-  console.log(`Car Deployment address = ${await carDeployment.getAddress()}`);
+  let ServiceRecord: ServiceRecord;
+  const carFactory = await ethers.getContractFactory("ServiceRecord");
+  ServiceRecord = (await carFactory.deploy()) as ServiceRecord;
+  const carDeployment = await ServiceRecord.waitForDeployment();
+  console.log(`Car service address = ${await carDeployment.getAddress()}`);
 };
 
 main()
