@@ -9,10 +9,10 @@ import useMultiContractWrite from "@/app/(hooks)/useMultiContract";
 
 interface SubNFTUploadProps {
   title: string;
-  contractDetails: any;
+  selectedContract: any;
   onMint: any;
 }
-function SubNFTUpload({ title, contractDetails, onMint }: SubNFTUploadProps) {
+function SubNFTUpload({ title, selectedContract, onMint }: SubNFTUploadProps) {
   const [fileUploadedSuccessfully, setFileUploadedSuccessfully] =
     useState(false);
   const [progress, setProgress] = useState(0);
@@ -48,7 +48,7 @@ function SubNFTUpload({ title, contractDetails, onMint }: SubNFTUploadProps) {
     // Then call onMint with the appropriate contract
     if (fileUploadedSuccessfully) {
       // Define your logic to check if a file is selected or any condition you have
-      onMint(contractDetails.carMintingContract); // Or another contract, depending on your logic
+      onMint(selectedContract); // Or another contract, depending on your logic
     }
   };
 
@@ -74,6 +74,7 @@ function SubNFTUpload({ title, contractDetails, onMint }: SubNFTUploadProps) {
         <Input id="picture" type="file" onChange={handleFileChange} />
       </div>
       <Button
+        onClick={handleButtonClick}
         variant="outline"
         size="icon"
         className={`col-start-5 col-span-1 ${
