@@ -83,6 +83,16 @@ function Page({ params }: { params: { id: string } }) {
     }
   }, [conversation, refreshConvo]);
 
+  useEffect(() => {
+    const intervalId = setInterval(() => {
+      // Your code to run every 5 seconds goes here
+      setRefreshConvo(true);
+    }, 5000);
+
+    // Cleanup: Clear the interval when the component is unmounted
+    return () => clearInterval(intervalId);
+  }, []); // Empty dependency array ensures this useEffect runs once when the component mounts
+
   const [input, setInput] = React.useState("");
 
   const inputLength = input.trim().length;
