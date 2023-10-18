@@ -11,10 +11,37 @@ import { useXmtpProvider } from "@/app/(context)/xmtpContext";
 function Page({ params }: { params: { id: string } }) {
   // If the profile is not found, display a message
   console.log(params, "profile");
-  const { id } = params;
+  const { id: peerAddress } = params;
   const { xmtpClient } = useXmtpProvider();
   const [conversation, setConversation] = useState<any>(null);
   const [messagesInConversation, setMessagesInConversation] = useState<any>([]);
+  const [refreshConvo, setRefreshConvo] = useState<any>(false);
+
+  const messageSellerAction = async (
+    message: string,
+    to: string,
+    conversation: any
+  ) => {
+    let actionConvo = conversation;
+    // if we found no conversation it's a new one... so create it
+    if (actionConvo == null) {
+      actionConvo = await xmtpClient.conversations.newConversation(to);
+    }
+    // now we are guarenteed to haev a conversation, prepare the message
+    console.log(`preparing the message to send ...`);
+    const preparedTextMessage = await actionConvo.prepareMessage(message);
+
+    // now try and send the message
+    try {
+      console.log(`trying to send message...`);
+      preparedTextMessage.send();
+      console.log(`message send successfully `);
+    } catch (e) {
+      // handle error, enable canceling and retries (see below)
+      console.error("Error sending message... ");
+      console.error(e);
+    }
+  };
 
   /*
     get all of the conversations
@@ -22,7 +49,7 @@ function Page({ params }: { params: { id: string } }) {
   const fetchConvos = async () => {
     // find any convo with car owner
     const convo = (await xmtpClient.conversations.list()).find(
-      (convo: any) => convo.peerAddress === `${id}`
+      (convo: any) => convo.peerAddress === `${peerAddress}`
     );
     console.log(convo);
     setConversation(convo);
@@ -52,8 +79,9 @@ function Page({ params }: { params: { id: string } }) {
   useEffect(() => {
     if (conversation) {
       fetchMessages();
+      setRefreshConvo(false);
     }
-  }, [conversation]);
+  }, [conversation, refreshConvo]);
 
   const [input, setInput] = React.useState("");
 
@@ -87,17 +115,12 @@ function Page({ params }: { params: { id: string } }) {
           : null}
       </div>
       <form
-        onSubmit={(event) => {
+        onSubmit={async (event) => {
           event.preventDefault();
           if (inputLength === 0) return;
-          // setMessages([
-          //   ...messages,
-          //   {
-          //     role: "user",
-          //     content: input,
-          //   },
-          // ]);
+          await messageSellerAction(input, peerAddress, conversation);
           setInput("");
+          setRefreshConvo(true);
         }}
         className="flex w-full items-center space-x-2 mt-4"
       >

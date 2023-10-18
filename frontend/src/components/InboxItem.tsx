@@ -3,7 +3,7 @@ import Link from "next/link";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
 interface InboxItemProps {
-  title: string;
+  peerAddress: string;
   email: string;
   avatarSrc: string;
   fallbackText: string;
@@ -11,14 +11,14 @@ interface InboxItemProps {
 }
 
 function InboxItem({
-  title,
+  peerAddress,
   email,
   avatarSrc,
   fallbackText,
   id,
 }: InboxItemProps) {
   return (
-    <Link className="col-span-6" href={`/inbox/${title}`} passHref>
+    <Link className="col-span-6" href={`/inbox/${peerAddress}`} passHref>
       <li
         className="bg-blue-100 rounded-md p-4 flex cursor-pointer w-full"
         style={{ minWidth: "max-content" }}
@@ -34,7 +34,7 @@ function InboxItem({
         </div>
 
         <div className="ml-4 space-y-1">
-          <p className="text-sm font-medium leading-none">{title}</p>
+          <p className="text-sm font-medium leading-none">{peerAddress}</p>
           <p className="text-sm text-muted-foreground">{email}</p>
         </div>
       </li>
