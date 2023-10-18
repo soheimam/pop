@@ -114,9 +114,9 @@ function Page({ params }: { params: { id: string } }) {
                 key={index}
                 className={cn(
                   "flex w-max max-w-[75%] flex-col gap-2 rounded-lg px-3 py-2 text-sm",
-                  message.role === "user"
-                    ? "ml-auto bg-primary text-primary-foreground"
-                    : "bg-muted"
+                  message.senderAddress === peerAddress
+                    ? "bg-muted"
+                    : "ml-auto bg-primary text-primary-foreground"
                 )}
               >
                 {message.content}
@@ -124,6 +124,7 @@ function Page({ params }: { params: { id: string } }) {
             ))
           : null}
       </div>
+      {/* [0].conversation.peerAddress */}
       <form
         onSubmit={async (event) => {
           event.preventDefault();
