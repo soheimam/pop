@@ -52,7 +52,7 @@ function Page({ params }: { params: { id: string } }) {
         {conversations.map((convo: any, index: number) => (
           <InboxItem
             key={index}
-            title={convo.peerAddress}
+            peerAddress={convo.peerAddress}
             email={convo.topic}
             fallbackText={`${index}`}
             avatarSrc={dummyAvatars[getRandomNumberBetween0And4()]}
