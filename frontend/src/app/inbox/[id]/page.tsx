@@ -6,30 +6,55 @@ import { Input } from "@/components/ui/input";
 import { PaperPlaneIcon } from "@radix-ui/react-icons";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
+import { useXmtpProvider } from "@/app/(context)/xmtpContext";
 
 function Page({ params }: { params: { id: string } }) {
   // If the profile is not found, display a message
   console.log(params, "profile");
   const { id } = params;
+  const { xmtpClient } = useXmtpProvider();
+  const [conversation, setConversation] = useState<any>(null);
+  const [messagesInConversation, setMessagesInConversation] = useState<any>([]);
 
-  const [messages, setMessages] = React.useState([
-    {
-      role: "agent",
-      content: "Hi, how can I help you today?",
-    },
-    {
-      role: "user",
-      content: "Hey, I'm having trouble with my account.",
-    },
-    {
-      role: "agent",
-      content: "What seems to be the problem?",
-    },
-    {
-      role: "user",
-      content: "I can't log in.",
-    },
-  ]);
+  /*
+    get all of the conversations
+  */
+  const fetchConvos = async () => {
+    // find any convo with car owner
+    const convo = (await xmtpClient.conversations.list()).find(
+      (convo: any) => convo.peerAddress === `${id}`
+    );
+    console.log(convo);
+    setConversation(convo);
+  };
+
+  const fetchMessages = async () => {
+    const opts = {
+      // Only show messages from last 24 hours
+      startTime: new Date(new Date().setDate(new Date().getDate() - 100)),
+      endTime: new Date(),
+    };
+    const messagesInConversation = await conversation.messages(opts);
+    console.log(`messages in convo...`);
+    console.log(messagesInConversation);
+    setMessagesInConversation(messagesInConversation);
+  };
+
+  /*
+    Init all convos and filter for convo with car owner
+  */
+  useEffect(() => {
+    if (xmtpClient) {
+      fetchConvos();
+    }
+  }, [xmtpClient]);
+
+  useEffect(() => {
+    if (conversation) {
+      fetchMessages();
+    }
+  }, [conversation]);
+
   const [input, setInput] = React.useState("");
 
   const inputLength = input.trim().length;
@@ -44,32 +69,34 @@ function Page({ params }: { params: { id: string } }) {
         </Link>
       </div>
 
-      <div className="flex-grow space-y-4 mb-4 overflow-auto">
-        {messages.map((message, index) => (
-          <div
-            key={index}
-            className={cn(
-              "flex w-max max-w-[75%] flex-col gap-2 rounded-lg px-3 py-2 text-sm",
-              message.role === "user"
-                ? "ml-auto bg-primary text-primary-foreground"
-                : "bg-muted"
-            )}
-          >
-            {message.content}
-          </div>
-        ))}
+      <div className="space-y-4 mb-4 overflow-auto max-h-[12rem]">
+        {messagesInConversation.length >= 0
+          ? messagesInConversation.map((message: any, index: number) => (
+              <div
+                key={index}
+                className={cn(
+                  "flex w-max max-w-[75%] flex-col gap-2 rounded-lg px-3 py-2 text-sm",
+                  message.role === "user"
+                    ? "ml-auto bg-primary text-primary-foreground"
+                    : "bg-muted"
+                )}
+              >
+                {message.content}
+              </div>
+            ))
+          : null}
       </div>
       <form
         onSubmit={(event) => {
           event.preventDefault();
           if (inputLength === 0) return;
-          setMessages([
-            ...messages,
-            {
-              role: "user",
-              content: input,
-            },
-          ]);
+          // setMessages([
+          //   ...messages,
+          //   {
+          //     role: "user",
+          //     content: input,
+          //   },
+          // ]);
           setInput("");
         }}
         className="flex w-full items-center space-x-2 mt-4"

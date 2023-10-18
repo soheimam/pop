@@ -38,9 +38,9 @@ export default function RootLayout({ children }: any) {
           <XmtpProvider>
             {/* <TablelandProvider> */}
             {children}
+            <NavBar />
           </XmtpProvider>
           {/* </TablelandProvider> */}
-          <NavBar />
         </WagmiProvider>
       </body>
     </html>

@@ -18,8 +18,11 @@ function InboxItem({
   id,
 }: InboxItemProps) {
   return (
-    <Link className="col-span-6" href={`/inbox/${id}`} passHref>
-      <li className="bg-blue-100 rounded-md p-4 flex cursor-pointer">
+    <Link className="col-span-6" href={`/inbox/${title}`} passHref>
+      <li
+        className="bg-blue-100 rounded-md p-4 flex cursor-pointer w-full"
+        style={{ minWidth: "max-content" }}
+      >
         <div className="relative ">
           <Avatar>
             <AvatarImage src={avatarSrc} />
