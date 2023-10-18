@@ -93,11 +93,8 @@ function Page({ params }: { params: { id: string } }) {
   const [loading, setLoading] = useState(true);
   const [content, setContent] = useState({});
   const [conversations, setConversations] = useState<any>([]);
-  // const { sendXMTPMessage, listenForMessages } = useXmtpProvider();
-  const [renderSendMessage, setRenderSendMessage] = useState(false);
-  // const { conversations, error, isLoading } = useConversations(); // THIS HOOK WILL THROW KEYSTORE ERROR
   const [carOwnerAddress, setCarOwnerAddress] = useState(
-    "0x7516e89D7111fEfaa312b58A06130F5B5DcDd01D"
+    "0x773660A24E683AA999bAe850ddF1B13B2b233135"
   );
 
   /*
@@ -131,6 +128,7 @@ function Page({ params }: { params: { id: string } }) {
       });
       console.log(data);
       const jsonData = await data.json();
+      console.log(jsonData);
       //TODO: we weren't doing anything with loading and content
       setContent(jsonData.tokens);
       setLoading(false);
@@ -176,45 +174,6 @@ function Page({ params }: { params: { id: string } }) {
         </div>
         <div className="flex gap-x-3 col-span-6">
           <Button key={"buyout"}>Buy</Button>
-          {/* did the component below do anything? */}
-          {/* <Button
-            key={"send msg"}
-            onClick={async () => {
-              setRenderSendMessage(true);
-              if (conversations != null) {
-                let doesContactExist = await conversations.find(
-                  (convo: any) => convo.peerAddress == carOwnerAddress
-                );
-
-                if (!doesContactExist) {
-                  doesContactExist =
-                    await xmtpClient.conversations.newConversation(
-                      carOwnerAddress
-                    );
-                }
-                console.log(doesContactExist);
-                const preparedTextMessage =
-                  await doesContactExist.prepareMessage(
-                    "I HATE YOU KEYSTORE ERROR"
-                  );
-                //After preparing an optimistic message, use its `send` method to send it.
-                try {
-                  console.log("SENDING MESSAGE");
-                  preparedTextMessage.send();
-                } catch (e) {
-                  // handle error, enable canceling and retries (see below)
-                  console.log("Error sending message... ");
-                  console.log(e);
-                }
-                let test = await doesContactExist.send(
-                  "Hello, I hate you key store!!!"
-                );
-                console.log(`DID THIS SEND ?`);
-                console.log(test);
-              }
-              // // await listenForMessages();
-            }}
-          ></Button> */}
           <MessageSeller to={carOwnerAddress} conversation={conversations} />
         </div>
       </div>
