@@ -5,13 +5,20 @@ import { Progress } from "@/components/ui/progress";
 import { ImageIcon } from "@radix-ui/react-icons";
 import { Button } from "@/components/ui/button";
 import { ReloadIcon, CheckIcon, UploadIcon } from "@radix-ui/react-icons";
+import useMultiContractWrite from "@/app/(hooks)/useMultiContract";
 
 interface SubNFTUploadProps {
   title: string;
+  contractDetails: any;
+  onMint: any;
 }
-function SubNFTUpload({ title }: SubNFTUploadProps) {
+function SubNFTUpload({ title, contractDetails, onMint }: SubNFTUploadProps) {
+  const [fileUploadedSuccessfully, setFileUploadedSuccessfully] =
+    useState(false);
   const [progress, setProgress] = useState(0);
   const [uploading, setUploading] = useState(false);
+  const { isLoading, isSuccess, error, data, writeContract } =
+    useMultiContractWrite();
 
   const handleFileChange = (event) => {
     const file = event.target.files[0];
@@ -23,6 +30,7 @@ function SubNFTUpload({ title }: SubNFTUploadProps) {
         initialProgress += 10; // increment progress by 10% every 100ms
         setProgress(initialProgress);
         if (initialProgress >= 100) {
+          setFileUploadedSuccessfully(true);
           clearInterval(intervalId);
         }
       }, 100);
@@ -34,6 +42,15 @@ function SubNFTUpload({ title }: SubNFTUploadProps) {
       setProgress(0); // Reset progress when component is unmounted
     };
   }, []);
+
+  const handleButtonClick = () => {
+    // Check if a file is selected or any other precondition is met
+    // Then call onMint with the appropriate contract
+    if (fileUploadedSuccessfully) {
+      // Define your logic to check if a file is selected or any condition you have
+      onMint(contractDetails.carMintingContract); // Or another contract, depending on your logic
+    }
+  };
 
   function updateButtonIcon({ progress }) {
     if (progress === 100) {
