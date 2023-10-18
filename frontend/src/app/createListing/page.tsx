@@ -31,7 +31,14 @@ import {
   TransactionResponse,
 } from "@ethersproject/abstract-provider";
 import { BigNumber, ethers } from "ethers";
-import { CAR_ABI, MUMBAI_CAR_CONTRACT_ADDRESS } from "@/lib/chainUtils";
+import {
+  CAR_ABI,
+  MUMBAI_CAR_CONTRACT_ADDRESS,
+  MUMBAI_SERVICE_CONTRACT_ADDRESS,
+  SERVICE_RECORD_ABI,
+  MUMBAI_ROAD_WORTHY_CONTRACT_ADDRESS,
+  ROAD_WORTHY_RECORD_ABI,
+} from "@/lib/chainUtils";
 import { toast } from "@/components/ui/use-toast";
 import { useCreateTBA } from "../(hooks)/useCreateTBA";
 import { ToastAction } from "@/components/ui/toast";
@@ -123,6 +130,20 @@ function Page({ params }: { params: { id: string } }) {
     args: [address],
   });
 
+  const contractDetails = {
+    serviceContract: {
+      address: MUMBAI_SERVICE_CONTRACT_ADDRESS, // Dummy contract address
+      abi: SERVICE_RECORD_ABI, // Dummy ABI
+      functionName: "mintServiceRecord", // The function to be called within your contract
+    },
+    roadWorthyContract: {
+      address: MUMBAI_ROAD_WORTHY_CONTRACT_ADDRESS, // Another dummy contract address
+      abi: ROAD_WORTHY_RECORD_ABI, // Another dummy ABI
+      functionName: "mintRoadWordRecord", // Another function to be called within the other contract
+    },
+    // ... other contracts
+  };
+
   useWaitForTransaction({
     hash: writeData?.hash,
     enabled: Boolean(writeData),
@@ -194,6 +215,15 @@ function Page({ params }: { params: { id: string } }) {
     console.log("Calling mint car");
 
     // await refetch?.();
+    write?.();
+  };
+
+  const handleMint = (selectedContract) => {
+    // Logic to interact with the blockchain will be here.
+    // For example, sending a transaction to the 'selectedContract.address' with the data required to call 'selectedContract.functionName'
+    console.log(
+      `Minting using contract at address: ${selectedContract.address}`
+    );
     write?.();
   };
 
@@ -273,8 +303,16 @@ function Page({ params }: { params: { id: string } }) {
             By adding more valid documents your car sales posting will have
             higher trust score.
           </p>
-          <SubNFTUpload title="Road Worthy Report" />
-          <SubNFTUpload title="Service Report" />
+          <SubNFTUpload
+            title="Road Worthy Report"
+            selectedContract={contractDetails.roadWorthyContract}
+            onMint={handleMint}
+          />
+          <SubNFTUpload
+            title="Service Report"
+            selectedContract={contractDetails.serviceContract}
+            onMint={handleMint}
+          />
         </>
       )}
 
