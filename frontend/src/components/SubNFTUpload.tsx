@@ -9,10 +9,10 @@ import useMultiContractWrite from "@/app/(hooks)/useMultiContract";
 
 interface SubNFTUploadProps {
   title: string;
-  selectedContract: any;
   onMint: any;
+  uploadHandler: any;
 }
-function SubNFTUpload({ title, selectedContract, onMint }: SubNFTUploadProps) {
+function SubNFTUpload({ title, onMint, uploadHandler }: SubNFTUploadProps) {
   const [fileUploadedSuccessfully, setFileUploadedSuccessfully] =
     useState(false);
   const [progress, setProgress] = useState(0);
@@ -20,9 +20,10 @@ function SubNFTUpload({ title, selectedContract, onMint }: SubNFTUploadProps) {
   const { isLoading, isSuccess, error, data, writeContract } =
     useMultiContractWrite();
 
-  const handleFileChange = (event) => {
+  const handleFileChange = (event: { target: { files: any[] } }) => {
     const file = event.target.files[0];
     if (file) {
+      uploadHandler(file);
       setUploading(true);
       // Simulate file upload processing
       let initialProgress = 0;
@@ -48,7 +49,7 @@ function SubNFTUpload({ title, selectedContract, onMint }: SubNFTUploadProps) {
     // Then call onMint with the appropriate contract
     if (fileUploadedSuccessfully) {
       // Define your logic to check if a file is selected or any condition you have
-      onMint(selectedContract); // Or another contract, depending on your logic
+      onMint(); // Or another contract, depending on your logic
     }
   };
 

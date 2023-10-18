@@ -89,6 +89,11 @@ function fileToBase64(file: File): Promise<string> {
 
 function Page({ params }: { params: { id: string } }) {
   const [capturedImage, setCapturedImage] = useState<File | null>(null);
+  const [capturedImageService, setCapturedImageService] = useState<File | null>(
+    null
+  );
+  const [capturedImageRoadworthy, setCapturedImageRoadWorthy] =
+    useState<File | null>(null);
   const [carApiData, setCarApiData] = useState<any>(null);
   const [mintButtonVisible, setMintButtonVisible] = useState(
     Boolean(carApiData)
@@ -119,10 +124,95 @@ function Page({ params }: { params: { id: string } }) {
   // console.log(transactionData);
 
   const {
-    data: writeData,
-    isLoading,
-    isSuccess,
-    write,
+    data: writeDataRoadWorthy,
+    isLoading: writeLoadingRoadWorthy,
+    isSuccess: writeSuccessRoadWorthy,
+    write: writeRoadWorthy,
+  } = useContractWrite({
+    address: MUMBAI_ROAD_WORTHY_CONTRACT_ADDRESS, // Another dummy contract address
+    abi: ROAD_WORTHY_RECORD_ABI, // Another dummy ABI
+    functionName: "mintRoadWorthyRecord", // Another function to be called within the other contract
+    args: [address],
+  });
+
+  useWaitForTransaction({
+    hash: writeDataRoadWorthy?.hash,
+    enabled: Boolean(writeDataRoadWorthy),
+    onSuccess: async (transactionReceipt) => {
+      const tokenId = getTokenId(transactionReceipt);
+      // await createTBA(+tokenId); - LINK this asset now to the TBA
+      const base64 = await fileToBase64(capturedImageRoadworthy!);
+      const traits = [
+        {
+          trait_type: "Road Worthy",
+          value: "Made Road Worthy at Y by Mechanic Z",
+        },
+      ];
+
+      const _data = await fetch(`/cars/api`, {
+        method: "POST",
+        body: JSON.stringify({
+          base64,
+          tokenId,
+          projectId: "e56510e1-48c8-432e-9295-883b1531a0bc",
+          visibility: "PRIVATE",
+          traits,
+        }),
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+      console.log(_data);
+    },
+  });
+
+  const {
+    data: writeDataService,
+    isLoading: writeLoadingService,
+    isSuccess: writeSuccessService,
+    write: writeService,
+  } = useContractWrite({
+    address: MUMBAI_SERVICE_CONTRACT_ADDRESS, // Another dummy contract address
+    abi: SERVICE_RECORD_ABI, // Another dummy ABI
+    functionName: "mintServiceRecord", // Another function to be called within the other contract
+    args: [address],
+  });
+
+  useWaitForTransaction({
+    hash: writeDataService?.hash,
+    enabled: Boolean(writeDataService),
+    onSuccess: async (transactionReceipt) => {
+      const tokenId = getTokenId(transactionReceipt);
+      const base64 = await fileToBase64(capturedImageService!);
+      // await createTBA(+tokenId); - LINK this asset now to the TBA
+      const traits = [
+        {
+          trait_type: "Service Record",
+          value: "Location X",
+        },
+      ];
+      const _data = await fetch(`/cars/api`, {
+        method: "POST",
+        body: JSON.stringify({
+          base64,
+          tokenId,
+          projectId: "dcdee2eb-b6bf-4267-97b4-c671b85aee6a",
+          visibility: "PRIVATE",
+          traits,
+        }),
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+      console.log(_data);
+    },
+  });
+
+  const {
+    data: writeDataCar,
+    isLoading: writeLoadingCar,
+    isSuccess: writeSuccessCar,
+    write: writeCar,
   } = useContractWrite({
     address: MUMBAI_CAR_CONTRACT_ADDRESS,
     abi: CAR_ABI,
@@ -130,23 +220,9 @@ function Page({ params }: { params: { id: string } }) {
     args: [address],
   });
 
-  const contractDetails = {
-    serviceContract: {
-      address: MUMBAI_SERVICE_CONTRACT_ADDRESS, // Dummy contract address
-      abi: SERVICE_RECORD_ABI, // Dummy ABI
-      functionName: "mintServiceRecord", // The function to be called within your contract
-    },
-    roadWorthyContract: {
-      address: MUMBAI_ROAD_WORTHY_CONTRACT_ADDRESS, // Another dummy contract address
-      abi: ROAD_WORTHY_RECORD_ABI, // Another dummy ABI
-      functionName: "mintRoadWordRecord", // Another function to be called within the other contract
-    },
-    // ... other contracts
-  };
-
   useWaitForTransaction({
-    hash: writeData?.hash,
-    enabled: Boolean(writeData),
+    hash: writeDataCar?.hash,
+    enabled: Boolean(writeDataCar),
     onSuccess: async (transactionReceipt) => {
       const tokenId = getTokenId(transactionReceipt);
       await createTBA(+tokenId);
@@ -157,6 +233,7 @@ function Page({ params }: { params: { id: string } }) {
         method: "POST",
         body: JSON.stringify({
           base64,
+          projectId: "be82af4a-9515-4c14-979f-27685ede3bbd",
           tokenId,
           traits,
         }),
@@ -215,16 +292,15 @@ function Page({ params }: { params: { id: string } }) {
     console.log("Calling mint car");
 
     // await refetch?.();
-    write?.();
+    writeCar?.();
   };
 
-  const handleMint = (selectedContract) => {
-    // Logic to interact with the blockchain will be here.
-    // For example, sending a transaction to the 'selectedContract.address' with the data required to call 'selectedContract.functionName'
-    console.log(
-      `Minting using contract at address: ${selectedContract.address}`
-    );
-    write?.();
+  const handleServiceMint = () => {
+    writeService?.();
+  };
+
+  const handleRoadWorthyMint = () => {
+    writeRoadWorthy?.();
   };
 
   const saveToTableLand = () => {};
@@ -277,7 +353,7 @@ function Page({ params }: { params: { id: string } }) {
                   onUpload={handleUpload}
                   onMint={mintCarNFT}
                   setCurrentStep={setCurrentStep}
-                  isLoading={isLoading}
+                  isLoading={writeLoadingCar}
                 />
               )}
             </div>
@@ -304,14 +380,14 @@ function Page({ params }: { params: { id: string } }) {
             higher trust score.
           </p>
           <SubNFTUpload
+            uploadHandler={setCapturedImageRoadWorthy}
             title="Road Worthy Report"
-            selectedContract={contractDetails.roadWorthyContract}
-            onMint={handleMint}
+            onMint={handleRoadWorthyMint}
           />
           <SubNFTUpload
             title="Service Report"
-            selectedContract={contractDetails.serviceContract}
-            onMint={handleMint}
+            onMint={handleServiceMint}
+            uploadHandler={setCapturedImageService}
           />
         </>
       )}

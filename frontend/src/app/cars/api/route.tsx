@@ -155,6 +155,8 @@ export async function POST(request: Request, response: Response) {
   const base64Body = res?.base64;
   const traits = res?.traits;
   const tokenId = res?.tokenId;
+  const visibility = res?.visibility;
+  const projectId = res?.projectId;
   const metafuseAPIKey = process.env.METAFUSE_API_KEY!;
   const metafuseAPI = "https://gateway.metafuse.me/v1/item";
 
@@ -165,11 +167,11 @@ export async function POST(request: Request, response: Response) {
       Authorization: metafuseAPIKey,
     },
     body: JSON.stringify({
-      visibility: "PUBLIC",
+      visibility: visibility || "PUBLIC",
       image: base64Body,
       traits: traits,
       tokenId: +tokenId,
-      projectId: "be82af4a-9515-4c14-979f-27685ede3bbd",
+      projectId,
     }),
   });
   const json = await req.json();
