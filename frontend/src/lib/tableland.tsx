@@ -11,38 +11,51 @@ if (!privateKey) {
   console.error("Private key is undefined!");
 }
 
-//TODO: This private key won't work no matter what unless hard coded
-
 const wallet = new ethers.Wallet(privateKey);
-// To avoid connecting to the browser wallet (locally, port 8545).
-// For example: "https://polygon-mumbai.g.alchemy.com/v2/YOUR_ALCHEMY_KEY"
 const provider = ethers.getDefaultProvider(
   "https://polygon-mumbai.infura.io/v3/9c17b4ee03bf4c75829e260cbea6a92a"
 );
 const signer = wallet.connect(provider);
-const tableName = "cli_pop_table_80001_7766";
+const userTableName = "cli_pop_table_80001_7884";
+const carTableName = "cli_popcar_table_80001_7882";
 // Connect to the database
 const db = new Database({ signer });
 
-export const insertRow = async () => {
-  //   // Insert a row into the table
+export interface CarRow {
+  carName: string;
+  tansmissionType: string;
+  tokenId: number;
+  bid: number;
+  price: number;
+  rating: string;
+}
+
+export interface UserRow {
+  userAddress: string;
+  userTba: string;
+  tokenId: number;
+}
+
+export const insertCarRow = async (carRow: CarRow) => {
+  // "carName text, tansmissionType text, tokenId int, year int, price int, rating text"
   const { meta: insert } = await db
     .prepare(
-      `INSERT INTO ${tableName} (userAddress, userTba, tokenId, bid, bidderAddress) VALUES (?1, ?2, ?3, ?4, ?5);`
+      `INSERT INTO ${carTableName} (carName, tansmissionType, tokenId, bid, price, rating) VALUES (?1, ?2, ?3, ?4, ?5, ?6);`
     )
     .bind(
-      "0xb6D9f614907368499bAF7b288b54B839fC891660",
-      "0xb6D9f614907368499bAF7b288b54B839fC891660",
-      1,
-      100,
-      "0xb6D9f614907368499bAF7b288b54B839fC891660"
+      carRow.carName,
+      carRow.tansmissionType,
+      carRow.tokenId,
+      carRow.bid,
+      carRow.price,
+      carRow.rating
     )
     .run();
 
   try {
     await insert.txn?.wait();
     const { results } = await db
-      .prepare(`SELECT ROWID FROM ${tableName};`)
+      .prepare(`SELECT ROWID FROM ${userTableName};`)
       .all();
 
     console.log(results);
@@ -51,10 +64,50 @@ export const insertRow = async () => {
   }
 };
 
-export const findUserOfTokenId = async (tokenId: number) => {
+export const insertUserRow = async (userRow: UserRow) => {
+  const { meta: insert } = await db
+    .prepare(
+      `INSERT INTO ${userTableName} (userAddress, userTba, tokenId) VALUES (?1, ?2, ?3);`
+    )
+    .bind(userRow.userAddress, userRow.userTba, userRow.tokenId)
+    .run();
+
+  try {
+    await insert.txn?.wait();
+    const { results } = await db
+      .prepare(`SELECT ROWID FROM ${userTableName};`)
+      .all();
+
+    console.log(results);
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const findCarsForHome = async () => {
   const transaction = await db
-    .prepare(`SELECT * FROM ${tableName} WHERE tokenId = '${tokenId}' LIMIT 1;`)
+    .prepare(`SELECT * FROM ${carTableName} LIMIT 10;`)
     .run();
   let result = await transaction.results;
-  return result;
+  return result as CarRow[];
+};
+
+export const findCarForUser = async (tokenId: number) => {
+  const transaction = await db
+    .prepare(
+      `SELECT * FROM ${carTableName} WHERE tokenId = '${tokenId}' LIMIT 1;`
+    )
+    .run();
+  let result = await transaction.results;
+  return result as CarRow[]; // array, but will only be limit 1
+};
+
+export const findUserOfTokenId = async (tokenId: number) => {
+  const transaction = await db
+    .prepare(
+      `SELECT * FROM ${userTableName} WHERE tokenId = '${tokenId}' LIMIT 1;`
+    )
+    .run();
+  let result = await transaction.results;
+  return result as UserRow[];
 };

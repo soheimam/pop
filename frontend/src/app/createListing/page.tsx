@@ -6,7 +6,6 @@ import Camera from "@/components/Camera";
 import { Button } from "@/components/ui/button";
 import MintButton from "@/components/MintButton";
 import CarSpecs from "@/components/CarSpecs";
-import { insertRow } from "@/lib/tableland";
 
 import {
   useWalletClient,
@@ -44,6 +43,7 @@ import { useCreateTBA } from "../(hooks)/useCreateTBA";
 import { ToastAction } from "@/components/ui/toast";
 import SubNFTUpload from "@/components/SubNFTUpload";
 import Stepper from "@/components/stepper";
+import { CarRow, UserRow, insertCarRow, insertUserRow } from "@/lib/tableland";
 
 // import { useConnectWallet } from "@privy-io/react-auth";
 
@@ -183,8 +183,8 @@ function Page({ params }: { params: { id: string } }) {
     enabled: Boolean(writeDataService),
     onSuccess: async (transactionReceipt) => {
       const tokenId = getTokenId(transactionReceipt);
+      setMintedTokenId(parseInt(tokenId));
       const base64 = await fileToBase64(capturedImageService!);
-      // await createTBA(+tokenId); - LINK this asset now to the TBA
       const traits = [
         {
           trait_type: "Service Record",
@@ -335,9 +335,7 @@ function Page({ params }: { params: { id: string } }) {
       <h2 className="max-w-[200px] pb-2 text-3xl font-semibold tracking-tight transition-colors text-blue-500 my-8">
         Snap & Sell List Car
       </h2>
-
       <Stepper currentStep={currentStep} />
-
       {currentStep === 1 && (
         <>
           <div className="grid grid-cols-6 md:grid-cols-12 gap-4 mt-12">
@@ -368,7 +366,6 @@ function Page({ params }: { params: { id: string } }) {
           </div>
         </>
       )}
-
       {currentStep === 2 && (
         <>
           <h4 className="mt-6 mb-2 text-xl font-semibold tracking-tight text-blue-800">
@@ -391,8 +388,34 @@ function Page({ params }: { params: { id: string } }) {
           />
         </>
       )}
+      {currentStep >= 3 && (
+        <button
+          onClick={async () => {
+            // insert a user details row
+            const userRow: UserRow = {
+              userAddress: address!,
+              userTba: account!,
+              tokenId: mintedTokenId,
+            };
+            await insertUserRow(userRow);
 
-      {currentStep >= 3 && <button>Test</button>}
+            const carRow: CarRow = {
+              carName: "",
+              tansmissionType: "",
+              tokenId: 0,
+              bid: 0,
+              price: 0,
+              rating: "",
+            };
+            await insertCarRow(carRow);
+
+            // insert a car details row
+          }}
+        >
+          Finish
+        </button>
+      )}{" "}
+      {/* Here we are finishing the process, so save all of the data */}
     </main>
   );
 }
