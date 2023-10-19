@@ -37,8 +37,8 @@ export default function RootLayout({ children }: any) {
           <Header />
 
           <XmtpProvider>
+            {/* <TablelandProvider> */}
             <TablelandProvider>
-              {/* <TablelandProvider> */}
               {children}
               <NavBar />
             </TablelandProvider>

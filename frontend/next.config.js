@@ -12,9 +12,9 @@ const nextConfig = {
 
     return config;
   },
-  experimental: {
-    serverActions: true,
-  },
+  // experimental: {
+  //   serverActions: true,
+  // },
 };
 
 const withPWA = require("next-pwa")({

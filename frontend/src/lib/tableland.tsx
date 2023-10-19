@@ -1,17 +1,16 @@
-"use server";
+"use client";
 
 import { Database } from "@tableland/sdk";
-import { ethers } from "ethers";
 
-// require("dotenv").config();
+require("dotenv").config();
 
-// const privateKey = process.env.WALLET_PRIVATE_KEY!;
+const privateKey = process.env.WALLET_PRIVATE_KEY!;
 
-// if (!privateKey) {
-//   console.error("Private key is undefined!");
-// }
+if (!privateKey) {
+  console.error("Private key is undefined!");
+}
 
-const userTableName = "cli_pop_table_80001_7884";
+const userTableName = "cli_pop_table_80001_7907";
 const carTableName = "cli_popcar_table_80001_7882";
 
 export interface CarRow {
@@ -28,6 +27,36 @@ export interface UserRow {
   tokenId: number;
 }
 
+export const insertUserRow = async (userRow: UserRow, db: Database) => {
+  console.log(`trying to insert user row `);
+  // const { results } = await db.prepare(`SELECT * FROM ${userTableName};`).all();
+  // console.log(results);
+  let insert = await db
+    .prepare(
+      `INSERT INTO ${userTableName} (userAddress, userTba, tokenId) VALUES (?1, ?2, ?3);`
+    )
+    .bind(
+      "0xa70327625a17CaeB2835F00215Aa579566d38987",
+      "0xa70327625a17CaeB2835F00215Aa579566d38987",
+      1
+    )
+    .run();
+
+  console.log(`here is the insert ...`);
+  // console.log(test);
+
+  try {
+    await insert.txn?.wait();
+    const { results } = await db
+      .prepare(`SELECT ROWID FROM ${userTableName};`)
+      .all();
+
+    console.log(results);
+  } catch (error) {
+    console.log(error);
+  }
+};
+
 export const insertCarRow = async (carRow: CarRow, dbClient: Database) => {
   // "carName text, tansmissionType text, tokenId int, year int, price int, rating text"
   const { meta: insert } = await dbClient
@@ -41,26 +70,6 @@ export const insertCarRow = async (carRow: CarRow, dbClient: Database) => {
       carRow.price,
       carRow.rating
     )
-    .run();
-
-  try {
-    await insert.txn?.wait();
-    const { results } = await dbClient
-      .prepare(`SELECT ROWID FROM ${userTableName};`)
-      .all();
-
-    console.log(results);
-  } catch (error) {
-    console.log(error);
-  }
-};
-
-export const insertUserRow = async (userRow: UserRow, dbClient: Database) => {
-  const { meta: insert } = await dbClient
-    .prepare(
-      `INSERT INTO ${userTableName} (userAddress, userTba, tokenId) VALUES (?1, ?2, ?3);`
-    )
-    .bind(userRow.userAddress, userRow.userTba, userRow.tokenId)
     .run();
 
   try {

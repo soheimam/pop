@@ -1,5 +1,5 @@
 "use client";
-
+import { ethers } from "ethers";
 import React, { useEffect, useState } from "react";
 import Camera from "@/components/Camera";
 // import { WalletContext } from "@/app/(context)/context";
@@ -22,6 +22,7 @@ import { useCreateTBA } from "../(hooks)/useCreateTBA";
 import SubNFTUpload from "@/components/SubNFTUpload";
 import Stepper from "@/components/stepper";
 import { CarRow, UserRow, insertCarRow, insertUserRow } from "@/lib/tableland";
+import { Database } from "@tableland/sdk";
 import { useTablelandProvider } from "../(context)/tablelandContext";
 
 // import { useConnectWallet } from "@privy-io/react-auth";
@@ -86,7 +87,23 @@ function Page({ params }: { params: { id: string } }) {
   const [currentStep, setCurrentStep] = useState(1);
   const [transactionHash, setTransactionHash] = useState<any>(null);
   const [aiData, setAidata] = useState<any>(null);
-  const { dbClient } = useTablelandProvider()
+  const { dbClient } = useTablelandProvider();
+
+  // let runner = async () => {
+  //   let userRow: UserRow = {
+  //     userAddress: "0xa70327625a17CaeB2835F00215Aa579566d38987",
+  //     userTba: "0xa70327625a17CaeB2835F00215Aa579566d38987",
+  //     tokenId: 0,
+  //   };
+  //   const provider = new ethers.providers.Web3Provider(window.ethereum);
+  //   const signer = provider.getSigner();
+  //   const db = new Database({ signer });
+  //   await insertUserRow(userRow, db);
+  // };
+
+  // useEffect(() => {
+  //   runner();
+  // }, []);
 
   const {
     data: writeDataRoadWorthy,
@@ -332,17 +349,17 @@ function Page({ params }: { params: { id: string } }) {
               };
               await insertUserRow(userRow, dbClient);
 
-              // const carRow: CarRow = {
-              //   carName:
-              //     aiData["model_make"] == null
-              //       ? "Unknown"
-              //       : aiData["model_make"],
-              //   tansmissionType: "",
-              //   tokenId: mintedTokenId,
-              //   price: 0,
-              //   rating: getRandomBetween(3.5, 5).toString(),
-              // };
-              // await insertCarRow(carRow);
+              const carRow: CarRow = {
+                carName:
+                  aiData["model_make"] == null
+                    ? "Unknown"
+                    : aiData["model_make"],
+                tansmissionType: "",
+                tokenId: mintedTokenId,
+                price: 0,
+                rating: getRandomBetween(3.5, 5).toString(),
+              };
+              await insertCarRow(carRow, dbClient);
 
               // insert a car details row
             }}
