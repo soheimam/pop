@@ -1,3 +1,4 @@
+"use client";
 import React from "react";
 import {
   connectorsForWallets,
@@ -35,13 +36,13 @@ const connectors = connectorsForWallets([
   {
     groupName: "Recommended",
     wallets: [
-      rainbowWallet({ chains, projectId: "2fd65f52a50707f4ea6190f3fc7c3e36" }),
-      walletConnectWallet({
-        chains,
-        projectId: "2fd65f52a50707f4ea6190f3fc7c3e36",
-      }),
+      // rainbowWallet({ chains, projectId: "2fd65f52a50707f4ea6190f3fc7c3e36" }),
+      // walletConnectWallet({
+      //   chains,
+      //   projectId: "2fd65f52a50707f4ea6190f3fc7c3e36",
+      // }),
       metaMaskWallet({ chains, projectId: "2fd65f52a50707f4ea6190f3fc7c3e36" }),
-      rainbowWeb3AuthConnector({ chains }),
+      // rainbowWeb3AuthConnector({ chains }),
     ],
   },
 ]);
