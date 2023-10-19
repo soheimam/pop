@@ -105,23 +105,6 @@ function Page({ params }: { params: { id: string } }) {
   const { createTBA, account } = useCreateTBA();
   const [currentStep, setCurrentStep] = useState(1);
   const [transactionHash, setTransactionHash] = useState<any>(null);
-  // const { config, refetch } = usePrepareContractWrite({
-  //   address: MUMBAI_CAR_CONTRACT_ADDRESS,
-  //   enabled: showEnableMinting,
-  //   abi: CAR_ABI,
-  //   functionName: "mintCar",
-  //   args: [address],
-  // });
-
-  // const {
-  //   data: transactionData,
-  //   isError: transactionError,
-  //   isLoading: transactionLoading,
-  // } = useTransaction({
-  //   enabled: Boolean(transactionHash),
-  //   hash: transactionHash,
-  // });
-  // console.log(transactionData);
 
   const {
     data: writeDataRoadWorthy,
@@ -336,6 +319,14 @@ function Page({ params }: { params: { id: string } }) {
         Snap & Sell List Car
       </h2>
 
+      <p className=" text-blue-400 text-small my-6">
+        More practical than the Ceed hatchback and more stylish than the Ceed
+        Sportswagon estate, the Proceed is a good-looking and individual choice
+        with a premium vibe, eye-catching styling, generous equipment levels and
+        that confidence-inspiring seven-year warranty. It drives pretty well
+        too.
+      </p>
+
       <Stepper currentStep={currentStep} />
 
       {currentStep === 1 && (
@@ -356,14 +347,6 @@ function Page({ params }: { params: { id: string } }) {
                   isLoading={writeLoadingCar}
                 />
               )}
-            </div>
-
-            <div>
-              {/* this is the tba button */}
-              {/* <Button onClick={async () => await createTBA(mintedTokenId)}> */}
-              <Button onClick={async () => () => console.log("Create tba")}>
-                Add documents
-              </Button>
             </div>
           </div>
         </>
