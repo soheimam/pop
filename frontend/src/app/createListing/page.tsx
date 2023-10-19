@@ -27,8 +27,9 @@ import { CarRow, UserRow, insertCarRow, insertUserRow } from "@/lib/tableland";
 
 // import { useWalletContext } from "../(hooks)/useWalletContext";
 
-function convertToTraitTypeValue(jsonObj: any) {
+function convertToTraitTypeValue(jsonObj: any, setAidata: any) {
   const highestScores = jsonObj.highestScores;
+  setAidata(highestScores);
   const traitTypeValueArray = Object.keys(highestScores).map((key) => {
     return { trait_type: key, value: highestScores[key] };
   });
@@ -83,6 +84,7 @@ function Page({ params }: { params: { id: string } }) {
   const { createTBA, account } = useCreateTBA();
   const [currentStep, setCurrentStep] = useState(1);
   const [transactionHash, setTransactionHash] = useState<any>(null);
+  const [aiData, setAidata] = useState<any>(null);
 
   const {
     data: writeDataRoadWorthy,
@@ -188,7 +190,7 @@ function Page({ params }: { params: { id: string } }) {
       const tokenId = getTokenId(transactionReceipt);
       await createTBA(+tokenId);
       const base64 = await fileToBase64(capturedImage!);
-      const traits = convertToTraitTypeValue(carApiData.data);
+      const traits = convertToTraitTypeValue(carApiData.data, setAidata);
 
       const _data = await fetch(`/cars/api`, {
         method: "POST",
@@ -243,6 +245,10 @@ function Page({ params }: { params: { id: string } }) {
     console.log("Calling mint car");
     writeCar?.();
   };
+
+  function getRandomBetween(min: number, max: number): number {
+    return Math.random() * (max - min) + min;
+  }
 
   const handleServiceMint = () => {
     writeService?.();
@@ -329,12 +335,12 @@ function Page({ params }: { params: { id: string } }) {
             await insertUserRow(userRow);
 
             const carRow: CarRow = {
-              carName: "",
+              carName:
+                aiData["model_make"] == null ? "Unknown" : aiData["model_make"],
               tansmissionType: "",
-              tokenId: 0,
-              bid: 0,
+              tokenId: mintedTokenId,
               price: 0,
-              rating: "",
+              rating: getRandomBetween(3.5, 5).toString(),
             };
             await insertCarRow(carRow);
 

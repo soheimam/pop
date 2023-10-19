@@ -25,7 +25,6 @@ export interface CarRow {
   carName: string;
   tansmissionType: string;
   tokenId: number;
-  bid: number;
   price: number;
   rating: string;
 }
@@ -40,13 +39,12 @@ export const insertCarRow = async (carRow: CarRow) => {
   // "carName text, tansmissionType text, tokenId int, year int, price int, rating text"
   const { meta: insert } = await db
     .prepare(
-      `INSERT INTO ${carTableName} (carName, tansmissionType, tokenId, bid, price, rating) VALUES (?1, ?2, ?3, ?4, ?5, ?6);`
+      `INSERT INTO ${carTableName} (carName, tansmissionType, tokenId, price, rating) VALUES (?1, ?2, ?3, ?4, ?5);`
     )
     .bind(
       carRow.carName,
       carRow.tansmissionType,
       carRow.tokenId,
-      carRow.bid,
       carRow.price,
       carRow.rating
     )
