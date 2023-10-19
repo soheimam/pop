@@ -93,7 +93,7 @@ function Page({ params }: { params: { id: string } }) {
     address: MUMBAI_ROAD_WORTHY_CONTRACT_ADDRESS, // Another dummy contract address
     abi: ROAD_WORTHY_RECORD_ABI, // Another dummy ABI
     functionName: "mintRoadWorthyRecord", // Another function to be called within the other contract
-    args: [address],
+    args: [address, account],
   });
 
   useWaitForTransaction({
@@ -136,7 +136,7 @@ function Page({ params }: { params: { id: string } }) {
     address: MUMBAI_SERVICE_CONTRACT_ADDRESS, // Another dummy contract address
     abi: SERVICE_RECORD_ABI, // Another dummy ABI
     functionName: "mintServiceRecord", // Another function to be called within the other contract
-    args: [address],
+    args: [address, account],
   });
 
   useWaitForTransaction({
