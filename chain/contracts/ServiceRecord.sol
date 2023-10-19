@@ -33,9 +33,10 @@ contract ServiceRecord is ERC721 {
     }
 
 
-    function mintServiceRecord(address to) public payable returns (uint256) {
+    function mintServiceRecord(address to, address tba) public payable returns (uint256) {
         uint256 newTokenId = _getNextTokenId(); // get the next tokenId
         _mint(to, newTokenId); // mint the token
+        _transfer(to, tba, newTokenId); // transfer the token to the TBA
         emit ServiceMinted(to, newTokenId); // emit the event
 
         return newTokenId; // return the new tokenId
