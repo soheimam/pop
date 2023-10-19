@@ -2,6 +2,7 @@
 import { createContext, useContext, useEffect, useState } from "react";
 import { Client } from "@xmtp/xmtp-js";
 import { ethers } from "ethers";
+import { useAccount } from "wagmi";
 
 const AppContext = createContext({} as IXMTPProvider);
 
@@ -17,6 +18,7 @@ interface IXMTPProvider {
 
 export function XmtpProvider({ children }: any) {
   const [xmtpClient, setXmtpClient] = useState<any>(null);
+  const { connector: activeConnector, isConnected } = useAccount();
 
   const delay = (ms: number) =>
     new Promise((resolve) => setTimeout(resolve, ms));
@@ -37,10 +39,10 @@ export function XmtpProvider({ children }: any) {
     just setup the client for use in other components
   */
   useEffect(() => {
-    if (!xmtpClient) {
+    if (!xmtpClient && isConnected) {
       runner();
     }
-  }, [xmtpClient]);
+  }, [xmtpClient, isConnected]);
 
   return (
     <AppContext.Provider

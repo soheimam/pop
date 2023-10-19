@@ -7,29 +7,8 @@ import { Button } from "@/components/ui/button";
 import MintButton from "@/components/MintButton";
 import CarSpecs from "@/components/CarSpecs";
 
-import {
-  useWalletClient,
-  useTransaction,
-  useWaitForTransaction,
-  useContractRead,
-  useContractWrite,
-  useAccount,
-  usePrepareContractWrite,
-} from "wagmi";
+import { useWaitForTransaction, useContractWrite, useAccount } from "wagmi";
 
-// import {
-//   CAR_ABI,
-//   createTBAAccount,
-//   getCarContract,
-//   getRegistryContract,
-//   getTBAAccount,
-// } from "@/lib/chainUtils";
-// import { RelayTransactionResponse } from "@cometh/connect-sdk";
-import {
-  TransactionReceipt,
-  TransactionResponse,
-} from "@ethersproject/abstract-provider";
-import { BigNumber, ethers } from "ethers";
 import {
   CAR_ABI,
   MUMBAI_CAR_CONTRACT_ADDRESS,
@@ -40,7 +19,6 @@ import {
 } from "@/lib/chainUtils";
 import { toast } from "@/components/ui/use-toast";
 import { useCreateTBA } from "../(hooks)/useCreateTBA";
-import { ToastAction } from "@/components/ui/toast";
 import SubNFTUpload from "@/components/SubNFTUpload";
 import Stepper from "@/components/stepper";
 import { CarRow, UserRow, insertCarRow, insertUserRow } from "@/lib/tableland";
@@ -228,16 +206,6 @@ function Page({ params }: { params: { id: string } }) {
     },
   });
 
-  //TODO: here is example of insert row
-  // async function runner() {
-  //   await insertRow();
-  // }
-
-  // useEffect(() => {
-  //   console.log("attempting to insert a row ...");
-  //   runner();
-  // });
-
   const handleImageCapture = async (imageFile: File) => {
     console.log(imageFile);
     setCapturedImage(imageFile);
@@ -273,8 +241,6 @@ function Page({ params }: { params: { id: string } }) {
 
   const mintCarNFT = async () => {
     console.log("Calling mint car");
-
-    // await refetch?.();
     writeCar?.();
   };
 
@@ -287,26 +253,6 @@ function Page({ params }: { params: { id: string } }) {
   };
 
   const saveToTableLand = () => {};
-
-  //TODO: Need a check or some way to get what the tokenId should be
-  // const createTBA = async (tokenId: number) => {
-  //   console.log(`starting TBA creation...`);
-
-  //   const tbaCreateTransaction: RelayTransactionResponse =
-  //     await createTBAAccount(provider!, tokenId);
-  //   console.log(`tbaCreateTransaction = ${tbaCreateTransaction}`);
-  //   const tbaCreationReceipt: any = await tbaCreateTransaction.wait();
-  //   console.log(tbaCreationReceipt);
-  //   const tbaCreationEvents = tbaCreationReceipt.events;
-  //   for (let k = 0; k < tbaCreationEvents.length; k++) {
-  //     if (tbaCreationEvents[k].event === "AccountCreated") {
-  //       console.log("AccountCreated event found!");
-  //       const account = await getTBAAccount(provider!, tokenId);
-  //       console.log(`TBA account address = ${account}`);
-  //       break;
-  //     }
-  //   }
-  // };
 
   const handleUpload = async () => {
     if (!capturedImage) return;
