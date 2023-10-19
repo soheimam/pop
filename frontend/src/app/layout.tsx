@@ -21,11 +21,10 @@ export default function RootLayout({ children }: any) {
     <html lang="en" suppressHydrationWarning>
       <body className={`${inter.className} bg-blue-50 mx-10  lg:mx-24 pb-40`}>
         <WagmiProvider>
-          <Header />
-
           <XmtpProvider>
             {/* <TablelandProvider> */}
             <TablelandProvider>
+              <Header />
               {children}
               <NavBar />
             </TablelandProvider>
