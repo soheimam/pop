@@ -8,6 +8,7 @@ import {
   PersonIcon,
   ChatBubbleIcon,
   BookmarkIcon,
+  MixIcon,
 } from "@radix-ui/react-icons";
 import Image from "next/image";
 
@@ -17,19 +18,19 @@ function NavBar() {
   return (
     <footer className=" fixed bottom-0 bg-blue-500 rounded-md transform -translate-x-1/2 left-1/2 shadow-md">
       <div className="flex justify-between mx-auto items-center">
-        <Link href="/" passHref legacyBehavior>
+        <Link href="/marketplace" passHref legacyBehavior>
           <a
             className="text-white w-[90px] text-xs bg-blue-500 hover:bg-blue-600 transition ease-in-out p-4  flex flex-col items-center justify-center rounded-bl-md rounded-tl-md"
             aria-label="Home"
           >
-            <HomeIcon width="24" height="24" />
-            Home
+            <MixIcon width="24" height="24" />
+            Cars
           </a>
         </Link>
         <Link href="/dashboard" passHref legacyBehavior>
           <a
             className="text-white w-[90px] text-xs bg-blue-500 hover:bg-blue-600 transition ease-in-out p-4  flex flex-col items-center justify-center"
-            aria-label="Profile"
+            aria-label="dashboard"
           >
             <PersonIcon width="24" height="24" />
             Dashboard
@@ -45,7 +46,7 @@ function NavBar() {
             Sell
           </a>
         </Link>
-        <Link href="/inbox" passHref legacyBehavior>
+        <Link href="/notification" passHref legacyBehavior>
           <a
             className="text-white w-[90px] text-xs bg-blue-500 hover:bg-blue-600 transition ease-in-out p-4  flex flex-col items-center justify-center"
             aria-label="Notifications"
@@ -54,7 +55,7 @@ function NavBar() {
             Saved
           </a>
         </Link>
-        <Link href="/notifications" passHref legacyBehavior>
+        <Link href="/inbox" passHref legacyBehavior>
           <a
             className="text-white w-[90px] text-xs bg-blue-500 hover:bg-blue-600 transition ease-in-out p-4 rounded-tr-md rounded-br-md flex flex-col items-center justify-center"
             aria-label="Inbox"

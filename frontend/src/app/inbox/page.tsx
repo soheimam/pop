@@ -46,7 +46,7 @@ function Page({ params }: { params: { id: string } }) {
   return (
     <main className="py-4 ">
       <h2 className=" max-w-[200px] pb-2 text-3xl font-semibold tracking-tight transition-colors  text-blue-500 my-8">
-        Inbox
+        Inbox test
       </h2>
       <ul className=" grid grid-cols-6 py-4 gap-4 overflow-x-scroll overflow-y-scroll">
         {conversations.map((convo: any, index: number) => (
