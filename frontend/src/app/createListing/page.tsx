@@ -22,6 +22,7 @@ import { useCreateTBA } from "../(hooks)/useCreateTBA";
 import SubNFTUpload from "@/components/SubNFTUpload";
 import Stepper from "@/components/stepper";
 import { CarRow, UserRow, insertCarRow, insertUserRow } from "@/lib/tableland";
+import { useTablelandProvider } from "../(context)/tablelandContext";
 
 // import { useConnectWallet } from "@privy-io/react-auth";
 
@@ -85,6 +86,7 @@ function Page({ params }: { params: { id: string } }) {
   const [currentStep, setCurrentStep] = useState(1);
   const [transactionHash, setTransactionHash] = useState<any>(null);
   const [aiData, setAidata] = useState<any>(null);
+  const { dbClient } = useTablelandProvider()
 
   const {
     data: writeDataRoadWorthy,
@@ -320,35 +322,36 @@ function Page({ params }: { params: { id: string } }) {
             onMint={handleServiceMint}
             uploadHandler={setCapturedImageService}
           />
+          <Button
+            onClick={async () => {
+              // insert a user details row
+              const userRow: UserRow = {
+                userAddress: address!,
+                userTba: account!,
+                tokenId: mintedTokenId,
+              };
+              await insertUserRow(userRow, dbClient);
+
+              // const carRow: CarRow = {
+              //   carName:
+              //     aiData["model_make"] == null
+              //       ? "Unknown"
+              //       : aiData["model_make"],
+              //   tansmissionType: "",
+              //   tokenId: mintedTokenId,
+              //   price: 0,
+              //   rating: getRandomBetween(3.5, 5).toString(),
+              // };
+              // await insertCarRow(carRow);
+
+              // insert a car details row
+            }}
+          >
+            Finish
+          </Button>
         </>
       )}
-      {currentStep >= 3 && (
-        <button
-          onClick={async () => {
-            // insert a user details row
-            const userRow: UserRow = {
-              userAddress: address!,
-              userTba: account!,
-              tokenId: mintedTokenId,
-            };
-            await insertUserRow(userRow);
-
-            const carRow: CarRow = {
-              carName:
-                aiData["model_make"] == null ? "Unknown" : aiData["model_make"],
-              tansmissionType: "",
-              tokenId: mintedTokenId,
-              price: 0,
-              rating: getRandomBetween(3.5, 5).toString(),
-            };
-            await insertCarRow(carRow);
-
-            // insert a car details row
-          }}
-        >
-          Finish
-        </button>
-      )}{" "}
+      {currentStep >= 3 && <div>hello</div>}{" "}
       {/* Here we are finishing the process, so save all of the data */}
     </main>
   );

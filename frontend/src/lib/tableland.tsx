@@ -3,23 +3,16 @@
 import { Database } from "@tableland/sdk";
 import { ethers } from "ethers";
 
-require("dotenv").config();
+// require("dotenv").config();
 
-const privateKey = process.env.WALLET_PRIVATE_KEY!;
+// const privateKey = process.env.WALLET_PRIVATE_KEY!;
 
-if (!privateKey) {
-  console.error("Private key is undefined!");
-}
+// if (!privateKey) {
+//   console.error("Private key is undefined!");
+// }
 
-const wallet = new ethers.Wallet(privateKey);
-const provider = ethers.getDefaultProvider(
-  "https://polygon-mumbai.infura.io/v3/9c17b4ee03bf4c75829e260cbea6a92a"
-);
-const signer = wallet.connect(provider);
 const userTableName = "cli_pop_table_80001_7884";
 const carTableName = "cli_popcar_table_80001_7882";
-// Connect to the database
-const db = new Database({ signer });
 
 export interface CarRow {
   carName: string;
@@ -35,9 +28,9 @@ export interface UserRow {
   tokenId: number;
 }
 
-export const insertCarRow = async (carRow: CarRow) => {
+export const insertCarRow = async (carRow: CarRow, dbClient: Database) => {
   // "carName text, tansmissionType text, tokenId int, year int, price int, rating text"
-  const { meta: insert } = await db
+  const { meta: insert } = await dbClient
     .prepare(
       `INSERT INTO ${carTableName} (carName, tansmissionType, tokenId, price, rating) VALUES (?1, ?2, ?3, ?4, ?5);`
     )
@@ -52,7 +45,7 @@ export const insertCarRow = async (carRow: CarRow) => {
 
   try {
     await insert.txn?.wait();
-    const { results } = await db
+    const { results } = await dbClient
       .prepare(`SELECT ROWID FROM ${userTableName};`)
       .all();
 
@@ -62,8 +55,8 @@ export const insertCarRow = async (carRow: CarRow) => {
   }
 };
 
-export const insertUserRow = async (userRow: UserRow) => {
-  const { meta: insert } = await db
+export const insertUserRow = async (userRow: UserRow, dbClient: Database) => {
+  const { meta: insert } = await dbClient
     .prepare(
       `INSERT INTO ${userTableName} (userAddress, userTba, tokenId) VALUES (?1, ?2, ?3);`
     )
@@ -72,7 +65,7 @@ export const insertUserRow = async (userRow: UserRow) => {
 
   try {
     await insert.txn?.wait();
-    const { results } = await db
+    const { results } = await dbClient
       .prepare(`SELECT ROWID FROM ${userTableName};`)
       .all();
 
@@ -82,16 +75,16 @@ export const insertUserRow = async (userRow: UserRow) => {
   }
 };
 
-export const findCarsForHome = async () => {
-  const transaction = await db
+export const findCarsForHome = async (dbClient: Database) => {
+  const transaction = await dbClient
     .prepare(`SELECT * FROM ${carTableName} LIMIT 10;`)
     .run();
   let result = await transaction.results;
   return result as CarRow[];
 };
 
-export const findCarForUser = async (tokenId: number) => {
-  const transaction = await db
+export const findCarForUser = async (tokenId: number, dbClient: Database) => {
+  const transaction = await dbClient
     .prepare(
       `SELECT * FROM ${carTableName} WHERE tokenId = '${tokenId}' LIMIT 1;`
     )
@@ -100,8 +93,11 @@ export const findCarForUser = async (tokenId: number) => {
   return result as CarRow[]; // array, but will only be limit 1
 };
 
-export const findUserOfTokenId = async (tokenId: number) => {
-  const transaction = await db
+export const findUserOfTokenId = async (
+  tokenId: number,
+  dbClient: Database
+) => {
+  const transaction = await dbClient
     .prepare(
       `SELECT * FROM ${userTableName} WHERE tokenId = '${tokenId}' LIMIT 1;`
     )

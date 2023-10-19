@@ -18,6 +18,7 @@ import React from "react";
 import Header from "@/components/Header";
 import WagmiProvider from "./(providers)/wagmi";
 import { XmtpProvider } from "./(context)/xmtpContext";
+import { TablelandProvider } from "./(context)/tablelandContext";
 
 // import { TablelandProvider } from "./(context)/tableland-context";
 
@@ -36,9 +37,11 @@ export default function RootLayout({ children }: any) {
           <Header />
 
           <XmtpProvider>
-            {/* <TablelandProvider> */}
-            {children}
-            <NavBar />
+            <TablelandProvider>
+              {/* <TablelandProvider> */}
+              {children}
+              <NavBar />
+            </TablelandProvider>
           </XmtpProvider>
           {/* </TablelandProvider> */}
         </WagmiProvider>
