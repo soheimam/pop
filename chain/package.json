@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@openzeppelin/contracts": "^4.9.3",
+    "@tableland/evm": "^4.3.0",
     "fs-extra": "^11.1.1",
     "typescript": "^5.2.2",
     "waffle": "^0.0.4"
