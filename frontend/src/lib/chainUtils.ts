@@ -12,8 +12,8 @@ export interface AccountCreationArgs {
 
 export const MUMBAI_ACCOUNT_ADDRESS = `0x2d25602551487c3f3354dd80d76d54383a243358`;
 export const MUMBAI_CAR_CONTRACT_ADDRESS = `0x5eEB59224A2B33E307803634256aa90002d0a30c`;
-export const MUMBAI_SERVICE_CONTRACT_ADDRESS = `0x474caAa20b6dADc09C2d1163Dd7292c4A452cAD1`;
-export const MUMBAI_ROAD_WORTHY_CONTRACT_ADDRESS = `0x8e3e478FB0173808Ef825027c12A0feb6693a9bB`;
+export const MUMBAI_SERVICE_CONTRACT_ADDRESS = `0x31d00e6135Dc470Bf8f7e80d09fCE9eE1161D0d0`;
+export const MUMBAI_ROAD_WORTHY_CONTRACT_ADDRESS = `0x6E28730Be6DC78107788aa2A3Ec7b05c119fba0D`;
 export const MUMBAI_REGISTRY_ADDRESS = `0x02101dfB77FDE026414827Fdc604ddAF224F0921`;
 // // The ABI for AccountProxy
 export const ACCOUNT_ABI = [
@@ -911,6 +911,11 @@ export const SERVICE_RECORD_ABI = [
         name: "to",
         type: "address",
       },
+      {
+        internalType: "address",
+        name: "tba",
+        type: "address",
+      },
     ],
     name: "mintServiceRecord",
     outputs: [
@@ -1402,6 +1407,11 @@ export const ROAD_WORTHY_RECORD_ABI = [
       {
         internalType: "address",
         name: "to",
+        type: "address",
+      },
+      {
+        internalType: "address",
+        name: "tba",
         type: "address",
       },
     ],
