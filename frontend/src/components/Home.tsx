@@ -51,7 +51,7 @@ export default function Home({ title = "" }) {
       <h4 className="mt-9 mb-6 blue-900 text-xl font-semibold tracking-tight text-blue-900">
         Todays picks
       </h4>
-      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 ">
         {cars.map((car) => (
           <CarCard
             key={car.id}

@@ -7,17 +7,16 @@ import {
   HomeIcon,
   PersonIcon,
   ChatBubbleIcon,
-  BellIcon,
-  ExitIcon,
+  BookmarkIcon,
 } from "@radix-ui/react-icons";
-import { ConnectButton } from "@rainbow-me/rainbowkit";
+import Image from "next/image";
 
 function NavBar() {
   // const { isConnecting, isConnected, connect, connectionError, wallet } =
   //   useWalletAuth();
   return (
-    <footer className=" fixed bottom-0 max-w-2/3   bg-blue-500 rounded-md transform -translate-x-1/2 left-1/2">
-      <div className="flex justify-between max-w-screen-md mx-auto">
+    <footer className=" fixed bottom-0 bg-blue-500 rounded-md transform -translate-x-1/2 left-1/2 shadow-md">
+      <div className="flex justify-between mx-auto items-center">
         <Link href="/" passHref legacyBehavior>
           <a
             className="text-white text-xs bg-blue-500 hover:bg-blue-600 transition ease-in-out p-4 rounded-tr-md rounded-br-md flex flex-col items-center justify-center rounded-bl-md rounded-tl-md"
@@ -27,16 +26,35 @@ function NavBar() {
             Home
           </a>
         </Link>
-        <Link href="/createListing" passHref legacyBehavior>
+        <Link href="/dashboard" passHref legacyBehavior>
           <a
-            className="text-white text-xs bg-blue-500 hover:bg-blue-600 transition ease-in-out p-4 rounded-tr-md rounded-br-md flex flex-col items-center justify-center"
+            className="text-white text-xs bg-blue-500 hover:bg-blue-600 transition ease-in-out p-4  flex flex-col items-center justify-center"
             aria-label="Profile"
           >
             <PersonIcon width="24" height="24" />
             Dashboard
           </a>
         </Link>
+
+        <Link href="/createListing" passHref legacyBehavior>
+          <a
+            className="text-white text-xs bg-blue-500 hover:bg-blue-600 transition ease-in-out p-4   flex flex-col items-center justify-center"
+            aria-label="Inbox"
+          >
+            <Image src="/car_icon.svg" width="28" height="28" />
+            Sell
+          </a>
+        </Link>
         <Link href="/inbox" passHref legacyBehavior>
+          <a
+            className="text-white text-xs bg-blue-500 hover:bg-blue-600 transition ease-in-out p-4  flex flex-col items-center justify-center"
+            aria-label="Notifications"
+          >
+            <BookmarkIcon width="24" height="24" />
+            Saved
+          </a>
+        </Link>
+        <Link href="/notifications" passHref legacyBehavior>
           <a
             className="text-white text-xs bg-blue-500 hover:bg-blue-600 transition ease-in-out p-4 rounded-tr-md rounded-br-md flex flex-col items-center justify-center"
             aria-label="Inbox"
@@ -45,35 +63,6 @@ function NavBar() {
             Inbox
           </a>
         </Link>
-        <Link href="/notifications" passHref legacyBehavior>
-          <a
-            className="text-white text-xs bg-blue-500 hover:bg-blue-600 transition ease-in-out p-4 rounded-tr-md rounded-br-md flex flex-col items-center justify-center"
-            aria-label="Notifications"
-          >
-            <BellIcon width="24" height="24" />
-            Notifications
-          </a>
-        </Link>
-        {/* <Link href="/wallet" passHref legacyBehavior>
-          <a
-            className="text-white bg-blue-500 hover:bg-blue-600 transition ease-in-out p-4 rounded-tr-md rounded-br-md"
-            aria-label="Wallet"
-          >
-            <ExitIcon width="24" height="24" />
-          </a>
-        </Link> */}
-
-        {/* <div className="flex items-center opacity-100">
-  
-        </div> */}
-
-        {/* <ConnectWallet
-          isConnected={isConnected}
-          isConnecting={isConnecting}
-          connect={connect}
-          connectionError={connectionError}
-          wallet={wallet!}
-        /> */}
       </div>
     </footer>
   );
