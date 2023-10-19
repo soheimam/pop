@@ -68,7 +68,7 @@ function SubNFTUpload({ title, onMint, uploadHandler }: SubNFTUploadProps) {
       <span className="w-16 flex-grow col-start-1 col-span-1 bg-white flex items-center justify-center rounded-md">
         <ImageIcon width="18" height="18" />
       </span>
-      <div className="col-start-2 col-span-3 place-self-center">
+      <div className="col-start-2 col-span-4 place-self-center">
         <Label className="text-blue-700" htmlFor="picture">
           {title}
         </Label>
@@ -78,7 +78,7 @@ function SubNFTUpload({ title, onMint, uploadHandler }: SubNFTUploadProps) {
         onClick={handleButtonClick}
         variant="outline"
         size="icon"
-        className={`col-start-5 col-span-1 ${
+        className={` col-span-1 place-self-end ${
           progress === 100 ? "bg-green-500" : "bg-none"
         } transition-all `}
       >

@@ -95,7 +95,7 @@ function Page({ params }: { params: { id: string } }) {
     address: MUMBAI_ROAD_WORTHY_CONTRACT_ADDRESS, // Another dummy contract address
     abi: ROAD_WORTHY_RECORD_ABI, // Another dummy ABI
     functionName: "mintRoadWorthyRecord", // Another function to be called within the other contract
-    args: [address],
+    args: [address, account],
   });
 
   useWaitForTransaction({
@@ -138,7 +138,7 @@ function Page({ params }: { params: { id: string } }) {
     address: MUMBAI_SERVICE_CONTRACT_ADDRESS, // Another dummy contract address
     abi: SERVICE_RECORD_ABI, // Another dummy ABI
     functionName: "mintServiceRecord", // Another function to be called within the other contract
-    args: [address],
+    args: [address, account],
   });
 
   useWaitForTransaction({
@@ -270,6 +270,13 @@ function Page({ params }: { params: { id: string } }) {
       <h2 className="max-w-[200px] pb-2 text-3xl font-semibold tracking-tight transition-colors text-blue-500 my-8">
         Snap & Sell List Car
       </h2>
+      <p className=" text-blue-400 text-small my-6">
+        More practical than the Ceed hatchback and more stylish than the Ceed
+        Sportswagon estate, the Proceed is a good-looking and individual choice
+        with a premium vibe, eye-catching styling, generous equipment levels and
+        that confidence-inspiring seven-year warranty. It drives pretty well
+        too.
+      </p>
       <Stepper currentStep={currentStep} />
       {currentStep === 1 && (
         <>
@@ -289,14 +296,6 @@ function Page({ params }: { params: { id: string } }) {
                   isLoading={writeLoadingCar}
                 />
               )}
-            </div>
-
-            <div>
-              {/* this is the tba button */}
-              {/* <Button onClick={async () => await createTBA(mintedTokenId)}> */}
-              <Button onClick={async () => () => console.log("Create tba")}>
-                Add documents
-              </Button>
             </div>
           </div>
         </>
