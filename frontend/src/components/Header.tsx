@@ -1,5 +1,6 @@
 "use client";
 
+import "@rainbow-me/rainbowkit/styles.css";
 import React from "react";
 import Image from "next/image";
 import NextLink from "next/link";
