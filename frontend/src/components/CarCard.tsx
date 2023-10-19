@@ -27,7 +27,7 @@ const CarCard: React.FC<CarCardProps> = ({
 }) => {
   return (
     <NextLink href={`/cars/${id}`}>
-      <div className="bg-blue-100 rounded-lg shadow-lg overflow-hidden hover:shadow-2xl">
+      <div className="bg-slate-200 rounded-lg shadow-lg overflow-hidden hover:shadow-2xl">
         <div className="relative h-48 w-full">
           <Image
             src={imageUrl}

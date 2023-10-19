@@ -19,7 +19,7 @@ function NavBar() {
       <div className="flex justify-between mx-auto items-center">
         <Link href="/" passHref legacyBehavior>
           <a
-            className="text-white text-xs bg-blue-500 hover:bg-blue-600 transition ease-in-out p-4 rounded-tr-md rounded-br-md flex flex-col items-center justify-center rounded-bl-md rounded-tl-md"
+            className="text-white w-[90px] text-xs bg-blue-500 hover:bg-blue-600 transition ease-in-out p-4  flex flex-col items-center justify-center rounded-bl-md rounded-tl-md"
             aria-label="Home"
           >
             <HomeIcon width="24" height="24" />
@@ -28,7 +28,7 @@ function NavBar() {
         </Link>
         <Link href="/dashboard" passHref legacyBehavior>
           <a
-            className="text-white text-xs bg-blue-500 hover:bg-blue-600 transition ease-in-out p-4  flex flex-col items-center justify-center"
+            className="text-white w-[90px] text-xs bg-blue-500 hover:bg-blue-600 transition ease-in-out p-4  flex flex-col items-center justify-center"
             aria-label="Profile"
           >
             <PersonIcon width="24" height="24" />
@@ -38,7 +38,7 @@ function NavBar() {
 
         <Link href="/createListing" passHref legacyBehavior>
           <a
-            className="text-white text-xs bg-blue-500 hover:bg-blue-600 transition ease-in-out p-4   flex flex-col items-center justify-center"
+            className="text-white w-[90px] text-xs bg-blue-500 hover:bg-blue-600 transition ease-in-out p-4   flex flex-col items-center justify-center"
             aria-label="Inbox"
           >
             <Image src="/car_icon.svg" width="28" height="28" />
@@ -47,7 +47,7 @@ function NavBar() {
         </Link>
         <Link href="/inbox" passHref legacyBehavior>
           <a
-            className="text-white text-xs bg-blue-500 hover:bg-blue-600 transition ease-in-out p-4  flex flex-col items-center justify-center"
+            className="text-white w-[90px] text-xs bg-blue-500 hover:bg-blue-600 transition ease-in-out p-4  flex flex-col items-center justify-center"
             aria-label="Notifications"
           >
             <BookmarkIcon width="24" height="24" />
@@ -56,7 +56,7 @@ function NavBar() {
         </Link>
         <Link href="/notifications" passHref legacyBehavior>
           <a
-            className="text-white text-xs bg-blue-500 hover:bg-blue-600 transition ease-in-out p-4 rounded-tr-md rounded-br-md flex flex-col items-center justify-center"
+            className="text-white w-[90px] text-xs bg-blue-500 hover:bg-blue-600 transition ease-in-out p-4 rounded-tr-md rounded-br-md flex flex-col items-center justify-center"
             aria-label="Inbox"
           >
             <ChatBubbleIcon width="24" height="24" />

@@ -1,11 +1,15 @@
 "use client";
 import { ethers } from "ethers";
+import Image from "next/image";
 import React, { useEffect, useState } from "react";
 import Camera from "@/components/Camera";
 // import { WalletContext } from "@/app/(context)/context";
 import { Button } from "@/components/ui/button";
+
 import MintButton from "@/components/MintButton";
 import CarSpecs from "@/components/CarSpecs";
+import { Label } from "@/components/ui/label";
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 
 import { useWaitForTransaction, useContractWrite, useAccount } from "wagmi";
 
@@ -286,24 +290,39 @@ function Page({ params }: { params: { id: string } }) {
 
   return (
     <main>
+      <Stepper currentStep={currentStep} />
       <h2 className="max-w-[200px] pb-2 text-3xl font-semibold tracking-tight transition-colors text-blue-500 my-8">
         Snap & Sell List Car
       </h2>
       <p className=" text-blue-400 text-small my-6">
-        More practical than the Ceed hatchback and more stylish than the Ceed
-        Sportswagon estate, the Proceed is a good-looking and individual choice
-        with a premium vibe, eye-catching styling, generous equipment levels and
-        that confidence-inspiring seven-year warranty. It drives pretty well
-        too.
+        Start now—snap a photo, upload, and watch as our platform creates a
+        comprehensive, attractive listing that's ready to go live. Sell smarter,
+        not harder, with 'Snap & Sell List Car'!
       </p>
-      <Stepper currentStep={currentStep} />
       {currentStep === 1 && (
         <>
           <div className="grid grid-cols-6 md:grid-cols-12 gap-4 mt-12">
             <Camera onCapture={handleImageCapture} onConfirm={handleConfirm} />
           </div>
 
-          {confirmCar ? <CarSpecs highScores={carApiData} /> : null}
+          {confirmCar ? (
+            <>
+              <CarSpecs highScores={carApiData} />
+              <h4 className="my-4 mb-2 text-xl font-semibold tracking-tight text-blue-800">
+                Engine selection
+              </h4>
+              <RadioGroup defaultValue="option-one " className="my-6">
+                <div className="flex items-center space-x-2">
+                  <RadioGroupItem value="option-one" id="automatic" />
+                  <Label htmlFor="option-one">Automatic</Label>
+                </div>
+                <div className="flex items-center space-x-2">
+                  <RadioGroupItem value="option-two" id="manual" />
+                  <Label htmlFor="option-two">Manual</Label>
+                </div>
+              </RadioGroup>
+            </>
+          ) : null}
 
           <div className="flex ">
             <div>

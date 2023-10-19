@@ -20,7 +20,7 @@ export default function RootLayout({ children }: any) {
   return (
     <html lang="en" suppressHydrationWarning>
       <body
-        className={`${inter.className} bg-blue-50 mx-10   md:mx-auto pb-40 max-w-xl`}
+        className={`${inter.className} bg-sky-50 mx-10   md:mx-auto pb-40 max-w-xl`}
       >
         <WagmiProvider>
           <XmtpProvider>

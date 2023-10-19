@@ -21,6 +21,7 @@ import {
   rainbowWallet,
   metaMaskWallet,
 } from "@rainbow-me/rainbowkit/wallets";
+import { PrivyWagmiConnector } from "@privy-io/wagmi-connector";
 import { rainbowWeb3AuthConnector } from "./RainbowKitConnector";
 
 const { chains, publicClient } = configureChains(
