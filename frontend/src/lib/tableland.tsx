@@ -2,15 +2,8 @@
 
 import { Database } from "@tableland/sdk";
 
-require("dotenv").config();
-
-const privateKey = process.env.WALLET_PRIVATE_KEY!;
-
-if (!privateKey) {
-  console.error("Private key is undefined!");
-}
-
-const userTableName = "cli_pop_table_80001_7907";
+// const userTableName = "cli_pop_table_80001_7907";
+const userTableName = "cli_pop_table_80001_7884";
 const carTableName = "cli_popcar_table_80001_7882";
 
 export interface CarRow {
