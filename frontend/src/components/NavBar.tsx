@@ -46,7 +46,7 @@ function NavBar() {
             Sell
           </a>
         </Link>
-        <Link href="/notification" passHref legacyBehavior>
+        <Link href="/notifications" passHref legacyBehavior>
           <a
             className="text-white w-[90px] text-xs bg-blue-500 hover:bg-blue-600 transition ease-in-out p-4  flex flex-col items-center justify-center"
             aria-label="Notifications"
