@@ -21,7 +21,13 @@ import { toast } from "@/components/ui/use-toast";
 import { useCreateTBA } from "../(hooks)/useCreateTBA";
 import SubNFTUpload from "@/components/SubNFTUpload";
 import Stepper from "@/components/stepper";
-import { CarRow, UserRow, insertCarRow, insertUserRow } from "@/lib/tableland";
+import {
+  CarRow,
+  UserRow,
+  findUserOfTokenId,
+  insertCarRow,
+  insertUserRow,
+} from "@/lib/tableland";
 import { Database } from "@tableland/sdk";
 import { useTablelandProvider } from "../(context)/tablelandContext";
 
@@ -89,21 +95,13 @@ function Page({ params }: { params: { id: string } }) {
   const [aiData, setAidata] = useState<any>(null);
   const { dbClient } = useTablelandProvider();
 
-  // let runner = async () => {
-  //   let userRow: UserRow = {
-  //     userAddress: "0xa70327625a17CaeB2835F00215Aa579566d38987",
-  //     userTba: "0xa70327625a17CaeB2835F00215Aa579566d38987",
-  //     tokenId: 0,
-  //   };
-  //   const provider = new ethers.providers.Web3Provider(window.ethereum);
-  //   const signer = provider.getSigner();
-  //   const db = new Database({ signer });
-  //   await insertUserRow(userRow, db);
-  // };
+  let runner = async () => {
+    findUserOfTokenId(1, dbClient);
+  };
 
-  // useEffect(() => {
-  //   runner();
-  // }, []);
+  useEffect(() => {
+    runner();
+  }, []);
 
   const {
     data: writeDataRoadWorthy,
