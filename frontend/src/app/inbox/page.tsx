@@ -21,13 +21,27 @@ function Page({ params }: { params: { id: string } }) {
   console.log(params, "messages");
   const { xmtpClient } = useXmtpProvider();
   const [conversations, setConversations] = useState([]);
+  const [lastMessageList, setLastMessageList] = useState<any>([]);
 
   /*
     get all of the conversations
   */
   const fetchConvos = async () => {
     // find any convo with car owner
+    const opts = {
+      // Only show messages from last 24 hours
+      startTime: new Date(new Date().setDate(new Date().getDate() - 100)),
+      endTime: new Date(),
+    };
+    const messagesToDisplay: any = [];
     const convos = await xmtpClient.conversations.list();
+    for (let i = 0; i < convos.length; i++) {
+      let msgs = await convos[i].messages(opts);
+      messagesToDisplay.push(
+        msgs.length > 0 ? msgs[msgs.length - 1].content : "..."
+      );
+    }
+    setLastMessageList(messagesToDisplay);
     console.log(convos);
     setConversations(convos);
   };
@@ -53,7 +67,7 @@ function Page({ params }: { params: { id: string } }) {
           <InboxItem
             key={index}
             peerAddress={convo.peerAddress}
-            email={convo.topic}
+            email={lastMessageList[index]}
             fallbackText={`${index}`}
             avatarSrc={dummyAvatars[getRandomNumberBetween0And4()]}
             id={`${index + 1}`}
