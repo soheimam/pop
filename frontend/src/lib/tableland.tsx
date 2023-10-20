@@ -13,6 +13,7 @@ export interface CarRow {
   tokenId: number;
   price: number;
   rating: string;
+  year: number;
 }
 
 export interface UserRow {
@@ -23,8 +24,6 @@ export interface UserRow {
 
 export const insertUserRow = async (userRow: UserRow, db: Database) => {
   console.log(`trying to insert user row `);
-  // const { results } = await db.prepare(`SELECT * FROM ${userTableName};`).all();
-  // console.log(results);
   let insert = await db
     .prepare(
       `INSERT INTO ${userTableName} (userAddress, userTba, tokenId) VALUES (?1, ?2, ?3);`
