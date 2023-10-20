@@ -1,4 +1,6 @@
 "use client";
+
+import "@rainbow-me/rainbowkit/styles.css";
 import NavBar from "@/components/NavBar";
 import "@/styles/globals.css";
 import { Inter } from "next/font/google";
@@ -7,7 +9,6 @@ import Header from "@/components/Header";
 import WagmiProvider from "./(providers)/wagmi";
 import { XmtpProvider } from "./(context)/xmtpContext";
 import { TablelandProvider } from "./(context)/tablelandContext";
-import "@rainbow-me/rainbowkit/styles.css";
 
 const inter = Inter({ subsets: ["latin"] });
 

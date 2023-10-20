@@ -10,7 +10,7 @@ import MintButton from "@/components/MintButton";
 import CarSpecs from "@/components/CarSpecs";
 import { Label } from "@/components/ui/label";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
-
+import Compressor from "compressorjs";
 import { useWaitForTransaction, useContractWrite, useAccount } from "wagmi";
 
 import {
@@ -40,6 +40,18 @@ function convertToTraitTypeValue(jsonObj: any, setAidata: any) {
     return { trait_type: key, value: highestScores[key] };
   });
   return traitTypeValueArray;
+}
+
+function blobToBase64(blob) {
+  return new Promise((resolve, _) => {
+    var reader = new FileReader();
+    reader.onload = function () {
+      var dataUrl = reader.result;
+      var base64 = dataUrl.split(",")[1];
+      resolve(base64);
+    };
+    reader.readAsDataURL(blob);
+  });
 }
 
 function getTokenId(transactionReceipt: any) {
@@ -233,35 +245,50 @@ function Page({ params }: { params: { id: string } }) {
 
   const handleImageCapture = async (imageFile: File) => {
     console.log(imageFile);
+
     setCapturedImage(imageFile);
   };
 
   const handleConfirm = async () => {
     setConfirmCar(true);
-    const base64 = await fileToBase64(capturedImage!);
 
-    const data = await fetch(`/cars/api`, {
-      method: "PUT",
-      body: JSON.stringify({
-        base64: base64,
-      }),
-      headers: {
-        "Content-Type": "application/json",
+    new Compressor(capturedImage!, {
+      quality: 0.6,
+
+      async success(result: File) {
+        // console.log(result);
+        const base64 = await blobToBase64(result);
+        // console.log(base64);
+        // const base64 = await fileToBase64(result);
+
+        const data = await fetch(`/cars/api`, {
+          method: "PUT",
+          body: JSON.stringify({
+            base64: base64,
+          }),
+          headers: {
+            "Content-Type": "application/json",
+          },
+        });
+
+        if (data.status === 200) {
+          const _data = await data.json();
+          setMintButtonVisible(true);
+          setCarApiData(_data);
+          setShowEnableMinting(true);
+        } else {
+          console.log("error");
+          toast({
+            description: `Error: ${data.status}`,
+          });
+          // Toast Here to say its an error
+        }
+      },
+      error(err: { message: any }) {
+        console.log(err);
+        console.log(err.message);
       },
     });
-
-    if (data.status === 200) {
-      const _data = await data.json();
-      setMintButtonVisible(true);
-      setCarApiData(_data);
-      setShowEnableMinting(true);
-    } else {
-      console.log("error");
-      toast({
-        description: `Error: ${data.status}`,
-      });
-      // Toast Here to say its an error
-    }
   };
 
   const mintCarNFT = async () => {
