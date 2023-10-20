@@ -394,14 +394,16 @@ function Page({ params }: { params: { id: string } }) {
               await insertUserRow(userRow, dbClient);
 
               const carRow: CarRow = {
-                carName:
+                make:
                   aiData["model_make"] == null
                     ? "Unknown"
                     : aiData["model_make"],
+                model: "",
                 tansmissionType: "",
                 tokenId: mintedTokenId,
                 price: 0,
                 rating: getRandomBetween(3.5, 5).toString(),
+                year: 0,
               };
               await insertCarRow(carRow, dbClient);
 

@@ -3,12 +3,13 @@
 import { Database } from "@tableland/sdk";
 
 const userTableName = "cli_pop_table_80001_7907";
-const carTableName = "cli_popcar_table_80001_7882";
+const carTableName = "cli_popcar_table_80001_7956";
 const favTableName = "cli_popfav_table_80001_7948";
 const bidTableName = "cli_popbid_table_80001_7949";
 
 export interface CarRow {
-  carName: string;
+  make: string;
+  model: string;
   tansmissionType: string;
   tokenId: number;
   price: number;
@@ -19,6 +20,11 @@ export interface CarRow {
 export interface UserRow {
   userAddress: string;
   userTba: string;
+  tokenId: number;
+}
+
+export interface FavRow {
+  userAddress: string;
   tokenId: number;
 }
 
@@ -39,6 +45,7 @@ export const insertUserRow = async (userRow: UserRow, db: Database) => {
   // console.log(test);
 
   try {
+    //@ts-ignore
     await insert.txn?.wait();
     const { results } = await db
       .prepare(`SELECT ROWID FROM ${userTableName};`)
@@ -54,10 +61,11 @@ export const insertCarRow = async (carRow: CarRow, dbClient: Database) => {
   // "carName text, tansmissionType text, tokenId int, year int, price int, rating text"
   const { meta: insert } = await dbClient
     .prepare(
-      `INSERT INTO ${carTableName} (carName, tansmissionType, tokenId, price, rating) VALUES (?1, ?2, ?3, ?4, ?5);`
+      `INSERT INTO ${carTableName} (make, model, tansmissionType, tokenId, price, rating) VALUES (?1, ?2, ?3, ?4, ?5, ?6);`
     )
     .bind(
-      carRow.carName,
+      carRow.make,
+      carRow.model,
       carRow.tansmissionType,
       carRow.tokenId,
       carRow.price,
@@ -85,6 +93,25 @@ export const findCarsForHome = async (dbClient: Database) => {
   return result as CarRow[];
 };
 
+export const findCarsForUser = async (
+  tokenIds: number[],
+  dbClient: Database
+) => {
+  let queryString = "";
+  for (let i = 0; i < tokenIds.length; i++) {
+    if (i != tokenIds.length - 1) {
+      queryString += `tokenId = '${tokenIds[i]}' OR `;
+    } else {
+      queryString += `tokenId = '${tokenIds[i]}'`;
+    }
+  }
+  const transaction = await dbClient
+    .prepare(`SELECT * FROM ${carTableName} WHERE ${queryString};`)
+    .run();
+  let result = await transaction.results;
+  return result as CarRow[]; // array, but will only be limit 1
+};
+
 export const findCarForUser = async (tokenId: number, dbClient: Database) => {
   const transaction = await dbClient
     .prepare(
@@ -108,17 +135,17 @@ export const findUserOfTokenId = async (
 };
 
 export const findFavoritesForUser = async (
-  userAddress: number,
+  userAddress: string,
   dbClient: Database
 ) => {
   const transaction = await dbClient
     .prepare(
-      `SELECT * FROM ${favTableName} where userAddress = ${userAddress};`
+      `SELECT * FROM ${favTableName} where userAddress = "${userAddress}";`
     )
     .run();
   let result = await transaction.results;
   console.log(result);
-  return result as UserRow[];
+  return result as FavRow[];
 };
 
 export const findBidsForCar = async (tokenId: number, dbClient: Database) => {
