@@ -1,12 +1,16 @@
 "use client";
 import { ethers } from "ethers";
+import Image from "next/image";
 import React, { useEffect, useState } from "react";
 import Camera from "@/components/Camera";
 // import { WalletContext } from "@/app/(context)/context";
 import { Button } from "@/components/ui/button";
+
 import MintButton from "@/components/MintButton";
 import CarSpecs from "@/components/CarSpecs";
-
+import { Label } from "@/components/ui/label";
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+import Compressor from "compressorjs";
 import { useWaitForTransaction, useContractWrite, useAccount } from "wagmi";
 
 import {
@@ -21,7 +25,13 @@ import { toast } from "@/components/ui/use-toast";
 import { useCreateTBA } from "../(hooks)/useCreateTBA";
 import SubNFTUpload from "@/components/SubNFTUpload";
 import Stepper from "@/components/stepper";
-import { CarRow, UserRow, insertCarRow, insertUserRow } from "@/lib/tableland";
+import {
+  CarRow,
+  UserRow,
+  findUserOfTokenId,
+  insertCarRow,
+  insertUserRow,
+} from "@/lib/tableland";
 import { Database } from "@tableland/sdk";
 import { useTablelandProvider } from "../(context)/tablelandContext";
 
@@ -36,6 +46,18 @@ function convertToTraitTypeValue(jsonObj: any, setAidata: any) {
     return { trait_type: key, value: highestScores[key] };
   });
   return traitTypeValueArray;
+}
+
+function blobToBase64(blob) {
+  return new Promise((resolve, _) => {
+    var reader = new FileReader();
+    reader.onload = function () {
+      var dataUrl = reader.result;
+      var base64 = dataUrl.split(",")[1];
+      resolve(base64);
+    };
+    reader.readAsDataURL(blob);
+  });
 }
 
 function getTokenId(transactionReceipt: any) {
@@ -89,21 +111,13 @@ function Page({ params }: { params: { id: string } }) {
   const [aiData, setAidata] = useState<any>(null);
   const { dbClient } = useTablelandProvider();
 
-  // let runner = async () => {
-  //   let userRow: UserRow = {
-  //     userAddress: "0xa70327625a17CaeB2835F00215Aa579566d38987",
-  //     userTba: "0xa70327625a17CaeB2835F00215Aa579566d38987",
-  //     tokenId: 0,
-  //   };
-  //   const provider = new ethers.providers.Web3Provider(window.ethereum);
-  //   const signer = provider.getSigner();
-  //   const db = new Database({ signer });
-  //   await insertUserRow(userRow, db);
-  // };
+  let runner = async () => {
+    findUserOfTokenId(1, dbClient);
+  };
 
-  // useEffect(() => {
-  //   runner();
-  // }, []);
+  useEffect(() => {
+    runner();
+  }, []);
 
   const {
     data: writeDataRoadWorthy,
@@ -229,35 +243,50 @@ function Page({ params }: { params: { id: string } }) {
 
   const handleImageCapture = async (imageFile: File) => {
     console.log(imageFile);
+
     setCapturedImage(imageFile);
   };
 
   const handleConfirm = async () => {
     setConfirmCar(true);
-    const base64 = await fileToBase64(capturedImage!);
 
-    const data = await fetch(`/cars/api`, {
-      method: "PUT",
-      body: JSON.stringify({
-        base64: base64,
-      }),
-      headers: {
-        "Content-Type": "application/json",
+    new Compressor(capturedImage!, {
+      quality: 0.6,
+
+      async success(result: File) {
+        // console.log(result);
+        const base64 = await blobToBase64(result);
+        // console.log(base64);
+        // const base64 = await fileToBase64(result);
+
+        const data = await fetch(`/cars/api`, {
+          method: "PUT",
+          body: JSON.stringify({
+            base64: base64,
+          }),
+          headers: {
+            "Content-Type": "application/json",
+          },
+        });
+
+        if (data.status === 200) {
+          const _data = await data.json();
+          setMintButtonVisible(true);
+          setCarApiData(_data);
+          setShowEnableMinting(true);
+        } else {
+          console.log("error");
+          toast({
+            description: `Error: ${data.status}`,
+          });
+          // Toast Here to say its an error
+        }
+      },
+      error(err: { message: any }) {
+        console.log(err);
+        console.log(err.message);
       },
     });
-
-    if (data.status === 200) {
-      const _data = await data.json();
-      setMintButtonVisible(true);
-      setCarApiData(_data);
-      setShowEnableMinting(true);
-    } else {
-      console.log("error");
-      toast({
-        description: `Error: ${data.status}`,
-      });
-      // Toast Here to say its an error
-    }
   };
 
   const mintCarNFT = async () => {
@@ -286,24 +315,39 @@ function Page({ params }: { params: { id: string } }) {
 
   return (
     <main>
+      <Stepper currentStep={currentStep} />
       <h2 className="max-w-[200px] pb-2 text-3xl font-semibold tracking-tight transition-colors text-blue-500 my-8">
         Snap & Sell List Car
       </h2>
       <p className=" text-blue-400 text-small my-6">
-        More practical than the Ceed hatchback and more stylish than the Ceed
-        Sportswagon estate, the Proceed is a good-looking and individual choice
-        with a premium vibe, eye-catching styling, generous equipment levels and
-        that confidence-inspiring seven-year warranty. It drives pretty well
-        too.
+        Start now—snap a photo, upload, and watch as our platform creates a
+        comprehensive, attractive listing that's ready to go live. Sell smarter,
+        not harder, with 'Snap & Sell List Car'!
       </p>
-      <Stepper currentStep={currentStep} />
       {currentStep === 1 && (
         <>
           <div className="grid grid-cols-6 md:grid-cols-12 gap-4 mt-12">
             <Camera onCapture={handleImageCapture} onConfirm={handleConfirm} />
           </div>
 
-          {confirmCar ? <CarSpecs highScores={carApiData} /> : null}
+          {confirmCar ? (
+            <>
+              <CarSpecs highScores={carApiData} />
+              <h4 className="my-4 mb-2 text-xl font-semibold tracking-tight text-blue-800">
+                Engine selection
+              </h4>
+              <RadioGroup defaultValue="option-one " className="my-6">
+                <div className="flex items-center space-x-2">
+                  <RadioGroupItem value="option-one" id="automatic" />
+                  <Label htmlFor="option-one">Automatic</Label>
+                </div>
+                <div className="flex items-center space-x-2">
+                  <RadioGroupItem value="option-two" id="manual" />
+                  <Label htmlFor="option-two">Manual</Label>
+                </div>
+              </RadioGroup>
+            </>
+          ) : null}
 
           <div className="flex ">
             <div>

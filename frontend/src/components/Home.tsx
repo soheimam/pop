@@ -2,68 +2,36 @@
 
 import { useState } from "react";
 import Image from "next/image";
-import CarCard from "./CarCard";
+import { Button } from "@/components/ui/button";
 
-const mockCars = [
-  {
-    id: 1,
-    make: "Toyota",
-    model: "Corolla",
-    year: 2018,
-    price: 15000,
-    image: "/car2.png",
-    engine: "automatic",
-  },
-  {
-    id: 2,
-    make: "Honda",
-    model: "Civic",
-    year: 2019,
-    price: 17000,
-    image: "/car3.png",
-    engine: "automatic",
-  },
-  {
-    id: 3,
-    make: "Ford",
-    model: "Mustang",
-    year: 2020,
-    price: 25000,
-    image: "/car4.png",
-    engine: "manual",
-  },
-];
-
-export default function Home({ title = "" }) {
-  const [cars, setCars] = useState(mockCars);
-
+export default function Home({}) {
   return (
-    <main>
-      <div className="grid grid-cols-6 bg-blue-500 rounded-b-2xl pt-4 pb-12 px-8 lg:grid-cols-12">
-        <h2 className="col-start-1 mt-8 text-3xl font-semibold   text-white text-wrap col-span-4  ">
-          You snap it! We sell it
-        </h2>
-        <p className="col-start-1 col-span-5 leading-7 text-white [&:not(:first-child)]:mt-3 ">
-          Take a photo of your car, use machine learning to detect the car and
-          its data.
-        </p>
-      </div>
-      <h4 className="mt-9 mb-6 blue-900 text-xl font-semibold tracking-tight text-blue-900">
-        Todays picks
-      </h4>
-      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
-        {cars.map((car) => (
-          <CarCard
-            key={car.id}
-            id={car.id}
-            make={car.make}
-            model={car.model}
-            year={car.year}
-            price={car.price}
-            imageUrl={car.image}
-            engine={car.engine}
-          />
-        ))}
+    <main className="absolute top-0 left-0 bg-[url('/home_b.jpg')] bg-cover bg-center h-screen w-screen flex flex-col justify-center items-center ">
+      {/* Overlay */}
+      <div className="absolute top-0 left-0 z-10  inset-0 bg-gradient-to-t from-overlay to-transparent"></div>
+      <Image
+        src="/pop_logo.svg"
+        height={100}
+        width={100}
+        alt="logo"
+        className="my-10"
+      />
+      {/* Content */}
+      <div className="z-20 text-left  mx-10 mb-24 space-y-12">
+        {/* Hero Text */}
+
+        <div className="space-y-2">
+          <h1 className="text-3xl font-bold tracking-tighter sm:text-5xl xl:text-6xl/none bg-clip-text text-transparent  bg-gradient-to-r from-white to-blue-500">
+            Discover Our Unique Features
+          </h1>
+          <p className="max-w-[600px] text-sky-200 md:text-xl dark:text-sky-100 mx-auto">
+            Our features are designed to enhance your productivity and
+            streamline your workflow.
+          </p>
+        </div>
+
+        {/* Start Now Button */}
+        <Button>Start Now</Button>
       </div>
     </main>
   );

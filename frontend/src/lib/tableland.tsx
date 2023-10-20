@@ -4,6 +4,8 @@ import { Database } from "@tableland/sdk";
 
 const userTableName = "cli_pop_table_80001_7907";
 const carTableName = "cli_popcar_table_80001_7882";
+const favTableName = "cli_popfav_table_80001_7948";
+const bidTableName = "cli_popbid_table_80001_7949";
 
 export interface CarRow {
   carName: string;
@@ -99,10 +101,32 @@ export const findUserOfTokenId = async (
   dbClient: Database
 ) => {
   const transaction = await dbClient
+    .prepare(`SELECT * FROM ${userTableName} where tokenId = ${tokenId};`)
+    .run();
+  let result = await transaction.results;
+  console.log(result);
+  return result as UserRow[];
+};
+
+export const findFavoritesForUser = async (
+  userAddress: number,
+  dbClient: Database
+) => {
+  const transaction = await dbClient
     .prepare(
-      `SELECT * FROM ${userTableName} WHERE tokenId = '${tokenId}' LIMIT 1;`
+      `SELECT * FROM ${favTableName} where userAddress = ${userAddress};`
     )
     .run();
   let result = await transaction.results;
+  console.log(result);
+  return result as UserRow[];
+};
+
+export const findBidsForCar = async (tokenId: number, dbClient: Database) => {
+  const transaction = await dbClient
+    .prepare(`SELECT * FROM ${bidTableName} where tokenId = ${tokenId};`)
+    .run();
+  let result = await transaction.results;
+  console.log(result);
   return result as UserRow[];
 };

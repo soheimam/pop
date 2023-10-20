@@ -39,7 +39,7 @@ export function XmtpProvider({ children }: any) {
     just setup the client for use in other components
   */
   useEffect(() => {
-    if (!xmtpClient && isConnected) {
+    if (!xmtpClient && isConnected && activeConnector) {
       runner();
     }
   }, [xmtpClient, isConnected]);
