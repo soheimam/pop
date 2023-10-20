@@ -2,7 +2,7 @@
 
 import { Database } from "@tableland/sdk";
 
-const userTableName = "cli_pop_table_80001_7907";
+const userTableName = "cli_pop_table_80001_7957";
 const carTableName = "cli_popcar_table_80001_7956";
 const favTableName = "cli_popfav_table_80001_7948";
 const bidTableName = "cli_popbid_table_80001_7949";
