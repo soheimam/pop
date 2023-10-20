@@ -13,7 +13,7 @@ export default function App({ Component, pageProps }: any) {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <meta name="theme-color" content="#ffffff" />
       </Head>
-      <div className={inter.className}>
+      <div className={`w-full ${inter.className}`}>
         <Component {...pageProps} />
       </div>
     </>

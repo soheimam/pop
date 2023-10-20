@@ -2,10 +2,15 @@
 import React from "react";
 import {
   connectorsForWallets,
+  getDefaultWallets,
   RainbowKitProvider,
 } from "@rainbow-me/rainbowkit";
 import { configureChains, createConfig, WagmiConfig } from "wagmi";
-
+import {
+  walletConnectWallet,
+  rainbowWallet,
+  metaMaskWallet,
+} from "@rainbow-me/rainbowkit/wallets";
 import {
   arbitrum,
   mainnet,
@@ -16,12 +21,8 @@ import {
   polygonMumbai,
 } from "wagmi/chains";
 import { publicProvider } from "wagmi/providers/public";
-import {
-  walletConnectWallet,
-  rainbowWallet,
-  metaMaskWallet,
-} from "@rainbow-me/rainbowkit/wallets";
 import { rainbowWeb3AuthConnector } from "./RainbowKitConnector";
+// import { PrivyWagmiConnector } from "@privy-io/wagmi-connector";
 
 const { chains, publicClient } = configureChains(
   [mainnet, polygon, optimism, arbitrum, base, zora, polygonMumbai],
@@ -49,8 +50,8 @@ const connectors = connectorsForWallets([
 
 const wagmiConfig = createConfig({
   autoConnect: true,
-  connectors,
   publicClient,
+  connectors,
 });
 
 const WagmiProvider = ({ children }: { children: React.ReactNode }) => {
