@@ -1,4 +1,5 @@
-import CarCard from "./CarCard";
+"use client";
+import CarCard from "@/components/CarCard";
 import { useState } from "react";
 
 function Page({ params }: { params: { id: string } }) {
