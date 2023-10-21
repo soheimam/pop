@@ -13,6 +13,7 @@ import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import Compressor from "compressorjs";
 import { useWaitForTransaction, useContractWrite, useAccount } from "wagmi";
 
+import { Input } from "@/components/ui/input";
 import {
   CAR_ABI,
   MUMBAI_CAR_CONTRACT_ADDRESS,
@@ -110,6 +111,9 @@ function Page({ params }: { params: { id: string } }) {
   const [transactionHash, setTransactionHash] = useState<any>(null);
   const [aiData, setAidata] = useState<any>(null);
   const { dbClient } = useTablelandProvider();
+  const [year, setYear] = useState("");
+  const [price, setPrice] = useState("");
+  const [selectedOption, setSelectedOption] = useState("automatic");
 
   let runner = async () => {
     findUserOfTokenId(1, dbClient);
@@ -247,6 +251,16 @@ function Page({ params }: { params: { id: string } }) {
     setCapturedImage(imageFile);
   };
 
+  const handleYearChange = (event) => {
+    setYear(event.target.value);
+  };
+
+  const handlePriceChange = (event) => {
+    setPrice(event.target.value);
+  };
+  const handleTransmisson = (event) => {
+    setSelectedOption(event.target.value);
+  };
   const handleConfirm = async () => {
     setConfirmCar(true);
 
@@ -333,40 +347,68 @@ function Page({ params }: { params: { id: string } }) {
           {confirmCar ? (
             <>
               <CarSpecs highScores={carApiData} />
-              <h4 className="my-4 mb-2 text-xl font-semibold tracking-tight text-blue-800">
-                Engine selection
+              <h4 className="text-sm font-medium leading-none col-span-6 text-blue-950 my-2">
+                {" "}
+                Transmission{" "}
               </h4>
-              <RadioGroup defaultValue="option-one " className="my-6">
-                <div className="flex items-center space-x-2">
-                  <RadioGroupItem value="option-one" id="automatic" />
-                  <Label htmlFor="option-one">Automatic</Label>
+              <p className="text-sm text-muted-foreground mb-4">
+                Select your cars transmission.
+              </p>
+
+              <div className="grid w-full max-w-sm items-center gap-2.5 mb-4">
+                <RadioGroup defaultValue="automatic" className="mb-2 ">
+                  <div className="flex items-center space-x-2">
+                    <RadioGroupItem
+                      value="automatic"
+                      id="automatic"
+                      checked={selectedOption === "automatic"}
+                    />
+                    <Label htmlFor="option-one">Automatic</Label>
+                  </div>
+                  <div className="flex items-center space-x-2">
+                    <RadioGroupItem value="manual" id="manual" />
+                    <Label htmlFor="option-two">Manual</Label>
+                  </div>
+                </RadioGroup>
+                <div className="grid w-full max-w-sm items-center gap-1.5">
+                  <Label htmlFor="year">Enter year</Label>
+                  <Input
+                    type="text"
+                    id="year"
+                    maxLength={4}
+                    value={year}
+                    onChange={handleYearChange}
+                  />
                 </div>
-                <div className="flex items-center space-x-2">
-                  <RadioGroupItem value="option-two" id="manual" />
-                  <Label htmlFor="option-two">Manual</Label>
+                <div className="grid w-full max-w-sm items-center gap-1.5">
+                  <Label htmlFor="price">Sale Price</Label>
+                  <Input
+                    type="text"
+                    id="price"
+                    value={price}
+                    onChange={handlePriceChange}
+                  />
                 </div>
-              </RadioGroup>
+              </div>
             </>
           ) : null}
 
-          <div className="flex ">
-            <div>
-              {!account && mintButtonVisible && capturedImage && (
-                <MintButton
-                  onUpload={handleUpload}
-                  onMint={mintCarNFT}
-                  setCurrentStep={setCurrentStep}
-                  isLoading={writeLoadingCar}
-                />
-              )}
-            </div>
+          <div>
+            {!account && mintButtonVisible && capturedImage && (
+              <MintButton
+                onUpload={handleUpload}
+                onMint={mintCarNFT}
+                setCurrentStep={setCurrentStep}
+                isLoading={writeLoadingCar}
+              />
+            )}
           </div>
         </>
       )}
       {currentStep === 2 && (
         <>
           <h4 className="mt-6 mb-2 text-xl font-semibold tracking-tight text-blue-800">
-            Add Details
+            Verify Your Maintenance History & Authenticate Your Car
           </h4>
 
           <p className=" text-blue-400 text-small">
@@ -391,27 +433,25 @@ function Page({ params }: { params: { id: string } }) {
                 userTba: account!,
                 tokenId: mintedTokenId,
               };
-              await insertUserRow(userRow, dbClient);
+              // await insertUserRow(userRow, dbClient);
 
               const carRow: CarRow = {
-                make:
-                  aiData["model_make"] == null
-                    ? "Unknown"
-                    : aiData["model_make"],
-                model: "",
-                tansmissionType: "",
+                make: aiData.make,
+                model: aiData.model,
+                tansmissionType: selectedOption,
                 tokenId: mintedTokenId,
-                price: 0,
+                price: price,
                 rating: getRandomBetween(3.5, 5).toString(),
-                year: 0,
+                year: year,
               };
-              await insertCarRow(carRow, dbClient);
+              // await insertCarRow(carRow, dbClient);
 
               // insert a car details row
             }}
           >
-            Finish
+            Confirm
           </Button>
+          <p>car {carRow}</p>
         </>
       )}
       {currentStep >= 3 && <div>hello</div>}{" "}

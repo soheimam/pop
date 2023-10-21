@@ -27,9 +27,9 @@ const CarSpecs: React.FC<CarSpecsProps> = ({ highScores }: CarSpecsProps) => {
 
   if (!highScores) {
     return (
-      <div className="grid grid-cols-6 py-4 gap-4">
+      <div className="grid grid-cols-6 grid-rows-2 py-4 gap-4 my-4">
         <div className=" grid col-span-6 md:col-span-12 space-y-1 ">
-          <h4 className="text-sm font-medium leading-none col-span-6">
+          <h4 className="text-sm font-medium leading-none col-span-6 text-blue-950">
             Specifications
           </h4>
           <p className="text-sm text-muted-foreground col-span-4">
