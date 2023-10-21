@@ -31,6 +31,7 @@ export interface FavRow {
 export const insertUserRow = async (userRow: UserRow, db: Database) => {
   if (db == null) {
     console.error("No db connection trying to insert user row");
+    return;
   }
   console.log(`trying to insert user row `);
   let insert = await db
@@ -63,6 +64,7 @@ export const insertUserRow = async (userRow: UserRow, db: Database) => {
 export const insertCarRow = async (carRow: CarRow, dbClient: Database) => {
   if (dbClient == null) {
     console.error("No db connection trying to insert car row");
+    return;
   }
   // "carName text, tansmissionType text, tokenId int, year int, price int, rating text"
   const { meta: insert } = await dbClient
@@ -95,6 +97,7 @@ export const insertCarRow = async (carRow: CarRow, dbClient: Database) => {
 export const findCarsForHome = async (dbClient: Database) => {
   if (dbClient == null) {
     console.error("No db connection trying to findCarsForHome");
+    return;
   }
   const transaction = await dbClient
     .prepare(`SELECT * FROM ${carTableName} LIMIT 10;`)
@@ -109,6 +112,7 @@ export const findCarsForUser = async (
 ) => {
   if (dbClient == null) {
     console.error("No db connection trying to findCarsForUser");
+    return;
   }
   let queryString = "";
   for (let i = 0; i < tokenIds.length; i++) {
@@ -128,6 +132,7 @@ export const findCarsForUser = async (
 export const findCarForUser = async (tokenId: number, dbClient: Database) => {
   if (dbClient == null) {
     console.error("No db connection trying to findCarForUser");
+    return;
   }
 
   const transaction = await dbClient
@@ -145,6 +150,7 @@ export const findUserOfTokenId = async (
 ) => {
   if (dbClient == null) {
     console.error("No db connection trying to findUserOfTokenId");
+    return;
   }
 
   const transaction = await dbClient
@@ -161,6 +167,7 @@ export const findFavoritesForUser = async (
 ) => {
   if (dbClient == null) {
     console.error("No db connection trying to findFavoritesForUser");
+    return;
   }
 
   const transaction = await dbClient
@@ -176,6 +183,7 @@ export const findFavoritesForUser = async (
 export const findBidsForCar = async (tokenId: number, dbClient: Database) => {
   if (dbClient == null) {
     console.error("No db connection trying to findBidsForCar");
+    return;
   }
 
   const transaction = await dbClient
