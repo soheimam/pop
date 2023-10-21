@@ -16,7 +16,7 @@ function NavBar() {
   // const { isConnecting, isConnected, connect, connectionError, wallet } =
   //   useWalletAuth();
   return (
-    <footer className=" z-30 fixed bottom-0 bg-blue-500 rounded-md transform -translate-x-1/2 left-1/2 shadow-md">
+    <footer className=" z-30 fixed bottom-0 bg-blue-500 rounded-md transform -translate-x-1/2 left-1/2 shadow-md mx-20">
       <div className="flex justify-between mx-auto items-center">
         <Link href="/marketplace" passHref legacyBehavior>
           <a
