@@ -69,22 +69,26 @@ export default function MarketPlace({ title = "" }) {
         Todays picks
       </h4>
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 ">
-        {cars.map((car) => (
-          <CarCard
-            key={car.tokenId}
-            id={car.tokenId}
-            make={car.make}
-            model={car.model}
-            year={car.year}
-            price={car.price}
-            imageUrl={
-              caughtError
-                ? car.image
-                : `https://api.metafuse.me/assets/be82af4a-9515-4c14-979f-27685ede3bbd/${car.tokenId}.png`
-            }
-            engine={car.transmissionType}
-          />
-        ))}
+        {cars ? (
+          cars.map((car) => (
+            <CarCard
+              key={car.tokenId}
+              id={car.tokenId}
+              make={car.make}
+              model={car.model}
+              year={car.year}
+              price={car.price}
+              imageUrl={
+                caughtError
+                  ? car.image
+                  : `https://api.metafuse.me/assets/be82af4a-9515-4c14-979f-27685ede3bbd/${car.tokenId}.png`
+              }
+              engine={car.transmissionType}
+            />
+          ))
+        ) : (
+          <></>
+        )}
       </div>
     </main>
   );
