@@ -34,18 +34,18 @@ function Page({ params }: { params: { id: string } }) {
 
   return (
     <main>
-      <h1 className="text-blue-800"> Notis</h1>
+      <h1 className="text-blue-800"> Favourites</h1>
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 ">
         {cars != null && cars.length > 0 ? (
-          cars.map((car) => (
+          cars.map((car, index) => (
             <CarCard
-              key={car.tokenId}
+              key={index}
               id={car.tokenId}
               make={car.make}
               model={car.model}
               year={car.year}
               price={car.price}
-              imageUrl={`/car2.png`}
+              imageUrl={`https://api.metafuse.me/assets/be82af4a-9515-4c14-979f-27685ede3bbd/${car.tokenId}.png`}
               engine={car.tansmissionType}
             />
           ))

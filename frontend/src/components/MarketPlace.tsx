@@ -70,9 +70,9 @@ export default function MarketPlace({ title = "" }) {
       </h4>
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 ">
         {cars ? (
-          cars.map((car) => (
+          cars.map((car, index) => (
             <CarCard
-              key={car.tokenId}
+              key={`${car.tokenId}${index}`}
               id={car.tokenId}
               make={car.make}
               model={car.model}

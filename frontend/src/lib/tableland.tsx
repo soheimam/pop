@@ -50,7 +50,7 @@ export const insertUserRow = async (userRow: UserRow, db: Database) => {
     const { results } = await db
       .prepare(`SELECT ROWID FROM ${userTableName};`)
       .all();
-
+    console.log(`all the user table rows...`);
     console.log(results);
   } catch (error) {
     console.log(error);
@@ -65,16 +65,16 @@ export const insertCarRow = async (carRow: CarRow, dbClient: Database) => {
   // "carName text, tansmissionType text, tokenId int, year int, price int, rating text"
   const { meta: insert } = await dbClient
     .prepare(
-      `INSERT INTO ${carTableName} (make, model, tansmissionType, tokenId, price, rating, year) VALUES (?1, ?2, ?3, ?4, ?5, ?6, ?7);`
+      `INSERT INTO ${carTableName} (make, model, tansmissionType, tokenId, year, price, rating) VALUES (?1, ?2, ?3, ?4, ?5, ?6, ?7);`
     )
     .bind(
       carRow.make,
       carRow.model,
       carRow.transmissionType,
       carRow.tokenId,
+      carRow.year,
       carRow.price,
-      carRow.rating,
-      carRow.year
+      carRow.rating
     )
     .run();
 

@@ -18,31 +18,32 @@ const mockCars = [
 ];
 
 function Page({ params }: { params: { id: string } }) {
-  const [cars, setCars] = useState(mockCars);
+  const [cars, setCars] = useState(null);
   const { dbClient } = useTablelandProvider();
-  const { address } = useAccount();
+  const { address, isConnected } = useAccount();
   const [caughtError, setCaughtError] = useState(false);
 
-  const initCarData = async () => {
-    if (!address) return;
-    try {
-      let tokenIds = await findCarTokenIdsForUser(address, dbClient);
-      console.log(tokenIds);
-      if (tokenIds == null || tokenIds.length == 0) {
-        throw Error("no token ids"); // should fall back to mock cars
-      }
-      let cars = await findCarsForUser(tokenIds!, dbClient);
-      setCars(cars);
-    } catch (error) {
-      setCaughtError(true);
-      console.log(error);
-      setCars(mockCars);
-    }
-  };
-
   useEffect(() => {
-    initCarData();
-  }, [address, cars]);
+    const initCarData = async () => {
+      try {
+        console.log`Initing some data`;
+        let tokenIds = await findCarTokenIdsForUser(address, dbClient);
+        console.log(tokenIds);
+        if (tokenIds == null || tokenIds.length == 0) {
+          throw Error("no token ids"); // should fall back to mock cars
+        }
+        let cars = await findCarsForUser(tokenIds!, dbClient);
+        setCars(cars);
+      } catch (error) {
+        setCaughtError(true);
+        console.log(error);
+        setCars(mockCars);
+      }
+    };
+    if (cars == null) {
+      initCarData();
+    }
+  }, [isConnected]);
 
   return (
     <main>
@@ -56,19 +57,18 @@ function Page({ params }: { params: { id: string } }) {
       </h4>
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 ">
         {cars ? (
-          cars.map((car) => (
+          cars.map((car, index) => (
             <CarCard
-              key={car.tokenId}
+              key={`${car.tokenId}${index}`}
               id={car.tokenId}
               make={car.make}
               model={car.model}
               year={car.year}
               price={car.price}
               imageUrl={
-                car.image
-                // caughtError
-                //   ? car.image
-                //   : `https://api.metafuse.me/assets/be82af4a-9515-4c14-979f-27685ede3bbd/${car.tokenId}.png`
+                caughtError
+                  ? car.image
+                  : `https://api.metafuse.me/assets/be82af4a-9515-4c14-979f-27685ede3bbd/${car.tokenId}.png`
               }
               engine={car.transmissionType}
             />

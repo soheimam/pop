@@ -114,6 +114,7 @@ function Page({ params }: { params: { id: string } }) {
   const [year, setYear] = useState("");
   const [price, setPrice] = useState("");
   const [selectedOption, setSelectedOption] = useState("automatic");
+  const [carTokenId, setCarTokenId] = useState<number>(0);
 
   const {
     data: writeDataRoadWorthy,
@@ -217,6 +218,8 @@ function Page({ params }: { params: { id: string } }) {
     enabled: Boolean(writeDataCar),
     onSuccess: async (transactionReceipt) => {
       const tokenId = getTokenId(transactionReceipt);
+      console.log(`what is this mint car token id ? ${tokenId}`);
+      setCarTokenId(+tokenId);
       await createTBA(+tokenId);
       const base64 = await fileToBase64(capturedImage!);
       const traits = convertToTraitTypeValue(carApiData.data, setAidata);
@@ -429,7 +432,7 @@ function Page({ params }: { params: { id: string } }) {
               const userRow: UserRow = {
                 userAddress: address!,
                 userTba: account!,
-                tokenId: mintedTokenId,
+                tokenId: carTokenId,
               };
               await insertUserRow(userRow, dbClient);
 
@@ -437,11 +440,13 @@ function Page({ params }: { params: { id: string } }) {
                 make: aiData.make,
                 model: aiData.model,
                 transmissionType: selectedOption,
-                tokenId: mintedTokenId,
+                tokenId: carTokenId,
                 price: +price,
                 rating: getRandomBetween(3.5, 5).toString(),
                 year: +year,
               };
+              console.log(`inserting a car row ..`);
+              console.log(carRow);
               await insertCarRow(carRow, dbClient);
 
               // insert a car details row
