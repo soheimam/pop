@@ -38,11 +38,7 @@ export const insertUserRow = async (userRow: UserRow, db: Database) => {
     .prepare(
       `INSERT INTO ${userTableName} (userAddress, userTba, tokenId) VALUES (?1, ?2, ?3);`
     )
-    .bind(
-      "0xa70327625a17CaeB2835F00215Aa579566d38987",
-      "0xa70327625a17CaeB2835F00215Aa579566d38987",
-      1
-    )
+    .bind(userRow.userAddress, userRow.userTba, userRow.tokenId)
     .run();
 
   console.log(`here is the insert ...`);
