@@ -69,6 +69,7 @@ function Page({ params }: { params: { id: string } }) {
               model={car.model}
               year={car.year}
               price={car.price}
+              rating={parseFloat(car.rating).toFixed(1).toString()}
               imageUrl={
                 caughtError
                   ? car.image

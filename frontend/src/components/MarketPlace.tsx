@@ -47,7 +47,6 @@ export default function MarketPlace({ title = "" }) {
   const initCarData = async () => {
     try {
       let cars = await findCarsForHome(dbClient);
-      let userFavs = await findFavoritesForUser(address, dbClient);
       setCars(cars);
     } catch (error) {
       console.log(error);
@@ -88,6 +87,7 @@ export default function MarketPlace({ title = "" }) {
               id={car.tokenId}
               make={car.make}
               model={car.model}
+              rating={parseFloat(car.rating).toFixed(1).toString()}
               year={car.year}
               price={car.price}
               imageUrl={
