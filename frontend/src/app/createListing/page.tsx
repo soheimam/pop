@@ -115,14 +115,6 @@ function Page({ params }: { params: { id: string } }) {
   const [price, setPrice] = useState("");
   const [selectedOption, setSelectedOption] = useState("automatic");
 
-  let runner = async () => {
-    findUserOfTokenId(1, dbClient);
-  };
-
-  useEffect(() => {
-    runner();
-  }, []);
-
   const {
     data: writeDataRoadWorthy,
     isLoading: writeLoadingRoadWorthy,
