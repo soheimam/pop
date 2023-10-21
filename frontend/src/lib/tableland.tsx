@@ -29,6 +29,9 @@ export interface FavRow {
 }
 
 export const insertUserRow = async (userRow: UserRow, db: Database) => {
+  if (db == null) {
+    console.error("No db connection trying to insert user row");
+  }
   console.log(`trying to insert user row `);
   let insert = await db
     .prepare(
@@ -58,10 +61,13 @@ export const insertUserRow = async (userRow: UserRow, db: Database) => {
 };
 
 export const insertCarRow = async (carRow: CarRow, dbClient: Database) => {
+  if (dbClient == null) {
+    console.error("No db connection trying to insert car row");
+  }
   // "carName text, tansmissionType text, tokenId int, year int, price int, rating text"
   const { meta: insert } = await dbClient
     .prepare(
-      `INSERT INTO ${carTableName} (make, model, tansmissionType, tokenId, price, rating) VALUES (?1, ?2, ?3, ?4, ?5, ?6);`
+      `INSERT INTO ${carTableName} (make, model, tansmissionType, tokenId, price, rating) VALUES (?1, ?2, ?3, ?4, ?5, ?6, ?7);`
     )
     .bind(
       carRow.make,
@@ -69,7 +75,8 @@ export const insertCarRow = async (carRow: CarRow, dbClient: Database) => {
       carRow.transmissionType,
       carRow.tokenId,
       carRow.price,
-      carRow.rating
+      carRow.rating,
+      carRow.year
     )
     .run();
 
@@ -86,6 +93,9 @@ export const insertCarRow = async (carRow: CarRow, dbClient: Database) => {
 };
 
 export const findCarsForHome = async (dbClient: Database) => {
+  if (dbClient == null) {
+    console.error("No db connection trying to findCarsForHome");
+  }
   const transaction = await dbClient
     .prepare(`SELECT * FROM ${carTableName} LIMIT 10;`)
     .run();
@@ -97,6 +107,9 @@ export const findCarsForUser = async (
   tokenIds: number[],
   dbClient: Database
 ) => {
+  if (dbClient == null) {
+    console.error("No db connection trying to findCarsForUser");
+  }
   let queryString = "";
   for (let i = 0; i < tokenIds.length; i++) {
     if (i != tokenIds.length - 1) {
@@ -113,6 +126,10 @@ export const findCarsForUser = async (
 };
 
 export const findCarForUser = async (tokenId: number, dbClient: Database) => {
+  if (dbClient == null) {
+    console.error("No db connection trying to findCarForUser");
+  }
+
   const transaction = await dbClient
     .prepare(
       `SELECT * FROM ${carTableName} WHERE tokenId = '${tokenId}' LIMIT 1;`
@@ -126,6 +143,10 @@ export const findUserOfTokenId = async (
   tokenId: number,
   dbClient: Database
 ) => {
+  if (dbClient == null) {
+    console.error("No db connection trying to findUserOfTokenId");
+  }
+
   const transaction = await dbClient
     .prepare(`SELECT * FROM ${userTableName} where tokenId = ${tokenId};`)
     .run();
@@ -138,6 +159,10 @@ export const findFavoritesForUser = async (
   userAddress: string,
   dbClient: Database
 ) => {
+  if (dbClient == null) {
+    console.error("No db connection trying to findFavoritesForUser");
+  }
+
   const transaction = await dbClient
     .prepare(
       `SELECT * FROM ${favTableName} where userAddress = "${userAddress}";`
@@ -149,6 +174,10 @@ export const findFavoritesForUser = async (
 };
 
 export const findBidsForCar = async (tokenId: number, dbClient: Database) => {
+  if (dbClient == null) {
+    console.error("No db connection trying to findBidsForCar");
+  }
+
   const transaction = await dbClient
     .prepare(`SELECT * FROM ${bidTableName} where tokenId = ${tokenId};`)
     .run();

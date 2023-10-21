@@ -1,41 +1,58 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Image from "next/image";
 import CarCard from "./CarCard";
+import { useTablelandProvider } from "@/app/(context)/tablelandContext";
+import { CarRow, findCarsForHome } from "@/lib/tableland";
 
 const mockCars = [
   {
-    id: 1,
+    tokenId: 1,
     make: "Toyota",
     model: "Corolla",
     year: 2018,
     price: 15000,
-    image: "/car2.png",
+    image: "/2.png",
     engine: "automatic",
   },
   {
-    id: 2,
+    tokenId: 2,
     make: "Honda",
     model: "Civic",
     year: 2019,
     price: 17000,
-    image: "/car3.png",
+    image: "/3.png",
     engine: "automatic",
   },
   {
-    id: 3,
+    tokenId: 3,
     make: "Ford",
     model: "Mustang",
     year: 2020,
     price: 25000,
-    image: "/car4.png",
+    image: "/4.png",
     engine: "manual",
   },
-];
+] as CarRow[];
 
 export default function MarketPlace({ title = "" }) {
-  const [cars, setCars] = useState(mockCars);
+  const [cars, setCars] = useState<CarRow[]>([]);
+  const [caughtError, setCaughtError] = useState(false);
+  const { dbClient } = useTablelandProvider();
+
+  const initCarData = async () => {
+    try {
+      let cars = await findCarsForHome(dbClient);
+      setCars(cars);
+    } catch (error) {
+      console.log(error);
+      setCars(mockCars);
+    }
+  };
+  useEffect(() => {
+    initCarData();
+  });
 
   return (
     <main>
@@ -54,14 +71,18 @@ export default function MarketPlace({ title = "" }) {
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 ">
         {cars.map((car) => (
           <CarCard
-            key={car.id}
-            id={car.id}
+            key={car.tokenId}
+            id={car.tokenId}
             make={car.make}
             model={car.model}
             year={car.year}
             price={car.price}
-            imageUrl={car.image}
-            engine={car.engine}
+            imageUrl={
+              caughtError
+                ? car.image
+                : `https://api.metafuse.me/assets/be82af4a-9515-4c14-979f-27685ede3bbd/${car.tokenId}.png`
+            }
+            engine={car.transmissionType}
           />
         ))}
       </div>

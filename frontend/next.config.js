@@ -1,5 +1,8 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  images: {
+    domains: ["api.metafuse.me"],
+  },
   reactStrictMode: false,
   typescript: {
     ignoreBuildErrors: true,

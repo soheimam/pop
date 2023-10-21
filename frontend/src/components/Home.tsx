@@ -1,6 +1,4 @@
 "use client";
-
-import { useState } from "react";
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
 
@@ -27,7 +25,9 @@ export default function Home({}) {
         </div>
 
         {/* Start Now Button */}
-        <Button>Start Now</Button>
+        <Button onClick={() => (window.location.href = "/marketplace")}>
+          Start Now
+        </Button>
       </div>
     </main>
   );
