@@ -361,12 +361,18 @@ function Page({ params }: { params: { id: string } }) {
                     <RadioGroupItem
                       value="automatic"
                       id="automatic"
+                      onClick={handleTransmisson}
                       checked={selectedOption === "automatic"}
                     />
                     <Label htmlFor="option-one">Automatic</Label>
                   </div>
                   <div className="flex items-center space-x-2">
-                    <RadioGroupItem value="manual" id="manual" />
+                    <RadioGroupItem
+                      value="manual"
+                      id="manual"
+                      onClick={handleTransmisson}
+                      checked={selectedOption === "manual"}
+                    />
                     <Label htmlFor="option-two">Manual</Label>
                   </div>
                 </RadioGroup>
@@ -433,25 +439,24 @@ function Page({ params }: { params: { id: string } }) {
                 userTba: account!,
                 tokenId: mintedTokenId,
               };
-              // await insertUserRow(userRow, dbClient);
+              await insertUserRow(userRow, dbClient);
 
               const carRow: CarRow = {
                 make: aiData.make,
                 model: aiData.model,
-                tansmissionType: selectedOption,
+                transmissionType: selectedOption,
                 tokenId: mintedTokenId,
-                price: price,
+                price: +price,
                 rating: getRandomBetween(3.5, 5).toString(),
-                year: year,
+                year: +year,
               };
-              // await insertCarRow(carRow, dbClient);
+              await insertCarRow(carRow, dbClient);
 
               // insert a car details row
             }}
           >
             Confirm
           </Button>
-          <p>car {carRow}</p>
         </>
       )}
       {currentStep >= 3 && <div>hello</div>}{" "}

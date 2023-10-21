@@ -10,7 +10,7 @@ const bidTableName = "cli_popbid_table_80001_7949";
 export interface CarRow {
   make: string;
   model: string;
-  tansmissionType: string;
+  transmissionType: string;
   tokenId: number;
   price: number;
   rating: string;
@@ -66,7 +66,7 @@ export const insertCarRow = async (carRow: CarRow, dbClient: Database) => {
     .bind(
       carRow.make,
       carRow.model,
-      carRow.tansmissionType,
+      carRow.transmissionType,
       carRow.tokenId,
       carRow.price,
       carRow.rating
