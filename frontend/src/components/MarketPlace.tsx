@@ -4,7 +4,8 @@ import { useEffect, useState } from "react";
 import Image from "next/image";
 import CarCard from "./CarCard";
 import { useTablelandProvider } from "@/app/(context)/tablelandContext";
-import { CarRow, findCarsForHome } from "@/lib/tableland";
+import { CarRow, findCarsForHome, findFavoritesForUser } from "@/lib/tableland";
+import { useAccount } from "wagmi";
 
 const mockCars = [
   {
@@ -37,22 +38,33 @@ const mockCars = [
 ] as CarRow[];
 
 export default function MarketPlace({ title = "" }) {
-  const [cars, setCars] = useState<CarRow[]>([]);
+  const [cars, setCars] = useState<CarRow[]>(null);
   const [caughtError, setCaughtError] = useState(false);
   const { dbClient } = useTablelandProvider();
+  const { address } = useAccount();
+  const [userFavs, setUserFavs] = useState();
 
   const initCarData = async () => {
     try {
       let cars = await findCarsForHome(dbClient);
+      let userFavs = await findFavoritesForUser(address, dbClient);
       setCars(cars);
     } catch (error) {
       console.log(error);
       setCars(mockCars);
     }
   };
+
   useEffect(() => {
-    initCarData();
-  });
+    if (!cars && dbClient) {
+      try {
+        initCarData();
+      } catch (error) {
+        setCars(mockCars);
+        console.log(error);
+      }
+    }
+  }, [dbClient]);
 
   return (
     <main>

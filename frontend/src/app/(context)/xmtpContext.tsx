@@ -25,7 +25,7 @@ export function XmtpProvider({ children }: any) {
     new Promise((resolve) => setTimeout(resolve, ms));
 
   const runner = async () => {
-    await delay(5000);
+    await delay(1000);
     // Your code to run after the 2-second delay goes here
     const provider = new ethers.providers.Web3Provider(window.ethereum);
     const signer = provider.getSigner();

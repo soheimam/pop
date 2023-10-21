@@ -25,14 +25,12 @@ export default function RootLayout({ children }: any) {
       >
         <WagmiProvider>
           <XmtpProvider>
-            {/* <TablelandProvider> */}
             <TablelandProvider>
               <Header />
               {children}
               <NavBar />
             </TablelandProvider>
           </XmtpProvider>
-          {/* </TablelandProvider> */}
         </WagmiProvider>
       </body>
     </html>
