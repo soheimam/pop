@@ -2,20 +2,47 @@
 
 import CarCard from "@/components/CarCard";
 import React, { useEffect, useState } from "react";
+import { useTablelandProvider } from "../(context)/tablelandContext";
+import { findCarTokenIdsForUser, findCarsForUser } from "@/lib/tableland";
+import { useAccount } from "wagmi";
 const mockCars = [
   {
-    id: 1,
+    tokenId: 1,
     make: "Toyota",
     model: "Corolla",
     year: 2018,
     price: 15000,
     image: "/car2.png",
-    engine: "automatic",
+    transmissionType: "automatic",
   },
 ];
 
 function Page({ params }: { params: { id: string } }) {
   const [cars, setCars] = useState(mockCars);
+  const { dbClient } = useTablelandProvider();
+  const { address } = useAccount();
+  const [caughtError, setCaughtError] = useState(false);
+
+  const initCarData = async () => {
+    if (!address) return;
+    try {
+      let tokenIds = await findCarTokenIdsForUser(address, dbClient);
+      console.log(tokenIds);
+      if (tokenIds == null || tokenIds.length == 0) {
+        throw Error("no token ids"); // should fall back to mock cars
+      }
+      let cars = await findCarsForUser(tokenIds!, dbClient);
+      setCars(cars);
+    } catch (error) {
+      setCaughtError(true);
+      console.log(error);
+      setCars(mockCars);
+    }
+  };
+
+  useEffect(() => {
+    initCarData();
+  }, [address, cars]);
 
   return (
     <main>
@@ -28,18 +55,27 @@ function Page({ params }: { params: { id: string } }) {
         Your cars
       </h4>
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 ">
-        {cars.map((car) => (
-          <CarCard
-            key={car.id}
-            id={car.id}
-            make={car.make}
-            model={car.model}
-            year={car.year}
-            price={car.price}
-            imageUrl={car.image}
-            engine={car.engine}
-          />
-        ))}
+        {cars ? (
+          cars.map((car) => (
+            <CarCard
+              key={car.tokenId}
+              id={car.tokenId}
+              make={car.make}
+              model={car.model}
+              year={car.year}
+              price={car.price}
+              imageUrl={
+                car.image
+                // caughtError
+                //   ? car.image
+                //   : `https://api.metafuse.me/assets/be82af4a-9515-4c14-979f-27685ede3bbd/${car.tokenId}.png`
+              }
+              engine={car.transmissionType}
+            />
+          ))
+        ) : (
+          <></>
+        )}
       </div>
     </main>
   );

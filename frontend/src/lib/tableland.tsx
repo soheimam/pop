@@ -69,7 +69,7 @@ export const insertCarRow = async (carRow: CarRow, dbClient: Database) => {
   // "carName text, tansmissionType text, tokenId int, year int, price int, rating text"
   const { meta: insert } = await dbClient
     .prepare(
-      `INSERT INTO ${carTableName} (make, model, tansmissionType, tokenId, price, rating) VALUES (?1, ?2, ?3, ?4, ?5, ?6, ?7);`
+      `INSERT INTO ${carTableName} (make, model, tansmissionType, tokenId, price, rating, year) VALUES (?1, ?2, ?3, ?4, ?5, ?6, ?7);`
     )
     .bind(
       carRow.make,
@@ -104,6 +104,24 @@ export const findCarsForHome = async (dbClient: Database) => {
     .run();
   let result = await transaction.results;
   return result as CarRow[];
+};
+
+export const findCarTokenIdsForUser = async (
+  userAddress: string,
+  dbClient: Database
+) => {
+  if (dbClient == null) {
+    console.error("No db connection trying to findCarsForUser");
+    return;
+  }
+
+  const transaction = await dbClient
+    .prepare(
+      `SELECT * FROM ${userTableName} where userAddress = "${userAddress}";`
+    )
+    .run();
+
+  return transaction.results.map((row: UserRow) => row.tokenId);
 };
 
 export const findCarsForUser = async (
