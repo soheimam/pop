@@ -27,7 +27,7 @@ function NavBar() {
             Cars
           </a>
         </Link>
-        <Link href="/dashboard" passHref legacyBehavior>
+        <Link href="/Dashboard" passHref legacyBehavior>
           <a
             className="text-white  text-xs bg-blue-500 hover:bg-blue-600 transition ease-in-out p-4  flex flex-col items-center justify-center"
             aria-label="dashboard"

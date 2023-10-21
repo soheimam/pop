@@ -194,6 +194,34 @@ export const findFavoritesForUser = async (
   return result as FavRow[];
 };
 
+export const addFavoriteForUesr = async (
+  userAddress: string,
+  carTokenId: number,
+  dbClient: Database
+) => {
+  if (dbClient == null) {
+    console.error("No db connection trying to addFavoriteForUesr");
+    return;
+  }
+
+  const { meta: insert } = await dbClient
+    .prepare(
+      `INSERT INTO ${favTableName} (userAddress, tokenId) VALUES (?1, ?2);`
+    )
+    .bind(userAddress, carTokenId)
+    .run();
+  try {
+    await insert.txn?.wait();
+    const { results } = await dbClient
+      .prepare(`SELECT ROWID FROM ${favTableName};`)
+      .all();
+
+    console.log(results);
+  } catch (error) {
+    console.log(error);
+  }
+};
+
 export const findBidsForCar = async (tokenId: number, dbClient: Database) => {
   if (dbClient == null) {
     console.error("No db connection trying to findBidsForCar");

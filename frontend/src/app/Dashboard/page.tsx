@@ -3,7 +3,11 @@
 import CarCard from "@/components/CarCard";
 import React, { useEffect, useState } from "react";
 import { useTablelandProvider } from "../(context)/tablelandContext";
-import { findCarTokenIdsForUser, findCarsForUser } from "@/lib/tableland";
+import {
+  CarRow,
+  findCarTokenIdsForUser,
+  findCarsForUser,
+} from "@/lib/tableland";
 import { useAccount } from "wagmi";
 const mockCars = [
   {
@@ -18,7 +22,7 @@ const mockCars = [
 ];
 
 function Page({ params }: { params: { id: string } }) {
-  const [cars, setCars] = useState(null);
+  const [cars, setCars] = useState<CarRow[]>(null);
   const { dbClient } = useTablelandProvider();
   const { address, isConnected } = useAccount();
   const [caughtError, setCaughtError] = useState(false);
@@ -43,7 +47,7 @@ function Page({ params }: { params: { id: string } }) {
     if (cars == null) {
       initCarData();
     }
-  }, [isConnected]);
+  }, [address]);
 
   return (
     <main>

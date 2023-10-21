@@ -26,19 +26,8 @@ import { toast } from "@/components/ui/use-toast";
 import { useCreateTBA } from "../(hooks)/useCreateTBA";
 import SubNFTUpload from "@/components/SubNFTUpload";
 import Stepper from "@/components/stepper";
-import {
-  CarRow,
-  UserRow,
-  findUserOfTokenId,
-  insertCarRow,
-  insertUserRow,
-} from "@/lib/tableland";
-import { Database } from "@tableland/sdk";
+import { CarRow, UserRow, insertCarRow, insertUserRow } from "@/lib/tableland";
 import { useTablelandProvider } from "../(context)/tablelandContext";
-
-// import { useConnectWallet } from "@privy-io/react-auth";
-
-// import { useWalletContext } from "../(hooks)/useWalletContext";
 
 function convertToTraitTypeValue(jsonObj: any, setAidata: any) {
   const highestScores = jsonObj.highestScores;
@@ -49,7 +38,7 @@ function convertToTraitTypeValue(jsonObj: any, setAidata: any) {
   return traitTypeValueArray;
 }
 
-function blobToBase64(blob) {
+function blobToBase64(blob: any) {
   return new Promise((resolve, _) => {
     var reader = new FileReader();
     reader.onload = function () {
@@ -448,8 +437,7 @@ function Page({ params }: { params: { id: string } }) {
               console.log(`inserting a car row ..`);
               console.log(carRow);
               await insertCarRow(carRow, dbClient);
-
-              // insert a car details row
+              window.location.href = "/Dashboard";
             }}
           >
             Confirm

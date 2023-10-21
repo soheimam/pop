@@ -15,6 +15,7 @@ import { Input } from "@/components/ui/input";
 import BidRow from "@/components/BidRow";
 
 import MaintenanceCard from "@/components/MaintanceCard";
+import AddToFavorites from "@/components/AddToFavourites";
 
 const mockData = [
   {
@@ -93,6 +94,8 @@ function Page({ params }: { params: { id: string } }) {
   const [loading, setLoading] = useState(true);
   const [content, setContent] = useState({});
   const [conversations, setConversations] = useState<any>([]);
+
+  //TODO: Replace this with address from tableland user table
   const [carOwnerAddress, setCarOwnerAddress] = useState(
     "0x773660A24E683AA999bAe850ddF1B13B2b233135"
   );
@@ -175,6 +178,8 @@ function Page({ params }: { params: { id: string } }) {
         <div className="flex gap-x-3 col-span-6">
           <Button key={"buyout"}>Buy</Button>
           <MessageSeller to={carOwnerAddress} conversation={conversations} />
+
+          <AddToFavorites carTokenId={+id} />
         </div>
       </div>
       <div className="">

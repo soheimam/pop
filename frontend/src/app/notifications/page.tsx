@@ -10,14 +10,21 @@ function Page({ params }: { params: { id: string } }) {
   const { dbClient } = useTablelandProvider();
   const { address } = useAccount();
   const [cars, setCars] = useState<CarRow[]>();
+  const [favoriteCarTokens, setFavoriteCarTokens] = useState<number[]>([]);
 
   const loadCars = async (address: string, dbClient: Database) => {
     let favoriteCarTokens = await findFavoritesForUser(address, dbClient);
     console.log("finding favorites ...");
     console.log(favoriteCarTokens);
+    if (favoriteCarTokens != undefined && favoriteCarTokens.length >= 0) {
+      setFavoriteCarTokens(favoriteCarTokens.map((user) => user.tokenId));
+    } else {
+      setFavoriteCarTokens([]);
+    }
+
     console.log("finding cars for favs...");
     let cars = await findCarsForUser(
-      favoriteCarTokens.map((user) => user.tokenId),
+      favoriteCarTokens!.map((user) => user.tokenId),
       dbClient
     );
     console.log(cars);
@@ -47,6 +54,7 @@ function Page({ params }: { params: { id: string } }) {
               price={car.price}
               imageUrl={`https://api.metafuse.me/assets/be82af4a-9515-4c14-979f-27685ede3bbd/${car.tokenId}.png`}
               engine={car.tansmissionType}
+              fav={favoriteCarTokens.includes(car.tokenId)}
             />
           ))
         ) : (

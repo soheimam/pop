@@ -14,6 +14,7 @@ declare global {
 
 interface IXMTPProvider {
   xmtpClient: any;
+  makeClient: () => any;
 }
 
 export function XmtpProvider({ children }: any) {
@@ -24,8 +25,19 @@ export function XmtpProvider({ children }: any) {
     new Promise((resolve) => setTimeout(resolve, ms));
 
   const runner = async () => {
-    await delay(2000);
+    await delay(5000);
     // Your code to run after the 2-second delay goes here
+    const provider = new ethers.providers.Web3Provider(window.ethereum);
+    const signer = provider.getSigner();
+    const xmtp = await Client.create(signer, {
+      env: "dev",
+    });
+    console.log(`setting xmtp client...`);
+    await setXmtpClient(xmtp);
+    return xmtp;
+  };
+
+  const makeClient = async () => {
     const provider = new ethers.providers.Web3Provider(window.ethereum);
     const signer = provider.getSigner();
     const xmtp = await Client.create(signer, {
@@ -48,6 +60,7 @@ export function XmtpProvider({ children }: any) {
     <AppContext.Provider
       value={{
         xmtpClient,
+        makeClient,
       }}
     >
       {children}
