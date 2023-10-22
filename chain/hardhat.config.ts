@@ -33,6 +33,14 @@ const config: HardhatUserConfig = {
       url: "https://polygon-mumbai.infura.io/v3/9c17b4ee03bf4c75829e260cbea6a92a",
       accounts: [privateKey],
     },
+    scroll: {
+      url: "https://sepolia-rpc.scroll.io/",
+      accounts: [privateKey],
+    },
+    mantle: {
+      url: "https://rpc.testnet.mantle.xyz",
+      accounts: [privateKey],
+    },
     base: {
       url: "https://goerli.base.org/",
       accounts: [privateKey],

@@ -4,7 +4,9 @@ import { ServiceRecord } from "../typechain-types";
 const main = async () => {
   let ServiceRecord: ServiceRecord;
   const serviceFactory = await ethers.getContractFactory("ServiceRecord");
-  ServiceRecord = (await serviceFactory.deploy()) as ServiceRecord;
+  ServiceRecord = (await serviceFactory.deploy({
+    gasLimit: "21000000",
+  })) as ServiceRecord;
   const serviceDeployment = await ServiceRecord.waitForDeployment();
   console.log(`Car service address = ${await serviceDeployment.getAddress()}`);
 };
