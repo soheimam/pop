@@ -54,7 +54,7 @@ Welcome to CarChain! We offer a seamless decentralized marketplace platform for 
 - Once a deal is reached, the car's ownership (TBA) is transferred to the buyer upon successful transaction.
 - All details of the transaction are stored on the blockchain, ensuring transparency and security.
 
-![Alt text](popjpg)
+![Alt text](pop.jpg)
 
 ## Deploy on Vercel
 
