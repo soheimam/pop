@@ -93,15 +93,18 @@ function processJson(data: InputData): ProcessedData | {} {
   // Extracting the highest score and respective label/name from each field
   processedData.highestScores.region = getHighestScore(result.region, "code");
   processedData.highestScores.vehicle = getHighestScore(result.vehicle, "type");
-  processedData.highestScores.model_make = getHighestScore(
+  processedData.highestScores.make = getHighestScore(result.model_make, "make");
+
+  processedData.highestScores.model = getHighestScore(
     result.model_make,
-    "make"
+    "model"
   );
+
   processedData.highestScores.color = getHighestScore(result.color, "color");
-  processedData.highestScores.orientation = getHighestScore(
-    result.orientation,
-    "orientation"
-  );
+  // processedData.highestScores.orientation = getHighestScore(
+  //   result.orientation,
+  //   "orientation"
+  // );
 
   // Joining top-level data
   processedData.topLevels.box = result.box;
@@ -132,7 +135,7 @@ export async function PUT(request: Request, response: Response) {
   const apiKey = process.env.NEXT_PUBLIC_CARS_API_KEY!;
   let body = new FormData();
   body.append("upload", base64Body);
-  body.append("regions", "us-ca"); // Change to your country
+  body.append("regions", "us-ca");
   body.append("mmc", "true");
 
   const req = await fetch("https://api.platerecognizer.com/v1/plate-reader/", {
@@ -142,8 +145,8 @@ export async function PUT(request: Request, response: Response) {
     },
     body: body,
   });
-  console.log(req);
   const json = await req.json();
+  console.log(JSON.stringify(json));
   const processedJson = processJson(json);
   console.log(processedJson);
   return NextResponse.json({ data: processedJson });

@@ -12,9 +12,17 @@ import { Input } from "@/components/ui/input";
 // import { SendMessage } from "@/components/SendMessage";
 // import { useConversations } from "@xmtp/react-sdk";
 
-import BidRow from "@/components/BidRow";
-
 import MaintenanceCard from "@/components/MaintanceCard";
+import AddToFavorites from "@/components/AddToFavourites";
+import { useTablelandProvider } from "@/app/(context)/tablelandContext";
+import {
+  findUserOfTokenId,
+  placeBidsForCar,
+  findBidsForCar,
+  CarBidRow,
+} from "@/lib/tableland";
+import { useAccount } from "wagmi";
+import BidRow from "@/components/BidRow";
 
 const mockData = [
   {
@@ -93,9 +101,26 @@ function Page({ params }: { params: { id: string } }) {
   const [loading, setLoading] = useState(true);
   const [content, setContent] = useState({});
   const [conversations, setConversations] = useState<any>([]);
-  const [carOwnerAddress, setCarOwnerAddress] = useState(
-    "0x773660A24E683AA999bAe850ddF1B13B2b233135"
-  );
+  const { dbClient } = useTablelandProvider();
+  const [bidValue, setBidValue] = useState<string>("");
+  const { address } = useAccount();
+
+  const [allBids, setAllBids] = useState<CarBidRow[]>();
+
+  const [carOwnerAddress, setCarOwnerAddress] = useState<string>("");
+
+  useEffect(() => {
+    const findOwnerRunner = async () => {
+      let ownerOfCarQueryResult = await findUserOfTokenId(+id, dbClient);
+      if (ownerOfCarQueryResult && ownerOfCarQueryResult.length >= 1) {
+        setCarOwnerAddress(ownerOfCarQueryResult[0].userAddress);
+      } else {
+        setCarOwnerAddress("0x773660A24E683AA999bAe850ddF1B13B2b233135");
+      }
+    };
+
+    findOwnerRunner();
+  }, []);
 
   /*
     We want to check if we have an open convo with the seller of the car
@@ -132,34 +157,66 @@ function Page({ params }: { params: { id: string } }) {
       //TODO: we weren't doing anything with loading and content
       setContent(jsonData.tokens);
       setLoading(false);
+
+      const getAllBids = async () => {
+        const bids = await findBidsForCar(+id, dbClient);
+        setAllBids(bids);
+      };
+
+      getAllBids();
     };
+
     _fetch();
   }, []);
+
+  const setTheBidValue = (e: any) => {
+    console.log(e.target.value);
+    setBidValue(e.target.value);
+  };
+
+  const placeTheBidOnCar = async () => {
+    console.log(`placing bid on car...`);
+    if (bidValue != null && bidValue != "") {
+      const bidRowObject = {
+        tokenId: +id,
+        bid: bidValue,
+        bidderAddress: address as string,
+      };
+      let bids = await placeBidsForCar(bidRowObject, dbClient);
+      if (bids && bids.length >= 1) {
+        setAllBids(bids);
+      }
+    }
+  };
 
   const squares = Array(3).fill(null);
   return (
     <main>
       <div className="grid grid-cols-6 md:grid-cols-12 gap-4">
-        {squares.map((square) => (
+        {squares.map((square, index) => (
           <div
-            key={square}
+            key={index}
             className="bg-gray-700 p-12 rounded-md col-span-2 md:col-span-4"
           ></div>
         ))}
       </div>
-      <div className="grid grid-cols-6 md:grid-cols-12 gap-4">
-        <div className="col-span-6 md:col-span-12">
+      <div className="grid grid-cols-6  gap-4">
+        <div className="col-start-1 col-span-3 ">
           <h3 className="mt-5 scroll-m-20 text-2xl font-semibold tracking-tight text-blue-800 ">
             {id}
           </h3>
+
           <div className="flex">
             <Image src="/engine.svg" height={20} width={20} alt="engine icon" />
             <p className="ml-2 text-blue-400 text-small">automatic</p>
           </div>
         </div>
+        <div className="col-start-5 col-span-2 self-end">
+          <AddToFavorites carTokenId={+id} />
+        </div>
       </div>
-      <div className="grid grid-cols-6 md:grid-cols-12 gap-4">
-        <div className="col-span-6 md:col-span-12">
+      <div className="grid grid-cols-6  gap-4">
+        <div className="col-span-6 ">
           <h4 className="mt-6 mb-2 text-xl font-semibold tracking-tight text-blue-800">
             Description
           </h4>
@@ -172,8 +229,10 @@ function Page({ params }: { params: { id: string } }) {
             warranty. It drives pretty well too.
           </p>
         </div>
-        <div className="flex gap-x-3 col-span-6">
+        <div className="col-start-1 col-span-2">
           <Button key={"buyout"}>Buy</Button>
+        </div>
+        <div className="col-start-3 col-span-4">
           <MessageSeller to={carOwnerAddress} conversation={conversations} />
         </div>
       </div>
@@ -183,7 +242,7 @@ function Page({ params }: { params: { id: string } }) {
         </h4>
       </div>
 
-      <Tabs defaultValue="history" className="w-full my-4">
+      <Tabs defaultValue="auction" className="w-full my-4">
         <TabsList className="grid w-full grid-cols-2">
           <TabsTrigger value="auction">Auction</TabsTrigger>
           <TabsTrigger value="history">History</TabsTrigger>
@@ -197,24 +256,33 @@ function Page({ params }: { params: { id: string } }) {
               className=" border-0 w-3/5"
               type="text"
               placeholder="Place your bid"
+              onChange={(e: any) => {
+                setTheBidValue(e);
+              }}
             />
-            <Button variant="secondary" type="submit">
+            <Button
+              variant="secondary"
+              type="submit"
+              onClick={async () => await placeTheBidOnCar()}
+            >
               Place Bid
             </Button>
           </div>
           <h4 className="mt-6 mb-2 text-xl font-semibold tracking-tight text-blue-800">
             Top Bidders
           </h4>
-          {mockData.map((data, index) => (
-            <BidRow
-              key={index}
-              index={index}
-              avatarSrc={data.avatarSrc}
-              avatarFallback={data.avatarFallback}
-              address={data.address}
-              price={data.price}
-            />
-          ))}
+          {allBids
+            ? allBids.map((data: CarBidRow, index: number) => (
+                <BidRow
+                  key={index}
+                  index={index}
+                  avatarSrc={"https://github.com/alice.png"}
+                  avatarFallback={"fall back"}
+                  address={data.bidderAddress}
+                  price={data.bid}
+                />
+              ))
+            : null}
         </TabsContent>
         <TabsContent value="history">
           <h4 className="mt-6 mb-2 text-xl font-semibold tracking-tight text-center text-blue-800">

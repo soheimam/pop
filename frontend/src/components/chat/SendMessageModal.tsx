@@ -51,8 +51,8 @@ const MessageSeller = ({ to, conversation }: IMessageDetails) => {
   };
 
   return (
-    <div>
-      <Button variant="outline" className="btn" onClick={showModal}>
+    <>
+      <Button variant="secondary" className="btn w-full" onClick={showModal}>
         Message Seller
       </Button>
       <dialog
@@ -85,7 +85,7 @@ const MessageSeller = ({ to, conversation }: IMessageDetails) => {
           </div>
         </div>
       </dialog>
-    </div>
+    </>
   );
 };
 

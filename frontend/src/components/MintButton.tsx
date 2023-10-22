@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button";
 import { toast } from "./ui/use-toast";
 import { ToastAction } from "./ui/toast";
 
-function MintButton({ onUpload, onMint, setCurrentStep, isLoading }: any) {
+function MintButton({ onUpload, onMint, isLoading }: any) {
   // const [loading, setLoading] = useState(false);
 
   // const handleMint = async () => {
@@ -24,7 +24,6 @@ function MintButton({ onUpload, onMint, setCurrentStep, isLoading }: any) {
       ),
     });
     if (onMint) await onMint();
-    setCurrentStep((prev: number) => prev + 1);
   };
 
   return (

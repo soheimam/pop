@@ -1,5 +1,8 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  images: {
+    domains: ["api.metafuse.me"],
+  },
   reactStrictMode: false,
   typescript: {
     ignoreBuildErrors: true,
@@ -18,9 +21,10 @@ const nextConfig = {
     return config;
   },
 };
-
+const runtimeCaching = require("next-pwa/cache");
 const withPWA = require("next-pwa")({
   dest: "public",
+  runtimeCaching,
   publicExcludes: ["**/manifest.json"],
   exclude: [
     // Exclude files from the service worker

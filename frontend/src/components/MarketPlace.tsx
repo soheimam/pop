@@ -1,41 +1,69 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Image from "next/image";
 import CarCard from "./CarCard";
+import { useTablelandProvider } from "@/app/(context)/tablelandContext";
+import { CarRow, findCarsForHome, findFavoritesForUser } from "@/lib/tableland";
+import { useAccount } from "wagmi";
 
 const mockCars = [
   {
-    id: 1,
+    tokenId: 1,
     make: "Toyota",
     model: "Corolla",
     year: 2018,
     price: 15000,
-    image: "/car2.png",
+    image: "/2.png",
     engine: "automatic",
   },
   {
-    id: 2,
+    tokenId: 2,
     make: "Honda",
     model: "Civic",
     year: 2019,
     price: 17000,
-    image: "/car3.png",
+    image: "/3.png",
     engine: "automatic",
   },
   {
-    id: 3,
+    tokenId: 3,
     make: "Ford",
     model: "Mustang",
     year: 2020,
     price: 25000,
-    image: "/car4.png",
+    image: "/4.png",
     engine: "manual",
   },
-];
+] as CarRow[];
 
 export default function MarketPlace({ title = "" }) {
-  const [cars, setCars] = useState(mockCars);
+  const [cars, setCars] = useState<CarRow[]>(null);
+  const [caughtError, setCaughtError] = useState(false);
+  const { dbClient } = useTablelandProvider();
+  const { address } = useAccount();
+  const [userFavs, setUserFavs] = useState();
+
+  const initCarData = async () => {
+    try {
+      let cars = await findCarsForHome(dbClient);
+      setCars(cars);
+    } catch (error) {
+      console.log(error);
+      setCars(mockCars);
+    }
+  };
+
+  useEffect(() => {
+    if (!cars && dbClient) {
+      try {
+        initCarData();
+      } catch (error) {
+        setCars(mockCars);
+        console.log(error);
+      }
+    }
+  }, [dbClient]);
 
   return (
     <main>
@@ -52,18 +80,27 @@ export default function MarketPlace({ title = "" }) {
         Todays picks
       </h4>
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 ">
-        {cars.map((car) => (
-          <CarCard
-            key={car.id}
-            id={car.id}
-            make={car.make}
-            model={car.model}
-            year={car.year}
-            price={car.price}
-            imageUrl={car.image}
-            engine={car.engine}
-          />
-        ))}
+        {cars ? (
+          cars.map((car, index) => (
+            <CarCard
+              key={`${car.tokenId}${index}`}
+              id={car.tokenId}
+              make={car.make}
+              model={car.model}
+              rating={parseFloat(car.rating).toFixed(1).toString()}
+              year={car.year}
+              price={car.price}
+              imageUrl={
+                caughtError
+                  ? car.image
+                  : `https://api.metafuse.me/assets/be82af4a-9515-4c14-979f-27685ede3bbd/${car.tokenId}.png`
+              }
+              engine={car.transmissionType}
+            />
+          ))
+        ) : (
+          <></>
+        )}
       </div>
     </main>
   );

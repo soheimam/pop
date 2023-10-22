@@ -14,6 +14,7 @@ interface CarCardProps {
   year: number;
   price: number;
   engine: string;
+  rating: string;
 }
 
 const CarCard: React.FC<CarCardProps> = ({
@@ -24,6 +25,7 @@ const CarCard: React.FC<CarCardProps> = ({
   year,
   price,
   engine,
+  rating,
 }) => {
   return (
     <NextLink href={`/cars/${id}`}>
@@ -40,7 +42,7 @@ const CarCard: React.FC<CarCardProps> = ({
           <h2 className="text-lg font-bold text-blue-900">{`${make} ${model}`}</h2>
           <div className="flex justify-between">
             <StarFilledIcon className="w-6 h-6 text-yellow-400 mr-2" />
-            <p className="text-blue-900"> 4.3</p>
+            <p className="text-blue-900"> {rating}</p>
           </div>
         </div>
         <Separator

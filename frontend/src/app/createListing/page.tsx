@@ -1,7 +1,7 @@
 "use client";
 import { ethers } from "ethers";
 import Image from "next/image";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import Camera from "@/components/Camera";
 // import { WalletContext } from "@/app/(context)/context";
 import { Button } from "@/components/ui/button";
@@ -13,6 +13,7 @@ import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import Compressor from "compressorjs";
 import { useWaitForTransaction, useContractWrite, useAccount } from "wagmi";
 
+import { Input } from "@/components/ui/input";
 import {
   CAR_ABI,
   MUMBAI_CAR_CONTRACT_ADDRESS,
@@ -25,19 +26,8 @@ import { toast } from "@/components/ui/use-toast";
 import { useCreateTBA } from "../(hooks)/useCreateTBA";
 import SubNFTUpload from "@/components/SubNFTUpload";
 import Stepper from "@/components/stepper";
-import {
-  CarRow,
-  UserRow,
-  findUserOfTokenId,
-  insertCarRow,
-  insertUserRow,
-} from "@/lib/tableland";
-import { Database } from "@tableland/sdk";
+import { CarRow, UserRow, insertCarRow, insertUserRow } from "@/lib/tableland";
 import { useTablelandProvider } from "../(context)/tablelandContext";
-
-// import { useConnectWallet } from "@privy-io/react-auth";
-
-// import { useWalletContext } from "../(hooks)/useWalletContext";
 
 function convertToTraitTypeValue(jsonObj: any, setAidata: any) {
   const highestScores = jsonObj.highestScores;
@@ -48,7 +38,7 @@ function convertToTraitTypeValue(jsonObj: any, setAidata: any) {
   return traitTypeValueArray;
 }
 
-function blobToBase64(blob) {
+function blobToBase64(blob: any) {
   return new Promise((resolve, _) => {
     var reader = new FileReader();
     reader.onload = function () {
@@ -105,19 +95,20 @@ function Page({ params }: { params: { id: string } }) {
   const { address } = useAccount();
   const [showEnableMinting, setShowEnableMinting] = useState<boolean>(false);
   const [mintedTokenId, setMintedTokenId] = useState<number>(0);
-  const { createTBA, account } = useCreateTBA();
   const [currentStep, setCurrentStep] = useState(1);
+  const {
+    createTBA,
+    account,
+    isLoading: TBALoading,
+  } = useCreateTBA(setCurrentStep);
+
   const [transactionHash, setTransactionHash] = useState<any>(null);
   const [aiData, setAidata] = useState<any>(null);
   const { dbClient } = useTablelandProvider();
-
-  let runner = async () => {
-    findUserOfTokenId(1, dbClient);
-  };
-
-  useEffect(() => {
-    runner();
-  }, []);
+  const [year, setYear] = useState("");
+  const [price, setPrice] = useState("");
+  const [selectedOption, setSelectedOption] = useState("automatic");
+  const [carTokenId, setCarTokenId] = useState<number>(0);
 
   const {
     data: writeDataRoadWorthy,
@@ -131,7 +122,7 @@ function Page({ params }: { params: { id: string } }) {
     args: [address, account],
   });
 
-  useWaitForTransaction({
+  const { isLoading: isLoadingRoadWorthyTransaction } = useWaitForTransaction({
     hash: writeDataRoadWorthy?.hash,
     enabled: Boolean(writeDataRoadWorthy),
     onSuccess: async (transactionReceipt) => {
@@ -174,7 +165,7 @@ function Page({ params }: { params: { id: string } }) {
     args: [address, account],
   });
 
-  useWaitForTransaction({
+  const { isLoading: serviceWaitingTransaction } = useWaitForTransaction({
     hash: writeDataService?.hash,
     enabled: Boolean(writeDataService),
     onSuccess: async (transactionReceipt) => {
@@ -216,11 +207,13 @@ function Page({ params }: { params: { id: string } }) {
     args: [address],
   });
 
-  useWaitForTransaction({
+  const { isLoading: writeCarWaitingTransaction } = useWaitForTransaction({
     hash: writeDataCar?.hash,
     enabled: Boolean(writeDataCar),
     onSuccess: async (transactionReceipt) => {
       const tokenId = getTokenId(transactionReceipt);
+      console.log(`what is this mint car token id ? ${tokenId}`);
+      setCarTokenId(+tokenId);
       await createTBA(+tokenId);
       const base64 = await fileToBase64(capturedImage!);
       const traits = convertToTraitTypeValue(carApiData.data, setAidata);
@@ -247,6 +240,16 @@ function Page({ params }: { params: { id: string } }) {
     setCapturedImage(imageFile);
   };
 
+  const handleYearChange = (event) => {
+    setYear(event.target.value);
+  };
+
+  const handlePriceChange = (event) => {
+    setPrice(event.target.value);
+  };
+  const handleTransmisson = (event) => {
+    setSelectedOption(event.target.value);
+  };
   const handleConfirm = async () => {
     setConfirmCar(true);
 
@@ -313,6 +316,24 @@ function Page({ params }: { params: { id: string } }) {
     console.log(capturedImage);
   };
 
+  const isLoading = useMemo(() => {
+    return (
+      writeCarWaitingTransaction ||
+      isLoadingRoadWorthyTransaction ||
+      serviceWaitingTransaction ||
+      TBALoading
+    );
+  }, [
+    writeCarWaitingTransaction,
+    isLoadingRoadWorthyTransaction,
+    serviceWaitingTransaction,
+    TBALoading,
+  ]);
+
+  if (isLoading) {
+    return <p>Loading..</p>;
+  }
+
   return (
     <main>
       <Stepper currentStep={currentStep} />
@@ -333,40 +354,73 @@ function Page({ params }: { params: { id: string } }) {
           {confirmCar ? (
             <>
               <CarSpecs highScores={carApiData} />
-              <h4 className="my-4 mb-2 text-xl font-semibold tracking-tight text-blue-800">
-                Engine selection
+              <h4 className="text-sm font-medium leading-none col-span-6 text-blue-950 my-2">
+                {" "}
+                Transmission{" "}
               </h4>
-              <RadioGroup defaultValue="option-one " className="my-6">
-                <div className="flex items-center space-x-2">
-                  <RadioGroupItem value="option-one" id="automatic" />
-                  <Label htmlFor="option-one">Automatic</Label>
+              <p className="text-sm text-muted-foreground mb-4">
+                Select your cars transmission.
+              </p>
+
+              <div className="grid w-full max-w-sm items-center gap-2.5 mb-4">
+                <RadioGroup defaultValue="automatic" className="mb-2 ">
+                  <div className="flex items-center space-x-2">
+                    <RadioGroupItem
+                      value="automatic"
+                      id="automatic"
+                      onClick={handleTransmisson}
+                      checked={selectedOption === "automatic"}
+                    />
+                    <Label htmlFor="option-one">Automatic</Label>
+                  </div>
+                  <div className="flex items-center space-x-2">
+                    <RadioGroupItem
+                      value="manual"
+                      id="manual"
+                      onClick={handleTransmisson}
+                      checked={selectedOption === "manual"}
+                    />
+                    <Label htmlFor="option-two">Manual</Label>
+                  </div>
+                </RadioGroup>
+                <div className="grid w-full max-w-sm items-center gap-1.5">
+                  <Label htmlFor="year">Enter year</Label>
+                  <Input
+                    type="text"
+                    id="year"
+                    maxLength={4}
+                    value={year}
+                    onChange={handleYearChange}
+                  />
                 </div>
-                <div className="flex items-center space-x-2">
-                  <RadioGroupItem value="option-two" id="manual" />
-                  <Label htmlFor="option-two">Manual</Label>
+                <div className="grid w-full max-w-sm items-center gap-1.5">
+                  <Label htmlFor="price">Sale Price</Label>
+                  <Input
+                    type="text"
+                    id="price"
+                    value={price}
+                    onChange={handlePriceChange}
+                  />
                 </div>
-              </RadioGroup>
+              </div>
             </>
           ) : null}
 
-          <div className="flex ">
-            <div>
-              {!account && mintButtonVisible && capturedImage && (
-                <MintButton
-                  onUpload={handleUpload}
-                  onMint={mintCarNFT}
-                  setCurrentStep={setCurrentStep}
-                  isLoading={writeLoadingCar}
-                />
-              )}
-            </div>
+          <div>
+            {!account && mintButtonVisible && capturedImage && (
+              <MintButton
+                onUpload={handleUpload}
+                onMint={mintCarNFT}
+                isLoading={writeLoadingCar}
+              />
+            )}
           </div>
         </>
       )}
       {currentStep === 2 && (
         <>
           <h4 className="mt-6 mb-2 text-xl font-semibold tracking-tight text-blue-800">
-            Add Details
+            Verify Your Maintenance History & Authenticate Your Car
           </h4>
 
           <p className=" text-blue-400 text-small">
@@ -389,26 +443,26 @@ function Page({ params }: { params: { id: string } }) {
               const userRow: UserRow = {
                 userAddress: address!,
                 userTba: account!,
-                tokenId: mintedTokenId,
+                tokenId: carTokenId,
               };
               await insertUserRow(userRow, dbClient);
 
               const carRow: CarRow = {
-                carName:
-                  aiData["model_make"] == null
-                    ? "Unknown"
-                    : aiData["model_make"],
-                tansmissionType: "",
-                tokenId: mintedTokenId,
-                price: 0,
+                make: aiData.make,
+                model: aiData.model,
+                transmissionType: selectedOption,
+                tokenId: carTokenId,
+                price: +price,
                 rating: getRandomBetween(3.5, 5).toString(),
+                year: +year,
               };
+              console.log(`inserting a car row ..`);
+              console.log(carRow);
               await insertCarRow(carRow, dbClient);
-
-              // insert a car details row
+              window.location.href = "/Dashboard";
             }}
           >
-            Finish
+            Confirm
           </Button>
         </>
       )}

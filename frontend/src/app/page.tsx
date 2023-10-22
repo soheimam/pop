@@ -6,5 +6,6 @@ import Home from "@/components/Home";
 // };
 
 export default function Page() {
+  //@ts-ignore
   return <Home title="App" />;
 }
