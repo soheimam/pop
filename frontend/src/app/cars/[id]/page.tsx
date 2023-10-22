@@ -200,19 +200,23 @@ function Page({ params }: { params: { id: string } }) {
           ></div>
         ))}
       </div>
-      <div className="grid grid-cols-6 md:grid-cols-12 gap-4">
-        <div className="col-span-6 md:col-span-12">
+      <div className="grid grid-cols-6  gap-4">
+        <div className="col-start-1 col-span-3 ">
           <h3 className="mt-5 scroll-m-20 text-2xl font-semibold tracking-tight text-blue-800 ">
             {id}
           </h3>
+
           <div className="flex">
             <Image src="/engine.svg" height={20} width={20} alt="engine icon" />
             <p className="ml-2 text-blue-400 text-small">automatic</p>
           </div>
         </div>
+        <div className="col-start-5 col-span-2 self-end">
+          <AddToFavorites carTokenId={+id} />
+        </div>
       </div>
-      <div className="grid grid-cols-6 md:grid-cols-12 gap-4">
-        <div className="col-span-6 md:col-span-12">
+      <div className="grid grid-cols-6  gap-4">
+        <div className="col-span-6 ">
           <h4 className="mt-6 mb-2 text-xl font-semibold tracking-tight text-blue-800">
             Description
           </h4>
@@ -225,11 +229,11 @@ function Page({ params }: { params: { id: string } }) {
             warranty. It drives pretty well too.
           </p>
         </div>
-        <div className="flex gap-x-3 col-span-6">
+        <div className="col-start-1 col-span-2">
           <Button key={"buyout"}>Buy</Button>
+        </div>
+        <div className="col-start-3 col-span-4">
           <MessageSeller to={carOwnerAddress} conversation={conversations} />
-
-          <AddToFavorites carTokenId={+id} />
         </div>
       </div>
       <div className="">
@@ -238,7 +242,7 @@ function Page({ params }: { params: { id: string } }) {
         </h4>
       </div>
 
-      <Tabs defaultValue="history" className="w-full my-4">
+      <Tabs defaultValue="auction" className="w-full my-4">
         <TabsList className="grid w-full grid-cols-2">
           <TabsTrigger value="auction">Auction</TabsTrigger>
           <TabsTrigger value="history">History</TabsTrigger>
