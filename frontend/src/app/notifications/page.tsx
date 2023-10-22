@@ -54,7 +54,8 @@ function Page({ params }: { params: { id: string } }) {
               rating={parseFloat(car.rating).toFixed(1).toString()}
               price={car.price}
               imageUrl={`https://api.metafuse.me/assets/be82af4a-9515-4c14-979f-27685ede3bbd/${car.tokenId}.png`}
-              engine={car.tansmissionType}
+              engine={car.transmissionType}
+              //@ts-ignore
               fav={favoriteCarTokens.includes(car.tokenId)}
             />
           ))

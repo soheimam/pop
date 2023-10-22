@@ -5,7 +5,7 @@ import { Database } from "@tableland/sdk";
 const userTableName = "cli_pop_table_80001_7957";
 const carTableName = "cli_popcar_table_80001_7956";
 const favTableName = "cli_popfav_table_80001_7948";
-const bidTableName = "cli_popbid_table_80001_7949";
+const bidTableName = "cli_popbid_table_80001_8170";
 
 export interface CarRow {
   make: string;
@@ -26,6 +26,12 @@ export interface UserRow {
 export interface FavRow {
   userAddress: string;
   tokenId: number;
+}
+
+export interface CarBidRow {
+  tokenId: number;
+  bid: string;
+  bidderAddress: string;
 }
 
 export const insertUserRow = async (userRow: UserRow, db: Database) => {
@@ -175,6 +181,20 @@ export const findUserOfTokenId = async (
   return result as UserRow[];
 };
 
+export const findOwnerOfCar = async (tokenId: number, dbClient: Database) => {
+  if (dbClient == null) {
+    console.error("No db connection trying to findOwnerOfCar");
+    return;
+  }
+
+  const transaction = await dbClient
+    .prepare(`SELECT * FROM ${carTableName} where tokenId = "${tokenId}";`)
+    .run();
+  let result = await transaction.results;
+  console.log(result);
+  return result as CarRow[];
+};
+
 export const findFavoritesForUser = async (
   userAddress: string,
   dbClient: Database
@@ -233,5 +253,31 @@ export const findBidsForCar = async (tokenId: number, dbClient: Database) => {
     .run();
   let result = await transaction.results;
   console.log(result);
-  return result as UserRow[];
+  return result as CarBidRow[];
+};
+
+export const placeBidsForCar = async (
+  bidRow: CarBidRow,
+  dbClient: Database
+) => {
+  if (dbClient == null) {
+    console.error("No db connection trying to placeBidsForCar");
+    return;
+  }
+
+  const { meta: insert } = await dbClient
+    .prepare(
+      `INSERT INTO ${bidTableName} (tokenId, bid, bidderAddress) VALUES (?1, ?2, ?3);`
+    )
+    .bind(bidRow.tokenId, bidRow.bid, bidRow.bidderAddress)
+    .run();
+  try {
+    await insert.txn?.wait();
+    const { results } = await dbClient
+      .prepare(`SELECT * FROM ${bidTableName};`)
+      .all();
+    return results as CarBidRow[];
+  } catch (error) {
+    console.log(error);
+  }
 };
