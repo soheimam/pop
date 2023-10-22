@@ -8,10 +8,9 @@ import {
   REGISTRY_ABI,
 } from "@/lib/chainUtils";
 
-export const useCreateTBA = () => {
+export const useCreateTBA = (setCurrentStep) => {
   const {
     data: writeData,
-    isLoading,
     isSuccess,
     write,
   } = useContractWrite({
@@ -22,11 +21,12 @@ export const useCreateTBA = () => {
 
   const [account, setAccount] = useState<string | null>(null);
 
-  useWaitForTransaction({
+  const { isLoading } = useWaitForTransaction({
     hash: writeData?.hash,
     enabled: Boolean(writeData),
     onSuccess: async (transactionReceipt) => {
       console.log(transactionReceipt);
+      setCurrentStep((prev: number) => prev + 1);
       setAccount(transactionReceipt.logs[0].address);
     },
   });

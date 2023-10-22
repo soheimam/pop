@@ -1,7 +1,7 @@
 "use client";
 import { ethers } from "ethers";
 import Image from "next/image";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import Camera from "@/components/Camera";
 // import { WalletContext } from "@/app/(context)/context";
 import { Button } from "@/components/ui/button";
@@ -95,8 +95,13 @@ function Page({ params }: { params: { id: string } }) {
   const { address } = useAccount();
   const [showEnableMinting, setShowEnableMinting] = useState<boolean>(false);
   const [mintedTokenId, setMintedTokenId] = useState<number>(0);
-  const { createTBA, account } = useCreateTBA();
   const [currentStep, setCurrentStep] = useState(1);
+  const {
+    createTBA,
+    account,
+    isLoading: TBALoading,
+  } = useCreateTBA(setCurrentStep);
+
   const [transactionHash, setTransactionHash] = useState<any>(null);
   const [aiData, setAidata] = useState<any>(null);
   const { dbClient } = useTablelandProvider();
@@ -117,7 +122,7 @@ function Page({ params }: { params: { id: string } }) {
     args: [address, account],
   });
 
-  useWaitForTransaction({
+  const { isLoading: isLoadingRoadWorthyTransaction } = useWaitForTransaction({
     hash: writeDataRoadWorthy?.hash,
     enabled: Boolean(writeDataRoadWorthy),
     onSuccess: async (transactionReceipt) => {
@@ -160,7 +165,7 @@ function Page({ params }: { params: { id: string } }) {
     args: [address, account],
   });
 
-  useWaitForTransaction({
+  const { isLoading: serviceWaitingTransaction } = useWaitForTransaction({
     hash: writeDataService?.hash,
     enabled: Boolean(writeDataService),
     onSuccess: async (transactionReceipt) => {
@@ -202,7 +207,7 @@ function Page({ params }: { params: { id: string } }) {
     args: [address],
   });
 
-  useWaitForTransaction({
+  const { isLoading: writeCarWaitingTransaction } = useWaitForTransaction({
     hash: writeDataCar?.hash,
     enabled: Boolean(writeDataCar),
     onSuccess: async (transactionReceipt) => {
@@ -311,6 +316,24 @@ function Page({ params }: { params: { id: string } }) {
     console.log(capturedImage);
   };
 
+  const isLoading = useMemo(() => {
+    return (
+      writeCarWaitingTransaction ||
+      isLoadingRoadWorthyTransaction ||
+      serviceWaitingTransaction ||
+      TBALoading
+    );
+  }, [
+    writeCarWaitingTransaction,
+    isLoadingRoadWorthyTransaction,
+    serviceWaitingTransaction,
+    TBALoading,
+  ]);
+
+  if (isLoading) {
+    return <p>Loading..</p>;
+  }
+
   return (
     <main>
       <Stepper currentStep={currentStep} />
@@ -388,7 +411,6 @@ function Page({ params }: { params: { id: string } }) {
               <MintButton
                 onUpload={handleUpload}
                 onMint={mintCarNFT}
-                setCurrentStep={setCurrentStep}
                 isLoading={writeLoadingCar}
               />
             )}
