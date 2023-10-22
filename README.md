@@ -1,35 +1,13 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+## Proof Of Purchase - [Pop Application](https://pop-wheat.vercel.app/)
 
-## Getting Started
-
-First, run the development server:
-
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
-
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
-
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
-
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
-
-## Proof Of Purchase
-
-Welcome to CarChain! We offer a seamless decentralized marketplace platform for buying and selling cars using the power of blockchain.
+Welcome to Pop! We offer a seamless decentralized marketplace platform for buying and selling cars using the power of blockchain.
 
 ### Features
 
 - **Token Bound Accounts (TBA):** Each car is represented by a unique ERC6551 token bound account, ensuring the authenticity and traceability of the vehicle.
 - **Document Verification:** Any verified document related to the car can be associated as minted ERC721 tokens held under its TBA. This guarantees the transparency and authenticity of every car's history and details.
 - **XMTP Messaging:** Our integration with the XMTP blockchain messaging library allows buyers and sellers to communicate directly, ensuring a smooth transaction process.
-  Bidding System: Fancy a car? Place a bid and get a chance to own it! Our transparent bidding system ensures fair market competition.
+- **Bidding System:** Fancy a car? Place a bid and get a chance to own it! Our transparent bidding system ensures fair market competition.
 - **AI Integration:** Just snap a picture of your car and let our AI API identify details about it! No more manual hassles.
 
 ### How It Works
@@ -56,11 +34,17 @@ Welcome to CarChain! We offer a seamless decentralized marketplace platform for 
 
 ![Alt text](./frontend/pop.jpg)
 
-## Deploy on Vercel
+## Contracts on Scroll Network
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+[ERC6551 Car Contract](https://blockscout.scroll.io/address/0xF8b68956c8636C05f3D2F184Ce2B1719A30fb494)
+[ERC721 Service Record Contract](https://blockscout.scroll.io/address/0x70993A5438c3dd991D508f8FBAB33C0164d3Ed18)
+[ERC721 Road Worthy Record Contract](https://blockscout.scroll.io/address/0x6C8D494BeA4310c9e01f7F2C291a0035f4d93F6A)
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+## Contracts on Mantle Network
+
+[ERC6551 Car Contract](https://explorer.mantle.xyz/address/0xf7a8a843B9fE1179A3172770a157B2913fb4cf27)
+[ERC721 Service Record Contract](https://explorer.mantle.xyz/address/0x70993A5438c3dd991D508f8FBAB33C0164d3Ed18)
+[ERC721 Road Worthy Record Contract](https://explorer.mantle.xyz/address/0x6C8D494BeA4310c9e01f7F2C291a0035f4d93F6A)
 
 ## License
 
