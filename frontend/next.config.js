@@ -21,9 +21,10 @@ const nextConfig = {
     return config;
   },
 };
-
+const runtimeCaching = require("next-pwa/cache");
 const withPWA = require("next-pwa")({
   dest: "public",
+  runtimeCaching,
   publicExcludes: ["**/manifest.json"],
   exclude: [
     // Exclude files from the service worker
