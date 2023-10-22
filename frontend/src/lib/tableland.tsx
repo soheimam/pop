@@ -2,10 +2,10 @@
 
 import { Database } from "@tableland/sdk";
 
-const userTableName = "cli_pop_table_80001_7907";
-const carTableName = "cli_popcar_table_80001_7882";
-const favTableName = "cli_popfav_table_80001_7948";
-const bidTableName = "cli_popbid_table_80001_7949";
+const userTableName = "cli_pop_table_80001_8212";
+const carTableName = "cli_popcar_table_80001_8213";
+const favTableName = "cli_popfav_table_80001_8214";
+const bidTableName = "cli_popbid_table_80001_8211";
 
 export interface CarRow {
   carName: string;
